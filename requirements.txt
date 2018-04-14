@@ -5,4 +5,4 @@ python-decouple==3.1
 pytz==2018.3
 static3==0.7.0
 gunicorn==19.4.1
-psycopg2==2.6.1
+psycopg2
