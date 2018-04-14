@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from core import views
+from sgce.core import views
 
 urlpatterns = [
     path('login/', views.login, name='login'),
