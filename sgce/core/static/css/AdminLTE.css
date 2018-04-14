@@ -288,7 +288,7 @@ a:focus {
   height: 50px;
   font-size: 20px;
   line-height: 50px;
-  text-align: center;
+  /*text-align: center;*/
   width: 230px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: 0 15px;
