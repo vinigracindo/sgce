@@ -12,4 +12,4 @@ class IndexTest(TestCase):
 
     def test_template(self):
         """Must use index.html"""
-        self.assertTemplateUsed(self.response, 'index.html')
+        self.assertTemplateUsed(self.response, 'core/index.html')

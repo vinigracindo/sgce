@@ -6,16 +6,18 @@ from sgce.core.models import User
 
 class UserListGet(TestCase):
     def setUp(self):
-        u1 = User.objects.create_user('user1', 'user1@domain.com', 'user1password')
-        u1.first_name = 'User'
-        u1.last_name = 'One'
-        u1.save()
-        u2 = User.objects.create_user('user2', 'user2@domain.com', 'user2password')
-        u2.first_name = 'User'
-        u2.last_name = 'Two'
-        u2.save()
+        self.u1 = User.objects.create_user(username='user1',
+                                      email='user1@domain.com',
+                                      password='user1password',
+                                      first_name='User',
+                                      last_name='One')
+        self.u1 = User.objects.create_user(username='user2',
+                                      email='user2@domain.com',
+                                      password='user2password',
+                                      first_name='User',
+                                      last_name='Two')
 
-        self.response = self.client.get(r('user_list'))
+        self.response = self.client.get(r('user-list'))
 
     def test_get(self):
         self.assertEqual(200, self.response.status_code)
@@ -25,13 +27,19 @@ class UserListGet(TestCase):
 
     def test_html(self):
         contents = [
-            (1, 'Nome'),
-            (1, 'Email'),
-            (1, 'Ação'),
             (1, 'User One'),
+            (1, 'user1@domain.com'),
             (1, 'User Two'),
+            (1, 'user2@domain.com'),
         ]
 
         for count, expected in contents:
             with self.subTest():
                 self.assertContains(self.response, expected, count)
+
+    def test_context(self):
+        variables = ['users']
+
+        for key in variables:
+            with self.subTest():
+                self.assertIn(key, self.response.context)
