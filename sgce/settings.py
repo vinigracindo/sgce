@@ -125,3 +125,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Login
 LOGIN_REDIRECT_URL = 'index'
 LOGIN_URL = 'login'
+
+# Override Absolute URL's
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.User': lambda user: "user/{}/".format(user.pk)
+}
