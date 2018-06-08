@@ -15,6 +15,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% block extra-css %}{% endblock %}
   </head>
 
   <body>
@@ -24,13 +25,15 @@
     {% include 'includes/navbar.html' %}
 
     <div class="main-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-      <h1 class="display-4">Bem-vindo</h1>
-      <p class="lead">Sistema de Gestão de Certificados Eletrônicos</p>
+      <h1 class="display-4">{% block content-title %}Bem-vindo{% endblock %}</h1>
+      <p class="lead">{% block content-description%}Sistema de Gestão de Certificados Eletrônicos{% endblock %}</p>
     </div>
 
     <div class="container">
-      {% block content %}
-      {% endblock %}
+      <div class="row">
+        {% block content %}
+        {% endblock %}
+      </div>
     </div>
 
     <!-- Bootstrap core JavaScript
@@ -42,5 +45,6 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+    {% block extra-js %}{% endblock %}
   </body>
 </html>

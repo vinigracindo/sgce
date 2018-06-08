@@ -4,74 +4,63 @@
 
 {% block extra-css %}
 <!-- DataTables -->
-<link rel="stylesheet" href="{% static 'bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/buttons.dataTables.min.css' %}">
 {% endblock %}
 
 {% block content-title %}Usuários{% endblock %}
+{% block content-description %}Página de Administração dos Usuários{% endblock %}
 
 {% block content %}
-<!-- Main content -->
-<section class="content">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="box">
-        <div class="box-header">
-          <h3 class="box-title">Usuários cadastrados</h3>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-          <table id="tableList" class="table table-bordered table-striped">
-            <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Email</th>
-              <th>Ação</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              {% for user in users %}
-                <td>{{ user.get_full_name }}</td>
-                <td>{{ user.email }} </td>
-                <td>Editar | Excluir</td>
-              {% endfor %}
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr>
-              <th>Nome</th>
-              <th>Email</th>
-              <th>Ação</th>
-            </tr>
-            </tfoot>
-          </table>
-        </div>
-        <!-- /.box-body -->
-      </div>
-      <!-- /.box -->
-    </div>
-    <!-- /.col -->
-  </div>
-  <!-- /.row -->
-</section>
-<!-- /.content -->
+<table id="tableList" class="table table-bordered table-striped">
+  <thead>
+  <tr>
+    <th>Nome</th>
+    <th>Email</th>
+    <th>Ação</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    {% for user in users %}
+      <td>{{ user.get_full_name }}</td>
+      <td>{{ user.email }} </td>
+      <td>Editar | Excluir</td>
+    {% endfor %}
+  </tr>
+  </tbody>
+  <tfoot>
+  <tr>
+    <th>Nome</th>
+    <th>Email</th>
+    <th>Ação</th>
+  </tr>
+  </tfoot>
+</table>
 {% endblock %}
 
 {% block extra-js %}
-<!-- DataTables -->
-<script src="{% static 'bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
-<script src="//cdn.datatables.net/plug-ins/1.10.16/i18n/Portuguese-Brasil.json"></script>
-<!-- page script -->
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/dataTables.buttons.min.js' %}"></script>
 <script>
   $(function () {
     $('#tableList').DataTable({
+      'dom': 'Bfrtip',
+      'buttons': [
+        {
+          text: "Novo Registro",
+          action: function (e, dt, node, config) {
+            alert("Novo Registro");
+          }
+        },
+      ],
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : false,
+      'autoWidth'   : true,
       'language': {
         "sEmptyTable": "Nenhum registro encontrado",
         "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
