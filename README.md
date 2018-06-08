@@ -4,8 +4,10 @@ Sistema Gerenciador de Certificados Eletrônicos.
 
 Live demo: https://sgce-app.herokuapp.com/login/
 
-[![Build Status](https://travis-ci.org/vinigracindo/eventex.svg?branch=master)](https://travis-ci.org/vinigracindo/eventex)
-[![Code Health](https://landscape.io/github/vinigracindo/eventex/master/landscape.svg?style=flat)](https://landscape.io/github/vinigracindo/eventex/master)
+User: admin | Password: admin11200
+
+[![Build Status](https://travis-ci.org/vinigracindo/sgce.svg?branch=master)](https://travis-ci.org/vinigracindo/sgce.svg?branch=master)
+[![Code Health](https://landscape.io/github/vinigracindo/sgce/master/landscape.svg?style=flat)](https://landscape.io/github/vinigracindo/sgce/master)
 
 O SGCE está sendo desenvolvido baseado no [SGCE criado pela Universidade Federal de Pampa](https://softwarepublico.gov.br/social/sgce) que foi descontinuado.
 Por este motivo, uma nova versão está sendo criada em python/django. Ressalto que essa versão não tem relação alguma com os servidores da
