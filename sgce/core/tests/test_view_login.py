@@ -23,7 +23,8 @@ class LoginGet(TestCase):
                 ('<input', 3),
                 ('type="text"', 1),
                 ('type="password"', 1),
-                ('type="submit"', 1))
+                ('type="submit"', 1),
+                ('method="post"', 1))
 
         for text, count in tags:
             with self.subTest():

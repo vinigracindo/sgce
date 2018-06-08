@@ -1,7 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import path
 from sgce.core import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('user/list/', views.UserListView.as_view(), name='user-list'),
+    path('user/list/', login_required(views.UserListView.as_view()), name='user-list'),
 ]

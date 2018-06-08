@@ -1,11 +1,12 @@
 from django.test import TestCase
 from django.shortcuts import resolve_url as r
-
+from sgce.core.tests.base import LoggedInTestCase
 from sgce.core.models import User
 
 
-class UserListGet(TestCase):
+class UserListGet(LoggedInTestCase):
     def setUp(self):
+        super(UserListGet, self).setUp()
         self.u1 = User.objects.create_user(username='user1',
                                       email='user1@domain.com',
                                       password='user1password',
