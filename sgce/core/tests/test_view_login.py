@@ -80,3 +80,12 @@ class LoginPostUserInvalid(TestCase):
     def test_form_has_errors(self):
         form = self.response.context['form']
         self.assertTrue(form.errors)
+
+    def test_html(self):
+        """HTML must contains error messages."""
+        form = self.response.context['form']
+        errors = form.non_field_errors()
+
+        for error in errors:
+            with self.subTest():
+                self.assertContains(self.response, error)

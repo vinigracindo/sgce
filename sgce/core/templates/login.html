@@ -19,6 +19,13 @@
   <body class="text-center">
     <form method="post" class="form-signin"> {% csrf_token %}
       <img class="mb-4" src="{% static 'images/logo.png' %}" alt="" width="96" height="96">
+      {% if form.errors %}
+        {% for error in form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% endif %}
       <label for="inputUsername" class="sr-only">Usuário</label>
       <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Usuário" required autofocus>
       <label for="inputPassword" class="sr-only">Senha</label>
