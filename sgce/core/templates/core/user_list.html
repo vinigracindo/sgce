@@ -12,31 +12,39 @@
 {% block content-description %}Página de Administração dos Usuários{% endblock %}
 
 {% block content %}
-<table id="tableList" class="table table-bordered table-striped">
-  <thead>
-  <tr>
-    <th>Nome</th>
-    <th>Email</th>
-    <th>Ação</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    {% for user in users %}
-      <td>{{ user.get_full_name }}</td>
-      <td>{{ user.email }} </td>
-      <td>Editar | Excluir</td>
-    {% endfor %}
-  </tr>
-  </tbody>
-  <tfoot>
-  <tr>
-    <th>Nome</th>
-    <th>Email</th>
-    <th>Ação</th>
-  </tr>
-  </tfoot>
-</table>
+<div class="row mb-4 ml-0 justify-content-center">
+  <a class="btn btn-success" href="#" role="button">Novo Usuário</a>
+</div>
+<div class="row">
+  <table id="tableList" class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>Nível de Acesso</th>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      {% for user in users %}
+        <td>{% if user.is_superuser %}Super Usuário{% else %}{{ user.profile.get_role_display }}{% endif %}</td>
+        <td>{{ user.get_full_name }}</td>
+        <td>{{ user.email }} </td>
+        <td><a href="#" class="fas fa-edit fa-sm" title="Editar"></a> | <a href="#" class="fa fa-trash-alt fa-sm" title="Excluir"></a></td>
+      {% endfor %}
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <th>Nível de Acesso</th>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Ações</th>
+    </tr>
+    </tfoot>
+  </table>
+</div>
 {% endblock %}
 
 {% block extra-js %}
@@ -46,15 +54,6 @@
 <script>
   $(function () {
     $('#tableList').DataTable({
-      'dom': 'Bfrtip',
-      'buttons': [
-        {
-          text: "Novo Registro",
-          action: function (e, dt, node, config) {
-            alert("Novo Registro");
-          }
-        },
-      ],
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,

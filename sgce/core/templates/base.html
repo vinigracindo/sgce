@@ -15,6 +15,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fontawesome-all.min.css' %}" rel="stylesheet">
     {% block extra-css %}{% endblock %}
   </head>
 
@@ -30,10 +31,8 @@
     </div>
 
     <div class="container">
-      <div class="row">
-        {% block content %}
-        {% endblock %}
-      </div>
+      {% block content %}
+      {% endblock %}
     </div>
 
     <!-- Bootstrap core JavaScript
