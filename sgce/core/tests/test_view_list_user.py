@@ -1,23 +1,26 @@
 from django.test import TestCase
 from django.shortcuts import resolve_url as r
 from sgce.core.tests.base import LoggedInTestCase
-from sgce.core.models import User
+from django.contrib.auth import get_user_model
 
 
 class UserListGet(LoggedInTestCase):
     def setUp(self):
         super(UserListGet, self).setUp()
-        self.u1 = User.objects.create_user(username='user1',
-                                      email='user1@domain.com',
-                                      password='user1password',
-                                      first_name='User',
-                                      last_name='One')
-        self.u1 = User.objects.create_user(username='user2',
-                                      email='user2@domain.com',
-                                      password='user2password',
-                                      first_name='User',
-                                      last_name='Two')
-
+        get_user_model().objects.create_user(
+            username='user1',
+            email='user1@domain.com',
+            password='user1password',
+            first_name='User',
+            last_name='One'
+        )
+        get_user_model().objects.create_user(
+            username='user2',
+            email='user2@domain.com',
+            password='user2password',
+            first_name='User',
+            last_name='Two'
+        )
         self.response = self.client.get(r('user-list'))
 
     def test_get(self):

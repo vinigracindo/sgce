@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView
-
-from sgce.core.models import User
+from django.contrib.auth import get_user_model
 
 
 def index(request):
@@ -9,6 +8,6 @@ def index(request):
 
 
 class UserListView(ListView):
-    model = User
+    model = get_user_model()
     template_name = 'core/user_list.html'
     context_object_name = 'users'

@@ -1,9 +1,9 @@
 from django.test import TestCase
-from sgce.core.models import User
+from django.contrib.auth import get_user_model
 
 
 class LoggedInTestCase(TestCase):
 
     def setUp(self):
-        user = User.objects.create_user(username='username', password='password')
+        get_user_model().objects.create_user(username='username', password='password')
         self.client.login(username='username', password='password')

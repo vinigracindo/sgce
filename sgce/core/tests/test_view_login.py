@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.shortcuts import resolve_url as r
 from django.test import Client
@@ -47,7 +47,7 @@ class LoginGet(TestCase):
 
 class LoginPostUserValid(TestCase):
     def setUp(self):
-        user = User.objects.create_user('usuario', 'usuario', 'userpass')
+        user = get_user_model().objects.create_user('usuario', 'usuario', 'userpass')
         data = dict(username=user.username, password='userpass')
         self.response = self.client.post(r('login'), data)
 
