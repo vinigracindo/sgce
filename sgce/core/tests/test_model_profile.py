@@ -6,11 +6,8 @@ from sgce.core.models import Profile
 class ProfileModelTest(TestCase):
     def setUp(self):
         user = get_user_model().objects.create_user('user', 'user@mail.com', 'pass')
-        self.profile = Profile.objects.create(
-            user=user,
-            role=Profile.MANAGER,
-            phone='82999624225'
-        )
+        # When a user is created a profile is created too.
+        self.profile = user.profile
 
     def test_create(self):
         self.assertTrue(Profile.objects.exists())
@@ -21,3 +18,7 @@ class ProfileModelTest(TestCase):
 
     def test_str(self):
         self.assertEqual('Perfil de {}'.format(self.profile.user.get_full_name()), str(self.profile))
+
+    def test_role_default_to_common_user(self):
+        """By default must be 'u' (Profile.USER)"""
+        self.assertEqual(self.profile.role, Profile.USER)

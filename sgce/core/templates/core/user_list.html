@@ -26,14 +26,14 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      {% for user in users %}
+    {% for user in users %}
+      <tr>
         <td>{% if user.is_superuser %}Super Usuário{% else %}{{ user.profile.get_role_display }}{% endif %}</td>
         <td>{{ user.get_full_name }}</td>
         <td>{{ user.email }} </td>
         <td><a href="#" class="fas fa-edit fa-sm" title="Editar"></a> | <a href="#" class="fa fa-trash-alt fa-sm" title="Excluir"></a></td>
-      {% endfor %}
-    </tr>
+      </tr>
+    {% endfor %}
     </tbody>
     <tfoot>
     <tr>
