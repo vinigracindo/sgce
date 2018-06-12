@@ -1,5 +1,4 @@
 exclude_paths:
-  - "contrib/*"
-  - "**/templates/*"
-  - "**/static/*"
-  - "**/migrations/*"
+  - contrib/*
+  - '*.js'
+  - '*.css'
