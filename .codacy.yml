@@ -1,5 +1,5 @@
 exclude_paths:
   - "contrib/*"
-  - "**/templates/"
-  - "**/static/"
-  - "**/migrations/"
+  - "**/templates/*"
+  - "**/static/*"
+  - "**/migrations/*"
