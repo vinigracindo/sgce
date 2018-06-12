@@ -8,4 +8,4 @@ script:
   - coverage run --source=core manage.py test
 
 after_success:
-  coveralls
+  - coveralls
