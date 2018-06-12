@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra-css %}
+{% endblock %}
+
+{% block content-title %}Usuários{% endblock %}
+{% block content-description %}Página de Administração dos Usuários{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <form method="post">{% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Salvar" />
+    </form>
+  </div>
+{% endblock %}
+
+{% block extra-js %}
+{% endblock %}

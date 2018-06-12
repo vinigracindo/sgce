@@ -27,7 +27,7 @@ class UserListGet(LoggedInTestCase):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'core/user_list.html')
+        self.assertTemplateUsed(self.response, 'core/user/user_list.html')
 
     def test_html(self):
         contents = [
@@ -35,6 +35,8 @@ class UserListGet(LoggedInTestCase):
             (1, 'user1@domain.com'),
             (1, 'User Two'),
             (1, 'user2@domain.com'),
+            # Must have a link to create a new user.
+            (1, 'href="{}"'.format(r('user-create'))),
         ]
 
         for count, expected in contents:

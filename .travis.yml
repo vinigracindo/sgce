@@ -5,4 +5,7 @@ install:
   - cp contrib/env-sample .env
   - pip install -q -r requirements.txt
 script:
-  - python manage.py test
+  - coverage run --source=core manage.py test
+
+after_success:
+  coveralls
