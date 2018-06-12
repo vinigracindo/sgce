@@ -8,7 +8,7 @@ class Profile(models.Model):
 
     ROLES = (
         (MANAGER, 'Coordenador'),
-        (USER, 'Usuário Comum'),
+        (USER, 'Usuário'),
     )
 
     user = models.OneToOneField(

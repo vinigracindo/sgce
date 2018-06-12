@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
     #Third-Apps
     'test_without_migrations',
-    'bootstrapform',
+    'bootstrap4',
 
     #System Apps
     'sgce.core',
@@ -128,7 +128,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Login
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'core:index'
 LOGIN_URL = 'login'
 
 # Override Absolute URL's

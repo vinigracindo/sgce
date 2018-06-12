@@ -21,7 +21,7 @@ class UserListGet(LoggedInTestCase):
             first_name='User',
             last_name='Two'
         )
-        self.response = self.client.get(r('user-list'))
+        self.response = self.client.get(r('core:user-list'))
 
     def test_get(self):
         self.assertEqual(200, self.response.status_code)
@@ -36,7 +36,7 @@ class UserListGet(LoggedInTestCase):
             (1, 'User Two'),
             (1, 'user2@domain.com'),
             # Must have a link to create a new user.
-            (1, 'href="{}"'.format(r('user-create'))),
+            (1, 'href="{}"'.format(r('core:user-create'))),
         ]
 
         for count, expected in contents:

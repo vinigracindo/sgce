@@ -4,7 +4,7 @@ from django.shortcuts import resolve_url as r
 
 class IndexTest(TestCase):
     def setUp(self):
-        self.response = self.client.get(r('index'))
+        self.response = self.client.get(r('core:index'))
 
     def test_get(self):
         """GET / must return status code 200"""
@@ -16,7 +16,7 @@ class IndexTest(TestCase):
 
     def test_menu_html(self):
         links = [
-            'href="{}"'.format(r('user-list')),
+            'href="{}"'.format(r('core:user-list')),
         ]
 
         for link in links:
@@ -25,7 +25,7 @@ class IndexTest(TestCase):
 
     def test_html(self):
         contents = [
-            'href="{}"'.format(r('index')),
+            'href="{}"'.format(r('core:index')),
         ]
 
         for content in contents:
