@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load bootstrap %}
 
 {% block extra-css %}
 {% endblock %}
@@ -11,8 +12,8 @@
 {% block content %}
   <div class="row">
     <form method="post">{% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="Salvar" />
+      {{ form|bootstrap }}
+      <button type="submit" class="btn btn-primary">Salvar</button>
     </form>
   </div>
 {% endblock %}

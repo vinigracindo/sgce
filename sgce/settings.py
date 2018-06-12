@@ -39,7 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #Third-Apps
     'test_without_migrations',
+    'bootstrapform',
+
+    #System Apps
     'sgce.core',
 ]
 
