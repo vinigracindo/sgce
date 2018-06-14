@@ -31,7 +31,7 @@
         <td>{% if user.is_superuser %}Super Usuário{% else %}{{ user.profile.get_role_display }}{% endif %}</td>
         <td>{{ user.get_full_name }}</td>
         <td>{{ user.email }} </td>
-        <td><a href="#" class="fas fa-edit fa-sm" title="Editar"></a> | <a href="#" class="fa fa-trash-alt fa-sm" title="Excluir"></a></td>
+        <td><a href="{% url 'core:user-update' user.pk %}" class="fas fa-edit fa-sm" title="Editar"></a> | <a href="#" class="fa fa-trash-alt fa-sm" title="Excluir"></a></td>
       </tr>
     {% endfor %}
     </tbody>

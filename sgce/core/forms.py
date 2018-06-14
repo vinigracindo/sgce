@@ -24,3 +24,8 @@ class UserForm(forms.ModelForm):
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['email'].required = True
+
+
+class UserUpdateForm(UserForm):
+    class Meta(UserForm.Meta):
+        exclude = ('password',)
