@@ -22,6 +22,7 @@
       <th>Nível de Acesso</th>
       <th>Nome</th>
       <th>Email</th>
+      <th>Ativo?</th>
       <th>Ações</th>
     </tr>
     </thead>
@@ -31,7 +32,19 @@
         <td>{% if user.is_superuser %}Super Usuário{% else %}{{ user.profile.get_role_display }}{% endif %}</td>
         <td>{{ user.get_full_name }}</td>
         <td>{{ user.email }} </td>
-        <td><a href="{% url 'core:user-update' user.pk %}" class="fas fa-edit fa-sm" title="Editar"></a><!-- | <a href="#" class="fa fa-trash-alt fa-sm" title="Excluir"></a> --></td>
+        <td>
+          {% if user.is_active %}
+            <i class="fas fa-check-circle" style="color: green;"></i>
+          {% else %}
+            <i class="fas fa-times-circle" style="color: red;"></i>
+          {% endif %}
+        </td>
+        <td>
+          <a href="{% url 'core:user-update' user.pk %}" class="fas fa-edit fa-sm" title="Editar"></a> |
+          {% with active=user.is_active %}
+            <a href="{% url 'core:user-active-or-disable' user.pk %}" class="fa fa-{% if active %}trash-alt{% else %}check{% endif %} fa-sm" title="{% if active %}Desabilitar{% else %}Habilitar{% endif %}"></a>
+          {% endwith %}
+        </td>
       </tr>
     {% endfor %}
     </tbody>
@@ -40,6 +53,7 @@
       <th>Nível de Acesso</th>
       <th>Nome</th>
       <th>Email</th>
+      <th>Ativo?</th>
       <th>Ações</th>
     </tr>
     </tfoot>

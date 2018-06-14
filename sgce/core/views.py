@@ -1,7 +1,6 @@
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth import get_user_model
@@ -9,7 +8,6 @@ from django.contrib.auth import get_user_model
 from sgce.core.forms import UserForm, UserUpdateForm
 
 
-#@login_required
 def index(request):
     return render(request, 'core/index.html')
 
@@ -51,3 +49,11 @@ class UserUpdateView(UpdateView):
         form.instance.profile.role = form.cleaned_data['role']
         form.instance.profile.save()
         return HttpResponseRedirect(self.get_success_url())
+
+
+def user_active_or_disable(request, pk):
+    user = get_user_model().objects.get(pk=pk)
+    if user.pk is not request.user.pk:
+        user.is_active = not user.is_active
+        user.save()
+    return HttpResponseRedirect(reverse('core:user-list'))
