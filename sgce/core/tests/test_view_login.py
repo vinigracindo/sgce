@@ -2,6 +2,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.shortcuts import resolve_url as r
+from django.conf import settings
 from django.test import Client
 
 
@@ -43,6 +44,13 @@ class LoginGet(TestCase):
         """form must have 2 fields (username and password)"""
         form = self.response.context['form']
         self.assertSequenceEqual(['username', 'password'], list(form.fields))
+
+    def test_redirect_authenticated_user(self):
+        """Must redirect to settings.LOGIN_REDIRECT_URL when user is authenticated."""
+        get_user_model().objects.create_user(username='username', password='password')
+        response = self.client.login(username='username', password='password')
+        response = self.client.get(r('login'))
+        self.assertRedirects(response, r(settings.LOGIN_REDIRECT_URL))
 
 
 class LoginPostUserValid(TestCase):

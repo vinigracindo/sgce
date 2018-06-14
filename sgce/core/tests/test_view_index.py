@@ -1,9 +1,11 @@
 from django.test import TestCase
 from django.shortcuts import resolve_url as r
+from sgce.core.tests.base import LoggedInTestCase
 
 
-class IndexTest(TestCase):
+class IndexTest(LoggedInTestCase):
     def setUp(self):
+        super(IndexTest, self).setUp()
         self.response = self.client.get(r('core:index'))
 
     def test_get(self):

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -8,6 +9,7 @@ from django.contrib.auth import get_user_model
 from sgce.core.forms import UserForm, UserUpdateForm
 
 
+#@login_required
 def index(request):
     return render(request, 'core/index.html')
 
