@@ -1,3 +1,5 @@
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
@@ -18,11 +20,12 @@ class UserListView(ListView):
     context_object_name = 'users'
 
 
-class UserCreateView(CreateView):
+class UserCreateView(SuccessMessageMixin, CreateView):
     model = get_user_model()
     form_class = UserForm
     template_name = 'core/user/user_form.html'
     success_url = reverse_lazy('core:user-list')
+    success_message = "O usuário %(username)s foi criado com sucesso."
 
     # Override form_valid to update user.profile.role
     def form_valid(self, form):
@@ -32,11 +35,12 @@ class UserCreateView(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(SuccessMessageMixin,UpdateView):
     model = get_user_model()
     form_class = UserUpdateForm
     template_name = 'core/user/user_form.html'
     success_url = reverse_lazy('core:user-list')
+    success_message = "O usuário %(username)s foi atualizado com sucesso."
 
     def get_initial(self):
         initial = super(UserUpdateView, self).get_initial()
@@ -54,6 +58,10 @@ class UserUpdateView(UpdateView):
 def user_active_or_disable(request, pk):
     user = get_user_model().objects.get(pk=pk)
     if user.pk is not request.user.pk:
-        user.is_active = not user.is_active
+        value = not user.is_active
+        user.is_active = value
         user.save()
+        messages.success(request, 'O usuário {} foi {} com sucesso.'.format(user.username, 'ativado' if value else 'desativado'))
+    else:
+        messages.error(request, 'Não é possível desativar o próprio usuário.')
     return HttpResponseRedirect(reverse('core:user-list'))
