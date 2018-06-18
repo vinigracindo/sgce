@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -38,6 +38,7 @@ class UserListView(LoginRequiredMixin, ListView):
 
 
 class UserCreateView(LoginRequiredMixin, CreateView, SuccessMessageMixin):
+    #permission_required = 'auth.add_user'
     model = get_user_model()
     form_class = UserForm
     template_name = 'core/user/user_form.html'
