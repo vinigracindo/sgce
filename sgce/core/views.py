@@ -37,8 +37,9 @@ class UserListView(LoginRequiredMixin, ListView):
     context_object_name = 'users'
 
 
-class UserCreateView(LoginRequiredMixin, CreateView, SuccessMessageMixin):
-    #permission_required = 'auth.add_user'
+class UserCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView, SuccessMessageMixin):
+    permission_required = 'auth.add_user'
+    raise_exception = True
     model = get_user_model()
     form_class = UserForm
     template_name = 'core/user/user_form.html'

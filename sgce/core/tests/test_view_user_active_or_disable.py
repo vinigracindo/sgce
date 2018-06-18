@@ -12,12 +12,11 @@ class UserActiveOrDisableWithoutPermission(LoggedInTestCase):
         super(UserActiveOrDisableWithoutPermission, self).setUp()
         # user created on LoggedInTestCase setUp()
         self.user = get_user_model().objects.get(pk=1)
-
         self.response = self.client.get(r('core:user-active-or-disable', self.user.pk))
 
     def test_get(self):
         """Must return 403 HttpError (No permission)"""
-        self.assertRaises(PermissionDenied)
+        self.assertEqual(403, self.response.status_code)
 
 
 # class Base. Add permission: can_enable_or_disable_user
