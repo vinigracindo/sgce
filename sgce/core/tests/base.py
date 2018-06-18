@@ -7,5 +7,5 @@ from django.conf import settings
 class LoggedInTestCase(TestCase):
 
     def setUp(self):
-        get_user_model().objects.create_user(username='username', password='password')
+        get_user_model().objects.create_superuser(username='username', email=None, password='password')
         self.response = self.client.login(username='username', password='password')
