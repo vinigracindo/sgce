@@ -13,7 +13,11 @@
 
 {% block content %}
 <div class="row mb-4 ml-0 justify-content-center">
-  <a class="btn btn-success" href="{% url 'core:user-create' %}" role="button">Novo Usuário</a>
+  {% if perms.auth.add_user %}
+    <a class="btn btn-success" href="{% url 'core:user-create' %}" role="button">Novo Usuário</a>
+  {% else %}
+    <a class="btn btn-secondary" style="cursor: not-allowed;" href="#" role="button" title="Você não tem permissão para criar um usuário." disabled>Novo Usuário</a>
+  {% endif %}
 </div>
 {% if messages %}
   {% for message in messages %}
