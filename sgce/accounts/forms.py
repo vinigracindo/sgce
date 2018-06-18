@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from sgce.core.models import Profile
+from sgce.accounts.models import Profile
 
 
 class UserForm(forms.ModelForm):

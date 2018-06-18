@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.shortcuts import resolve_url as r
 from sgce.core.tests.base import LoggedInTestCase
 from django.contrib.auth import get_user_model
@@ -21,13 +20,13 @@ class UserListGet(LoggedInTestCase):
             first_name='User',
             last_name='Two'
         )
-        self.response = self.client.get(r('core:user-list'))
+        self.response = self.client.get(r('accounts:user-list'))
 
     def test_get(self):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'core/user/user_list.html')
+        self.assertTemplateUsed(self.response, 'accounts/user/user_list.html')
 
     def test_html(self):
         contents = [
@@ -36,7 +35,7 @@ class UserListGet(LoggedInTestCase):
             (1, 'User Two'),
             (1, 'user2@domain.com'),
             # Must have a link to create a new user.
-            (1, 'href="{}"'.format(r('core:user-create'))),
+            (1, 'href="{}"'.format(r('accounts:user-create'))),
         ]
 
         for count, expected in contents:

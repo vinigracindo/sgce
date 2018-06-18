@@ -2,8 +2,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import resolve_url as r
-from sgce.core.forms import UserForm
-from sgce.core.models import Profile
+from sgce.accounts.forms import UserForm
+from sgce.accounts.models import Profile
 from sgce.core.tests.base import LoggedInTestCase
 
 
@@ -13,7 +13,7 @@ class UserCreateWithoutPermission(LoggedInTestCase):
         # user created on LoggedInTestCase setUp()
         self.user = get_user_model().objects.get(pk=1)
 
-        self.response = self.client.get(r('core:user-create'))
+        self.response = self.client.get(r('accounts:user-create'))
 
     def test_get(self):
         """Must return 403 HttpError (No permission)"""
@@ -38,13 +38,13 @@ class Base(LoggedInTestCase):
 class UserCreateGet(Base):
     def setUp(self):
         super(UserCreateGet, self).setUp()
-        self.response = self.client.get(r('core:user-create'))
+        self.response = self.client.get(r('accounts:user-create'))
 
     def test_get(self):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'core/user/user_form.html')
+        self.assertTemplateUsed(self.response, 'accounts/user/user_form.html')
 
     def test_html(self):
         """Html must contain input tags"""
@@ -86,11 +86,11 @@ class UserCreatePost(Base):
             password = 'password',
             role = Profile.MANAGER
         )
-        self.response = self.client.post(r('core:user-create'), data)
+        self.response = self.client.post(r('accounts:user-create'), data)
 
     def test_post(self):
         """ Valid POST should redirect to 'user-list' """
-        self.assertRedirects(self.response, r('core:user-list'))
+        self.assertRedirects(self.response, r('accounts:user-list'))
 
     def test_save_user(self):
         self.assertTrue(get_user_model().objects.filter(username='alanturing').exists())
@@ -107,14 +107,14 @@ class UserCreatePost(Base):
 class UserCreatePostInvalid(Base):
     def setUp(self):
         super(UserCreatePostInvalid, self).setUp()
-        self.response = self.client.post(r('core:user-create'), {})
+        self.response = self.client.post(r('accounts:user-create'), {})
 
     def test_post(self):
         """Invalid Post should not redirect"""
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'core/user/user_form.html')
+        self.assertTemplateUsed(self.response, 'accounts/user/user_form.html')
 
     def test_has_form(self):
         form = self.response.context['form']

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     #System Apps
     'sgce.core',
+    'sgce.accounts',
 ]
 
 MIDDLEWARE = [

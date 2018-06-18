@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.shortcuts import resolve_url as r
 from sgce.core.tests.base import LoggedInTestCase
 
@@ -18,7 +17,7 @@ class IndexTest(LoggedInTestCase):
 
     def test_menu_html(self):
         links = [
-            'href="{}"'.format(r('core:user-list')),
+            'href="{}"'.format(r('accounts:user-list')),
         ]
 
         for link in links:

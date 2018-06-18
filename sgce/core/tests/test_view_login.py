@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.shortcuts import resolve_url as r
 from django.conf import settings
-from django.test import Client
 
 
 class LoginGet(TestCase):

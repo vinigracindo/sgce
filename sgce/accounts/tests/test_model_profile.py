@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from sgce.core.models import Profile
+from sgce.accounts.models import Profile
 
 
 class ProfileModelTest(TestCase):

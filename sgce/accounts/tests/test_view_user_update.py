@@ -2,9 +2,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import resolve_url as r
-from sgce.core.forms import UserUpdateForm
-from sgce.core.models import Profile
 from sgce.core.tests.base import LoggedInTestCase
+from sgce.accounts.forms import UserUpdateForm
+from sgce.accounts.models import Profile
 
 
 class UserUpdateWithoutPermission(LoggedInTestCase):
@@ -13,7 +13,7 @@ class UserUpdateWithoutPermission(LoggedInTestCase):
         # user created on LoggedInTestCase setUp()
         self.user = get_user_model().objects.get(pk=1)
 
-        self.response = self.client.get(r('core:user-create'))
+        self.response = self.client.get(r('accounts:user-create'))
 
     def test_get(self):
         """Must return 403 HttpError (No permission)"""
@@ -45,13 +45,13 @@ class UserUpdateGet(Base):
         self.user.email = 'hello@world.com'
         self.user.save()
 
-        self.response = self.client.get(r('core:user-update', self.user.pk))
+        self.response = self.client.get(r('accounts:user-update', self.user.pk))
 
     def test_get(self):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'core/user/user_form.html')
+        self.assertTemplateUsed(self.response, 'accounts/user/user_form.html')
         
     def test_inputs(self):
         """Html must contain filled inputs"""
@@ -105,12 +105,12 @@ class UserUpdatePost(Base):
             username = 'alanturing',
             role = Profile.USER
         )
-        self.response = self.client.post(r('core:user-update', self.user.pk), data)
+        self.response = self.client.post(r('accounts:user-update', self.user.pk), data)
         self.user.refresh_from_db()
 
     def test_post(self):
         """ Valid POST should redirect to 'user-list' """
-        self.assertRedirects(self.response, r('core:user-list'))
+        self.assertRedirects(self.response, r('accounts:user-list'))
 
     def test_update_user(self):
         self.assertEqual('Alan', self.user.first_name)

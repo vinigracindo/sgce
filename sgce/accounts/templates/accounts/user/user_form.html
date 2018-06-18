@@ -14,7 +14,7 @@
     <form method="post">{% csrf_token %}
       {% bootstrap_form form layout='group' %}
       {% buttons %}
-        <a href="{% url 'core:user-list' %}" class="btn btn-dark" value="Voltar">Voltar</a>
+        <a href="{% url 'accounts:user-list' %}" class="btn btn-dark" value="Voltar">Voltar</a>
         <button type="submit" class="btn btn-success">Salvar</button>
       {% endbuttons %}
     </form>

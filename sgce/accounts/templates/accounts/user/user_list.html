@@ -14,9 +14,9 @@
 {% block content %}
 <div class="row mb-4 ml-0 justify-content-center">
   {% if perms.auth.add_user %}
-    <a class="btn btn-success" href="{% url 'core:user-create' %}" role="button">Novo Usuário</a>
+    <a class="btn btn-success" href="{% url 'accounts:user-create' %}" role="button">Novo Usuário</a>
   {% else %}
-    <a class="btn btn-secondary" style="cursor: not-allowed;" href="{% url 'core:user-create' %}" role="button" title="Você não tem permissão para criar um usuário." disabled>Novo Usuário</a>
+    <a class="btn btn-secondary" style="cursor: not-allowed;" href="{% url 'accounts:user-create' %}" role="button" title="Você não tem permissão para criar um usuário." disabled>Novo Usuário</a>
   {% endif %}
 </div>
 {% if messages %}
@@ -53,12 +53,12 @@
         <td>
           {% if perms.auth.change_user %}
             {% with active=user.is_active %}
-            <a href="{% url 'core:user-update' user.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
+            <a href="{% url 'accounts:user-update' user.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
             {% endwith %}
           {% endif %}
-          {% if perms.core.can_enable_or_disable_user %}
+          {% if perms.accounts.can_enable_or_disable_user %}
             {% with active=user.is_active %}
-            | <a href="{% url 'core:user-active-or-disable' user.pk %}" class="fa fa-{% if active %}trash-alt{% else %}check{% endif %} fa-sm" title="{% if active %}Desabilitar{% else %}Habilitar{% endif %}"></a>
+            | <a href="{% url 'accounts:user-active-or-disable' user.pk %}" class="fa fa-{% if active %}trash-alt{% else %}check{% endif %} fa-sm" title="{% if active %}Desabilitar{% else %}Habilitar{% endif %}"></a>
             {% endwith %}
           {% endif %}
         </td>
