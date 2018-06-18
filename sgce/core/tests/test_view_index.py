@@ -27,6 +27,7 @@ class IndexTest(LoggedInTestCase):
     def test_html(self):
         contents = [
             'href="{}"'.format(r('core:index')),
+            'href="{}"'.format(r('logout')),
         ]
 
         for content in contents:
