@@ -54,7 +54,9 @@ class UserCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView, Su
         return HttpResponseRedirect(self.get_success_url())
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
+class UserUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView, SuccessMessageMixin):
+    permission_required = 'auth.change_user'
+    raise_exception = True
     model = get_user_model()
     form_class = UserUpdateForm
     template_name = 'core/user/user_form.html'

@@ -51,7 +51,11 @@
           {% endif %}
         </td>
         <td>
-          <a href="{% url 'core:user-update' user.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
+          {% if perms.auth.change_user %}
+            {% with active=user.is_active %}
+            <a href="{% url 'core:user-update' user.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
+            {% endwith %}
+          {% endif %}
           {% if perms.core.can_enable_or_disable_user %}
             {% with active=user.is_active %}
             | <a href="{% url 'core:user-active-or-disable' user.pk %}" class="fa fa-{% if active %}trash-alt{% else %}check{% endif %} fa-sm" title="{% if active %}Desabilitar{% else %}Habilitar{% endif %}"></a>
