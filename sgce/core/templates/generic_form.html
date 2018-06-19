@@ -5,12 +5,14 @@
 
 {% block content %}
   <div class="row justify-content-center">
-    <form method="post">{% csrf_token %}
-      {% bootstrap_form form layout='group' %}
-      {% buttons %}
-        <a href="{% block link-back %}%{% endblock %}" class="btn btn-dark" value="Voltar">Voltar</a>
-        <button type="submit" class="btn btn-success">Salvar</button>
-      {% endbuttons %}
-    </form>
+    <div class="col-md-10">
+      <form method="post">{% csrf_token %}
+        {% bootstrap_form form layout='group' %}
+        {% buttons %}
+          <a href="{% block link-back %}%{% endblock %}" class="btn btn-dark" value="Voltar">Voltar</a>
+          <button type="submit" class="btn btn-success">Salvar</button>
+        {% endbuttons %}
+      </form>
+    </div>
   </div>
 {% endblock %}
