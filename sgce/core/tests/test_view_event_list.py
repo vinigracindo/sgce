@@ -35,16 +35,16 @@ class EventListGet(LoggedInTestCase):
             (1, 'Simpósio Brasileiro de Inteligência Artificial'),
             (1, '19 de Junho de 2018 a 19 de Junho de 2018'),
             # Must have a link to create a new user.
-            # (1, 'href="{}"'.format(r('accounts:user-create'))),
+            (1, 'href="{}"'.format(r('core:event-create'))),
         ]
 
         for count, expected in contents:
             with self.subTest():
                 self.assertContains(self.response, expected, count)
 
-    #def test_context(self):
-    #    variables = ['users']
-    #
-    #    for key in variables:
-    #        with self.subTest():
-    #            self.assertIn(key, self.response.context)
+    def test_context(self):
+       variables = ['events']
+
+       for key in variables:
+           with self.subTest():
+               self.assertIn(key, self.response.context)

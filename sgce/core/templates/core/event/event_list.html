@@ -14,9 +14,9 @@
 {% block content %}
 <div class="row mb-4 ml-0 justify-content-center">
   {% if perms.core.add_event %}
-    <a class="btn btn-success" href="{% url 'accounts:user-create' %}" role="button">Novo Evento</a>
+    <a class="btn btn-success" href="{% url 'core:event-create' %}" role="button">Novo Evento</a>
   {% else %}
-    <a class="btn btn-secondary" style="cursor: not-allowed;" href="{% url 'accounts:user-create' %}" role="button" title="Você não tem permissão para criar um evento." disabled>Novo Usuário</a>
+    <a class="btn btn-secondary" style="cursor: not-allowed;" href="{% url 'core:event-create' %}" role="button" title="Você não tem permissão para criar um evento." disabled>Novo Usuário</a>
   {% endif %}
 </div>
 {% if messages %}

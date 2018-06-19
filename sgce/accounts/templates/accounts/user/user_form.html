@@ -1,25 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'generic_form.html' %}
 
 {% load static %}
-{% load bootstrap4 %}
-
-{% block extra-css %}
-{% endblock %}
 
 {% block content-title %}Usuários{% endblock %}
 {% block content-description %}Cadastro de novo usuário{% endblock %}
-
-{% block content %}
-  <div class="row justify-content-center">
-    <form method="post">{% csrf_token %}
-      {% bootstrap_form form layout='group' %}
-      {% buttons %}
-        <a href="{% url 'accounts:user-list' %}" class="btn btn-dark" value="Voltar">Voltar</a>
-        <button type="submit" class="btn btn-success">Salvar</button>
-      {% endbuttons %}
-    </form>
-  </div>
-{% endblock %}
-
-{% block extra-js %}
-{% endblock %}
+{% block link-back %}{% url 'accounts:user-list' %}{% endblock %}

@@ -32,7 +32,7 @@ class UserListView(LoginRequiredMixin, ListView):
     context_object_name = 'users'
 
 
-class UserCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView, SuccessMessageMixin):
+class UserCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     permission_required = 'auth.add_user'
     raise_exception = True
     model = get_user_model()
@@ -49,7 +49,7 @@ class UserCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView, Su
         return HttpResponseRedirect(self.get_success_url())
 
 
-class UserUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView, SuccessMessageMixin):
+class UserUpdateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     permission_required = 'auth.change_user'
     raise_exception = True
     model = get_user_model()
