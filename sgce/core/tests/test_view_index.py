@@ -18,6 +18,7 @@ class IndexTest(LoggedInTestCase):
     def test_menu_html(self):
         links = [
             'href="{}"'.format(r('accounts:user-list')),
+            'href="{}"'.format(r('core:event-list')),
         ]
 
         for link in links:
