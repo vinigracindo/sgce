@@ -16,6 +16,7 @@ class Event(models.Model):
     class Meta:
         verbose_name = 'evento'
         verbose_name_plural = 'eventos'
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.name
@@ -27,7 +28,7 @@ class Event(models.Model):
     def save(self, *args, **kwargs):
         # Edit
         if self.slug:
-            if slugify(self.title) != self.slug:
+            if slugify(self.name) != self.slug:
                 self.slug = generate_unique_slug(Event, self.name)
         # Create
         else:
