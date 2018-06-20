@@ -1,10 +1,9 @@
 # SGCE
 
-[![Build Status](https://travis-ci.org/vinigracindo/sgce.svg?branch=master)](https://travis-ci.org/vinigracindo/sgce.svg?branch=master)
-[![Code Health](https://landscape.io/github/vinigracindo/sgce/master/landscape.svg?style=flat)](https://landscape.io/github/vinigracindo/sgce/master)
-[![Coverage Status](https://coveralls.io/repos/github/vinigracindo/sgce/badge.svg?branch=master)](https://coveralls.io/github/vinigracindo/sgce?branch=master)
+[![Build Status](https://travis-ci.org/vinigracindo/sgce.svg?branch=develop)](https://travis-ci.org/vinigracindo/sgce.svg?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/vinigracindo/sgce/badge.svg?branch=develop)](https://coveralls.io/github/vinigracindo/sgce?branch=develop)
 [![License](https://img.shields.io/pypi/l/django-treenode.svg)](https://img.shields.io/pypi/l/django-treenode.svg)
-[![Requirements Status](https://requires.io/github/vinigracindo/sgce/requirements.svg?branch=master)](https://requires.io/github/vinigracindo/sgce/requirements/?branch=master)
+[![Requirements Status](https://requires.io/github/vinigracindo/sgce/requirements.svg?branch=develop)](https://requires.io/github/vinigracindo/sgce/requirements/?branch=develop)
 
 Sistema Gerenciador de Certificados Eletrônicos.
 
