@@ -56,8 +56,8 @@ class EventCreateGet(Base):
             ('<form', 1),
             # CSRF, Name, Acronym, Start_date, End_date and Location
             ('<input', 6),
-            # Role
-            ('type="text"', 5),
+            ('type="text"', 3),
+            ('type="date"', 2),
             ('type="submit"', 1),
         )
         for text, count in tags:
