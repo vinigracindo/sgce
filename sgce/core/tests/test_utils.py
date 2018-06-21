@@ -9,7 +9,6 @@ class SlugifyTest(TestCase):
         self.user = get_user_model().objects.create_user('user', 'user@mail.com', 'pass')
         self.event = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
-            acronym='SBI',
             start_date='2018-06-18',
             end_date='2018-06-18',
             location='IFAL - Campus Arapiraca',
@@ -38,7 +37,6 @@ class SlugifyTest(TestCase):
         """slug field should be 'simposio-brasileiro-de-informatica-1'"""
         another_event = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
-            acronym='SBI',
             start_date='2018-06-18',
             end_date='2018-06-18',
             location='IFAL - Campus Arapiraca',

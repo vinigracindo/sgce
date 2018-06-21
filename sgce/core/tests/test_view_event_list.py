@@ -10,7 +10,6 @@ class EventListGet(LoggedInTestCase):
         another_user = get_user_model().objects.create_user('anotheruser', 'anotheruser@mail.com', 'pass')
         self.e1 = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
-            acronym='SBI',
             start_date='2018-06-18',
             end_date='2018-06-18',
             location='IFAL - Campus Arapiraca',
@@ -19,7 +18,6 @@ class EventListGet(LoggedInTestCase):
         )
         self.e2 = Event.objects.create(
             name='Simpósio Brasileiro de Inteligência Artificial',
-            acronym='SBIA',
             start_date='2018-06-19',
             end_date='2018-06-19',
             location='IFAL - Campus Arapiraca',
@@ -28,7 +26,6 @@ class EventListGet(LoggedInTestCase):
         )
         self.e3 = Event.objects.create(
             name='Simpósio Brasileiro de Medicina',
-            acronym='SBM',
             start_date='2018-06-21',
             end_date='2018-06-21',
             location='IFAL - Campus Arapiraca',
@@ -89,7 +86,6 @@ class EventListSuperUserGet(LoggedInTestCase):
         )
         self.e1 = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
-            acronym='SBI',
             start_date='2018-06-18',
             end_date='2018-06-18',
             location='IFAL - Campus Arapiraca',
@@ -98,7 +94,6 @@ class EventListSuperUserGet(LoggedInTestCase):
         )
         self.e2 = Event.objects.create(
             name='Simpósio Brasileiro de Inteligência Artificial',
-            acronym='SBIA',
             start_date='2018-06-19',
             end_date='2018-06-19',
             location='IFAL - Campus Arapiraca',
@@ -107,7 +102,6 @@ class EventListSuperUserGet(LoggedInTestCase):
         )
         self.e3 = Event.objects.create(
             name='Simpósio Brasileiro de Medicina',
-            acronym='SBM',
             start_date='2018-06-21',
             end_date='2018-06-21',
             location='IFAL - Campus Arapiraca',

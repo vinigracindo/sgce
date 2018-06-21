@@ -11,7 +11,6 @@ class EventModelTest(TestCase):
         user = get_user_model().objects.create_user('user', 'user@mail.com', 'pass')
         self.event = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
-            acronym='SBI',
             start_date=datetime.date(2018, 6, 18),
             end_date=datetime.date(2018, 6, 18),
             location='IFAL - Campus Arapiraca',

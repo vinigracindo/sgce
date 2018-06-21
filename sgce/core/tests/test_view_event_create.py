@@ -48,9 +48,9 @@ class EventCreateGet(Base):
         """Html must contain input tags"""
         tags = (
             ('<form', 1),
-            # CSRF, Name, Acronym, Start_date, End_date and Location
-            ('<input', 6),
-            ('type="text"', 3),
+            # CSRF, Name, Start_date, End_date and Location
+            ('<input', 5),
+            ('type="text"', 2),
             ('type="date"', 2),
             ('type="submit"', 1),
         )
@@ -73,7 +73,6 @@ class EventCreatePost(Base):
         super(EventCreatePost, self).setUp()
         data = dict(
             name='Simpósio Brasileiro de Informática',
-            acronym='SBI',
             start_date=datetime.date(2018, 6, 21),
             end_date=datetime.date(2018, 6, 21),
             location='IFAL - Campus Arapiraca',
