@@ -20,6 +20,11 @@ class EventListView(LoginRequiredMixin, ListView):
     template_name = 'core/event/event_list.html'
     context_object_name = 'events'
 
+    def get_queryset(self):
+        queryset = super(EventListView, self).get_queryset()
+        user = self.request.user
+        return queryset if user.is_superuser else queryset.filter(created_by=self.request.user)
+
 
 class EventCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     model = Event

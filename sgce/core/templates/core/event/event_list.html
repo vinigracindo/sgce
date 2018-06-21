@@ -32,6 +32,9 @@
     <tr>
       <th>Nome</th>
       <th>Período de Realização</th>
+      {% if user.is_superuser %}
+        <th>Criado por</th>
+      {% endif %}
       <th>Ações</th>
     </tr>
     </thead>
@@ -40,6 +43,9 @@
       <tr>
         <td>{{ event.name }}</td>
         <td>{{ event.start_date }} a {{ event.end_date }}</td>
+        {% if user.is_superuser %}
+          <td>{{ event.created_by.get_full_name }}</td>
+        {% endif %}
         <td></td>
       </tr>
     {% endfor %}
@@ -48,6 +54,9 @@
     <tr>
       <th>Nome</th>
       <th>Período de Realização</th>
+      {% if user.is_superuser %}
+        <th>Criado por</th>
+      {% endif %}
       <th>Ações</th>
     </tr>
     </tfoot>
