@@ -3,6 +3,8 @@ import datetime
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import resolve_url as r
+
+from sgce.accounts.models import Profile
 from sgce.core.forms import EventForm
 from sgce.core.models import Event
 from sgce.core.tests.base import LoggedInTestCase
@@ -18,19 +20,14 @@ class EventCreateWithoutPermission(LoggedInTestCase):
         self.assertEqual(403, self.response.status_code)
 
 
-#class Base. Add permission: add_event
+#class Base. Add user as MANAGER
 class Base(LoggedInTestCase):
     def setUp(self):
         super(Base, self).setUp()
-        # permission required: core.add_event
-        content_type = ContentType.objects.get_for_model(Event)
-        self.permission = Permission.objects.get(
-            codename='add_event',
-            content_type=content_type,
-        )
-
-        self.user_logged_in.user_permissions.add(self.permission)
-        self.user_logged_in.refresh_from_db()
+        # set as Profile.MANAGER
+        self.user_logged_in.profile.role = Profile.MANAGER
+        self.user_logged_in.profile.save()
+        self.user_logged_in.profile.refresh_from_db()
 
 
 class EventCreateGet(Base):

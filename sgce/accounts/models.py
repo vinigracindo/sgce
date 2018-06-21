@@ -27,16 +27,5 @@ class Profile(models.Model):
     def __str__(self):
         return 'Perfil de {}'.format(self.user.get_full_name())
 
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #
-    #     content_type = ContentType.objects.get_for_model(Profile)
-    #     permission = Permission.objects.get(
-    #         codename='can_enable_or_disable_user',
-    #         content_type=content_type,
-    #     )
-    #
-    #     if self.role == self.MANAGER:
-    #         self.user.user_permissions.add(permission)
-    #     else:
-    #         self.user.user_permissions.remove(permission)
+    def is_manager(self):
+        return True if (self.role == self.MANAGER) else False

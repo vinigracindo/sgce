@@ -10,6 +10,6 @@ class EventForm(forms.ModelForm):
         model = Event
         exclude = ('created_by',)
         widgets = {
-            'start_date': Html5DateInput(),
-            'end_date': Html5DateInput(),
+            'start_date': Html5DateInput(format='%Y-%m-%d'),
+            'end_date': Html5DateInput(format='%Y-%m-%d'),
         }

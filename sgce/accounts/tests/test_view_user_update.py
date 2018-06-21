@@ -10,7 +10,7 @@ from sgce.accounts.models import Profile
 class UserUpdateWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(UserUpdateWithoutPermission, self).setUp()
-        self.response = self.client.get(r('accounts:user-create'))
+        self.response = self.client.get(r('accounts:user-update', self.user_logged_in.pk))
 
     def test_get(self):
         """Must return 403 HttpError (No permission)"""
