@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.org/vinigracindo/sgce.svg?branch=develop)](https://travis-ci.org/vinigracindo/sgce.svg?branch=develop)
 [![Coverage Status](https://coveralls.io/repos/github/vinigracindo/sgce/badge.svg?branch=develop)](https://coveralls.io/github/vinigracindo/sgce?branch=develop)
-[![License](https://img.shields.io/pypi/l/django-treenode.svg)](https://img.shields.io/pypi/l/django-treenode.svg)
 [![Requirements Status](https://requires.io/github/vinigracindo/sgce/requirements.svg?branch=develop)](https://requires.io/github/vinigracindo/sgce/requirements/?branch=develop)
+[![License](https://img.shields.io/pypi/l/django-treenode.svg)](https://img.shields.io/pypi/l/django-treenode.svg)
 
 Sistema Gerenciador de Certificados Eletrônicos.
 
@@ -33,22 +33,4 @@ source .sgce/bin/activate #Unix CMD
 pip install -r requirements.txt
 cp contrib/env-sample .env
 python manage.py test
-```
-
-## Como fazer o deploy no Heroku?
-
-1. Crie uma instância no Heroku.
-2. Envie as configurações para o heroku.
-3. Defina uma SECRET_KEY segura para a instância.
-4. Define DEBUG=False
-5. Configure o serviço de email.
-6. Envie o código para o heroku.
-
-```console
-heroku create minhainstancia
-heroku config:push
-heroku config:set SECRET_KEY=`python contrib/secret_gen.py`
-heroku config:set DEBUG=False
-#Configura Email
-git push heroku master --force
 ```
