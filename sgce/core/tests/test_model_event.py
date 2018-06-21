@@ -1,5 +1,5 @@
+import datetime
 from django.test import TestCase
-from datetime import datetime
 from sgce.core.models import Event
 from django.shortcuts import resolve_url as r
 
@@ -9,8 +9,8 @@ class EventModelTest(TestCase):
         self.event = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
             acronym='SBI',
-            start_date='2018-06-18',
-            end_date='2018-06-18',
+            start_date=datetime.date(2018, 6, 18),
+            end_date=datetime.date(2018, 6, 18),
             location='IFAL - Campus Arapiraca',
         )
 
@@ -26,7 +26,7 @@ class EventModelTest(TestCase):
 
     def test_created_at(self):
         """Event must have an auto created_at attr"""
-        self.assertIsInstance(self.event.created_at, datetime)
+        self.assertIsInstance(self.event.created_at, datetime.datetime)
 
     def test_slug_cant_be_editable(self):
         """Event should not have an editable slug field."""
