@@ -10,9 +10,6 @@ from sgce.accounts.models import Profile
 class UserUpdateWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(UserUpdateWithoutPermission, self).setUp()
-        # user created on LoggedInTestCase setUp()
-        self.user = get_user_model().objects.get(pk=1)
-
         self.response = self.client.get(r('accounts:user-create'))
 
     def test_get(self):
@@ -31,21 +28,19 @@ class Base(LoggedInTestCase):
             content_type=content_type,
         )
 
-        self.user.user_permissions.add(self.permission)
-        self.user.refresh_from_db()
+        self.user_logged_in.user_permissions.add(self.permission)
+        self.user_logged_in.refresh_from_db()
 
 
 class UserUpdateGet(Base):
     def setUp(self):
         super(UserUpdateGet, self).setUp()
-        # user created on LoggedInTestCase setUp()
-        self.user = get_user_model().objects.get(pk=1)
-        self.user.first_name = 'Hello'
-        self.user.last_name = 'World'
-        self.user.email = 'hello@world.com'
-        self.user.save()
+        self.user_logged_in.first_name = 'Hello'
+        self.user_logged_in.last_name = 'World'
+        self.user_logged_in.email = 'hello@world.com'
+        self.user_logged_in.save()
 
-        self.response = self.client.get(r('accounts:user-update', self.user.pk))
+        self.response = self.client.get(r('accounts:user-update', self.user_logged_in.pk))
 
     def test_get(self):
         self.assertEqual(200, self.response.status_code)
@@ -96,7 +91,6 @@ class UserUpdatePost(Base):
     def setUp(self):
         super(UserUpdatePost, self).setUp()
         # user created on LoggedInTestCase setUp()
-        self.user = get_user_model().objects.get(pk=1)
         data = dict(
             first_name = 'Alan',
             last_name = 'Turing',
@@ -105,17 +99,17 @@ class UserUpdatePost(Base):
             username = 'alanturing',
             role = Profile.USER
         )
-        self.response = self.client.post(r('accounts:user-update', self.user.pk), data)
-        self.user.refresh_from_db()
+        self.response = self.client.post(r('accounts:user-update', self.user_logged_in.pk), data)
+        self.user_logged_in.refresh_from_db()
 
     def test_post(self):
         """ Valid POST should redirect to 'user-list' """
         self.assertRedirects(self.response, r('accounts:user-list'))
 
     def test_update_user(self):
-        self.assertEqual('Alan', self.user.first_name)
-        self.assertEqual('Turing', self.user.last_name)
-        self.assertEqual('alan@turing.com', self.user.email)
-        self.assertFalse(self.user.is_superuser)
-        self.assertEqual('alanturing', self.user.username)
-        self.assertEqual(Profile.USER, self.user.profile.role)
+        self.assertEqual('Alan', self.user_logged_in.first_name)
+        self.assertEqual('Turing', self.user_logged_in.last_name)
+        self.assertEqual('alan@turing.com', self.user_logged_in.email)
+        self.assertFalse(self.user_logged_in.is_superuser)
+        self.assertEqual('alanturing', self.user_logged_in.username)
+        self.assertEqual(Profile.USER, self.user_logged_in.profile.role)

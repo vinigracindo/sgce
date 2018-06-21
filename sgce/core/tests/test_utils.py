@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from sgce.core.models import Event
 from sgce.core.utils import slugify
@@ -5,12 +6,14 @@ from sgce.core.utils import slugify
 
 class SlugifyTest(TestCase):
     def setUp(self):
+        self.user = get_user_model().objects.create_user('user', 'user@mail.com', 'pass')
         self.event = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
             acronym='SBI',
             start_date='2018-06-18',
             end_date='2018-06-18',
             location='IFAL - Campus Arapiraca',
+            created_by=self.user,
         )
 
     def test_create_event(self):
@@ -39,5 +42,6 @@ class SlugifyTest(TestCase):
             start_date='2018-06-18',
             end_date='2018-06-18',
             location='IFAL - Campus Arapiraca',
+            created_by=self.user,
         )
         self.assertEqual(another_event.slug, 'simposio-brasileiro-de-informatica-1')

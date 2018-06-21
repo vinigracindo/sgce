@@ -10,9 +10,6 @@ from sgce.core.tests.base import LoggedInTestCase
 class UserCreateWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(UserCreateWithoutPermission, self).setUp()
-        # user created on LoggedInTestCase setUp()
-        self.user = get_user_model().objects.get(pk=1)
-
         self.response = self.client.get(r('accounts:user-create'))
 
     def test_get(self):
@@ -31,8 +28,8 @@ class Base(LoggedInTestCase):
             content_type=content_type,
         )
 
-        self.user.user_permissions.add(self.permission)
-        self.user.refresh_from_db()
+        self.user_logged_in.user_permissions.add(self.permission)
+        self.user_logged_in.refresh_from_db()
 
 
 class UserCreateGet(Base):

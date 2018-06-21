@@ -1,4 +1,5 @@
 import datetime
+
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import resolve_url as r
@@ -28,8 +29,8 @@ class Base(LoggedInTestCase):
             content_type=content_type,
         )
 
-        self.user.user_permissions.add(self.permission)
-        self.user.refresh_from_db()
+        self.user_logged_in.user_permissions.add(self.permission)
+        self.user_logged_in.refresh_from_db()
 
 
 class EventCreateGet(Base):
@@ -82,6 +83,11 @@ class EventCreatePost(Base):
     def test_post(self):
         """ Valid POST should redirect to 'user-list' """
         self.assertRedirects(self.response, r('core:event-list'))
+
+    def test_created_by_should_be_request_user(self):
+        """obj.created_by should be request.user (user logged)."""
+        obj = Event.objects.first()
+        self.assertEqual(obj.created_by, self.user_logged_in)
 
     def test_save_user(self):
         self.assertTrue(Event.objects.exists())

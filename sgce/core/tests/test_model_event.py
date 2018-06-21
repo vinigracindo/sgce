@@ -1,4 +1,6 @@
 import datetime
+
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from sgce.core.models import Event
 from django.shortcuts import resolve_url as r
@@ -6,12 +8,14 @@ from django.shortcuts import resolve_url as r
 
 class EventModelTest(TestCase):
     def setUp(self):
+        user = get_user_model().objects.create_user('user', 'user@mail.com', 'pass')
         self.event = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
             acronym='SBI',
             start_date=datetime.date(2018, 6, 18),
             end_date=datetime.date(2018, 6, 18),
             location='IFAL - Campus Arapiraca',
+            created_by=user,
         )
 
     def test_create(self):

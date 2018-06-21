@@ -9,9 +9,7 @@ from sgce.core.tests.base import LoggedInTestCase
 class UserActiveOrDisableWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(UserActiveOrDisableWithoutPermission, self).setUp()
-        # user created on LoggedInTestCase setUp()
-        self.user = get_user_model().objects.get(pk=1)
-        self.response = self.client.get(r('accounts:user-active-or-disable', self.user.pk))
+        self.response = self.client.get(r('accounts:user-active-or-disable', self.user_logged_in.pk))
 
     def test_get(self):
         """Must return 403 HttpError (No permission)"""
@@ -29,8 +27,8 @@ class Base(LoggedInTestCase):
             content_type=content_type,
         )
 
-        self.user.user_permissions.add(self.permission)
-        self.user.refresh_from_db()
+        self.user_logged_in.user_permissions.add(self.permission)
+        self.user_logged_in.refresh_from_db()
 
 
 class UserActiveOrDisable(Base):
@@ -72,9 +70,9 @@ class UserEnableGet(Base):
 class UserActiveOrDisableHimSelf(Base):
     def setUp(self):
         super(UserActiveOrDisableHimSelf, self).setUp()
-        self.response = self.client.get(r('accounts:user-active-or-disable', self.user.pk))
-        self.user.refresh_from_db()
+        self.response = self.client.get(r('accounts:user-active-or-disable', self.user_logged_in.pk))
+        self.user_logged_in.refresh_from_db()
 
     def test_user_wont_be_disabled(self):
         """The user cannot be himself."""
-        self.assertTrue(self.user.is_active)
+        self.assertTrue(self.user_logged_in.is_active)

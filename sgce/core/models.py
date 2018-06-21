@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
-
+from django.conf import settings
 from sgce.core.utils.slugify import generate_unique_slug
 
 
@@ -11,6 +11,11 @@ class Event(models.Model):
     start_date = models.DateField('data de início')
     end_date = models.DateField('data de término')
     location = models.CharField('local de realização', max_length=255, blank=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='criado por',
+        on_delete=models.PROTECT,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

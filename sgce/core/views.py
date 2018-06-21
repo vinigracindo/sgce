@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
@@ -28,6 +29,11 @@ class EventCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessag
     template_name = 'core/event/event_form.html'
     success_url = reverse_lazy('core:event-list')
     success_message = "O evento %(name)s foi criado com sucesso."
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        return super(EventCreateView, self).form_valid(form)
 
 
 def event_detail(request, slug): pass

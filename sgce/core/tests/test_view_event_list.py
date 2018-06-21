@@ -12,6 +12,8 @@ class EventListGet(LoggedInTestCase):
             start_date='2018-06-18',
             end_date='2018-06-18',
             location='IFAL - Campus Arapiraca',
+            #user created on LoggedInTestCase setUp()
+            created_by=self.user_logged_in,
         )
         self.e2 = Event.objects.create(
             name='Simpósio Brasileiro de Inteligência Artificial',
@@ -19,6 +21,8 @@ class EventListGet(LoggedInTestCase):
             start_date='2018-06-19',
             end_date='2018-06-19',
             location='IFAL - Campus Arapiraca',
+            # user created on LoggedInTestCase setUp()
+            created_by=self.user_logged_in,
         )
         self.response = self.client.get(r('core:event-list'))
 
