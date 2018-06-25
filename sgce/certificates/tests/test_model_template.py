@@ -62,3 +62,6 @@ class TemplateModelTest(TestCase):
 
     def test_str(self):
         self.assertEqual('SBI - Certificado de Participante', str(self.template))
+
+    def test_get_fields(self):
+        self.assertListEqual(self.template.template_fields(), ['NOME_PARTICIPANTE', 'NOME_EVENTO'])

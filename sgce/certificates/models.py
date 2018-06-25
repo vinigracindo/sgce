@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+import re
 from sgce.core.models import Event
 
 
@@ -33,3 +34,7 @@ class Template(models.Model):
 
     def __str__(self):
         return self.name
+
+    def template_fields(self):
+        """Must return the fields that build the certificate. The pattern: UPPERCASE_UPPERCASE"""
+        return re.findall('[A-Z]+_[A-Z]+', self.content)
