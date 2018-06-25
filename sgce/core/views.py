@@ -1,10 +1,11 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from sgce.core.forms import EventForm
 from sgce.core.models import Event
@@ -54,7 +55,34 @@ class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMix
 
     # user_passes_test
     def test_func(self):
-        return self.request.user.is_superuser or self.request.user.profile.is_manager()
+        user = self.request.user
+        event = self.get_object()
+        #Superuser OR user is manager and event has been created by himself.
+        if user.is_superuser or (user.profile.is_manager() and (event.created_by == user)):
+            return True
+        return False
+
+
+class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Event
+    form_class = EventForm
+    raise_exception = True
+    template_name = 'core/event/event_check_delete.html'
+    success_url = reverse_lazy('core:event-list')
+    success_message = "O evento foi excluído com sucesso."
+
+    # user_passes_test
+    def test_func(self):
+        user = self.request.user
+        event = self.get_object()
+        # Superuser OR user is manager and event has been created by himself.
+        if user.is_superuser or (user.profile.is_manager() and (event.created_by == user)):
+            return True
+        return False
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(EventDeleteView, self).delete(request, *args, **kwargs)
 
 
 def event_detail(request, slug): pass

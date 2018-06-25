@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post">{% csrf_token %}
+        <p>Tem certeza que quer excluir o evento "<b>{{ object }}</b>"?</p>
+        <button type="submit" class="btn btn-warning">Confirmar</button>
+    </form>
+{% endblock %}

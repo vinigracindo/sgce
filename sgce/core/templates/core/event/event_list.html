@@ -53,7 +53,7 @@
             <a href="{% url 'core:event-update' event.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
           {% endif %}
           {% if perms.core.delete_event %}
-            | <a href="#" class="fa fa-trash-alt fa-sm" title="Excluir"></a>
+            | <a href="{% url 'core:event-delete' event.pk %}" class="fa fa-trash-alt fa-sm" title="Excluir"></a>
           {% endif %}
         </td>
       </tr>
