@@ -65,3 +65,16 @@ class TemplateModelTest(TestCase):
 
     def test_get_fields(self):
         self.assertListEqual(self.template.template_fields(), ['NOME_PARTICIPANTE', 'NOME_EVENTO'])
+        # another test
+        self.template.content = '''
+        O campo nome_evento não fará parte dos campos, pois está em lowercase.
+        O campo NOME_EVENTO deve fazer parte.
+        O campo NOME_PARTICIPANTE também deve fazer parte.
+        O CAMPO NOME_DO_EVENTO não deve fazer parte.
+        ESTE_CAMPO_NAO_DEVE_FAZER_PARTE.
+        EMAIL_PARTICIPANTE é um campo válido diferente de EMAIL_DO_PARTICIPANTE
+        Strings EM UPPER CASE SEM UNDERLINE NÃO DEVE FAZER PARTE.
+        '''
+        self.template.save()
+        self.template.refresh_from_db()
+        self.assertListEqual(self.template.template_fields(), ['NOME_EVENTO', 'NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE'])

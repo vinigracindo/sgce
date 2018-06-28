@@ -36,5 +36,5 @@ class Template(models.Model):
         return self.name
 
     def template_fields(self):
-        """Must return the fields that build the certificate. The pattern: UPPERCASE_UPPERCASE"""
-        return re.findall('[A-Z]+_[A-Z]+', self.content)
+        """Must return the fields that will build the certificate. The pattern: UPPERCASE_UPPERCASE"""
+        return re.findall(r'\b([A-Z]+_[A-Z]+)\b', self.content)
