@@ -72,7 +72,7 @@ class TemplateModelTest(TestCase):
         O campo NOME_PARTICIPANTE também deve fazer parte.
         O CAMPO NOME_DO_EVENTO não deve fazer parte.
         ESTE_CAMPO_NAO_DEVE_FAZER_PARTE.
-        EMAIL_PARTICIPANTE é um campo válido diferente de EMAIL_DO_PARTICIPANTE
+        EMAIL_PARTICIPANTE é um campo válido diferente de EMAIL_DO_PARTICIPANTE.
         Strings EM UPPER CASE SEM UNDERLINE NÃO DEVE FAZER PARTE.
         '''
         self.template.save()

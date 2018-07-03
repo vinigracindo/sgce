@@ -19,6 +19,7 @@ class IndexTest(LoggedInTestCase):
         links = [
             'href="{}"'.format(r('accounts:user-list')),
             'href="{}"'.format(r('core:event-list')),
+            'href="{}"'.format(r('certificates:template-list')),
         ]
 
         for link in links:

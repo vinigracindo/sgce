@@ -1,3 +1,5 @@
 from django.contrib import admin
+from sgce.certificates.models import Template
 
-# Register your models here.
+
+admin.site.register(Template)
