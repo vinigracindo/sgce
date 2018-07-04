@@ -1,6 +1,7 @@
 # SGCE
 
 [![Build Status](https://travis-ci.org/vinigracindo/sgce.svg?branch=develop)](https://travis-ci.org/vinigracindo/sgce.svg?branch=develop)
+[![Code Health](https://landscape.io/github/vinigracindo/sgce/develop/landscape.svg?style=flat)](https://landscape.io/github/vinigracindo/sgce/develop)
 [![Coverage Status](https://coveralls.io/repos/github/vinigracindo/sgce/badge.svg?branch=develop)](https://coveralls.io/github/vinigracindo/sgce?branch=develop)
 [![Requirements Status](https://requires.io/github/vinigracindo/sgce/requirements.svg?branch=develop)](https://requires.io/github/vinigracindo/sgce/requirements/?branch=develop)
 [![License](https://img.shields.io/pypi/l/django-treenode.svg)](https://img.shields.io/pypi/l/django-treenode.svg)
