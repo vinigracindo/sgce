@@ -30,3 +30,7 @@ html {
 .fa {
     font-size: 8px;
 }
+
+.required-field {
+    color:red;
+}

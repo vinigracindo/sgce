@@ -1,0 +1,126 @@
+{% extends 'generic_form.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content-title %}Modelos{% endblock %}
+{% block content-description %}Cadastro de novo modelo{% endblock %}
+
+{% block extra-css %}
+{{ form.media }}
+{% endblock %}
+
+{% block content %}
+<section class="container">
+    {% if form.errors %}
+          {% for field in form.visible_fields  %}
+            {% if field.errors %}
+                {{ field.label }}: {{ field.errors }}
+            {% endif %}
+          {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <ul id="tabsJustified" class="nav nav-tabs">
+                <li class="nav-item"><a href="" data-target="#description" data-toggle="tab" class="nav-link small text-uppercase active">Descrição</a></li>
+                <li class="nav-item"><a href="" data-target="#front" data-toggle="tab" class="nav-link small text-uppercase">Texto Frente</a></li>
+                <li class="nav-item"><a href="" data-target="#back" data-toggle="tab" class="nav-link small text-uppercase">Texto Verso</a></li>
+                <li class="nav-item"><a href="" data-target="#background" data-toggle="tab" class="nav-link small text-uppercase">Imagem de Fundo</a></li>
+                <li class="nav-item"><a href="" data-target="#layout" data-toggle="tab" class="nav-link small text-uppercase">Layout</a></li>
+            </ul>
+            <br>
+            <form id="template-form" method="post">{% csrf_token %}
+                <div id="tabsJustifiedContent" class="tab-content">
+                    <div id="description" class="tab-pane fade active show">
+                        {% bootstrap_label "Nome" label_for="id_name" %}{% if form.name.field.required %}<span class="required-field">*</span>{% endif %}:
+                        {% bootstrap_field form.name placeholder='' show_label=False  %}
+                        {% bootstrap_label "Evento" label_for="id_event" %}{% if form.event.field.required %}<span class="required-field">*</span>{% endif %}:
+                        {% bootstrap_field form.event placeholder='' show_label=False %}
+                    </div>
+                    <div id="front" class="tab-pane fade">
+                        {% bootstrap_label "Título" label_for="id_title" %}{% if form.title.field.required %}<span class="required-field">*</span>{% endif %}:
+                        {% bootstrap_field form.title placeholder='' show_label=False  %}
+                        {% bootstrap_label "Texto" label_for="id_content" %}{% if form.content.field.required %}<span class="required-field">*</span>{% endif %}:
+                        {% bootstrap_field form.content placeholder='' show_label=False %}
+                    </div>
+                    <div id="back" class="tab-pane fade">
+                        {% bootstrap_label "Título do Verso" label_for="id_backside_title" %}{% if form.backside_title.field.required %}<span class="required-field">*</span>{% endif %}:
+                        {% bootstrap_field form.backside_title placeholder='' show_label=False  %}
+                        {% bootstrap_label "Texto do Verso" label_for="id_backside_content" %}{% if form.backside_content.field.required %}<span class="required-field">*</span>{% endif %}:
+                        {% bootstrap_field form.backside_content placeholder='' show_label=False %}
+                    </div>
+                    <div id="background" class="tab-pane fade">
+                        {% bootstrap_label "Imagem de Fundo" label_for="id_background" %}{% if form.background.field.required %}<span class="required-field">*</span>{% endif %}:
+                        {% bootstrap_field form.background placeholder='' show_label=False  %}
+                    </div>
+                    <div id="layout" class="tab-pane fade">
+                      <div class="card">
+                        <div class="card-header text-center">
+                          Estilo
+                        </div>
+                        <div class="card-body">
+                          {% bootstrap_label "Estilo" label_for="id_font" %}{% if form.font.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.font placeholder='' show_label=False  %}
+                        </div>
+                      </div>
+                      <div class="card mt-2">
+                        <div class="card-header text-center">
+                          Título
+                        </div>
+                        <div class="card-body">
+                          {% bootstrap_label "Distância do Topo ao Título (%)" label_for="id_title_top_distance" %}{% if form.title_top_distance.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.title_top_distance placeholder='' show_label=False  %}
+                          {% bootstrap_label "Alinhamento da Seção" label_for="id_title_section_align" %}{% if form.title_section_align.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.title_section_align placeholder='' show_label=False  %}
+                          {% bootstrap_label "Alinhamento do Título" label_for="id_title_align" %}{% if form.title_align.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.title_align placeholder='' show_label=False  %}
+                          {% bootstrap_label "Cor" label_for="id_title_color" %}{% if form.title_color.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.title_color placeholder='' show_label=False  %}
+                          {% bootstrap_label "Tamanho da Fonte (pt)" label_for="id_title_font_size" %}{% if form.title_font_size.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.title_font_size placeholder='' show_label=False  %}
+                        </div>
+                      </div>
+                      <div class="card mt-2">
+                        <div class="card-header text-center">
+                          Texto
+                        </div>
+                        <div class="card-body">
+                          {% bootstrap_label "Distância do Título ao Texto (%)" label_for="id_content_title_distance" %}{% if form.content_title_distance.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.content_title_distance placeholder='' show_label=False  %}
+                          {% bootstrap_label "Alinhamento da Seção" label_for="id_content_section_align" %}{% if form.content_section_align.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.content_section_align placeholder='' show_label=False  %}
+                          {% bootstrap_label "Alinhamento do Texto" label_for="id_content_text_align" %}{% if form.content_text_align.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.content_text_align placeholder='' show_label=False  %}
+                          {% bootstrap_label "Cor" label_for="id_content_text_color" %}{% if form.content_text_color.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.content_text_color placeholder='' show_label=False  %}
+                          {% bootstrap_label "Tamanho da Fonte (pt)" label_for="id_content_font_size" %}{% if form.content_font_size.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.content_font_size placeholder='' show_label=False  %}
+                        </div>
+                      </div>
+                      <div class="card mt-2">
+                        <div class="card-header text-center">
+                          Rodapé
+                        </div>
+                        <div class="card-body">
+                          {% bootstrap_label "Distância do Texto ao Rodapé (%)" label_for="id_footer_title_distance" %}{% if form.footer_title_distance.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.footer_title_distance placeholder='' show_label=False  %}
+                          {% bootstrap_label "Alinhamento da Seção" label_for="id_footer_section_align" %}{% if form.footer_section_align.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.footer_section_align placeholder='' show_label=False  %}
+                          {% bootstrap_label "Alinhamento do Texto" label_for="id_footer_text_align" %}{% if form.footer_text_align.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.footer_text_align placeholder='' show_label=False  %}
+                          {% bootstrap_label "Cor" label_for="id_footer_text_color" %}{% if form.footer_text_color.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_field form.footer_text_color placeholder='' show_label=False  %}
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <hr>
+                {% buttons %}
+                  <a href="{% url 'certificates:template-list' %}" class="btn btn-dark" value="Voltar">Voltar</a>
+                  <button id="submitButton" type="submit" class="btn btn-success">Salvar</button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

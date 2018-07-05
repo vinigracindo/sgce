@@ -65,8 +65,6 @@ class TemplateListGet(LoggedInTestCase):
             (2, 'Simpósio Brasileiro de Informática'),
             (1, 'SBI - Certificado de Participante'),
             (1, 'SBI - Certificado de Palestrante'),
-            # Must have a link to create a new user.
-            #(1, 'href="{}"'.format(r('core:event-create'))),
         ]
 
         for count, expected in contents:

@@ -78,3 +78,21 @@ class TemplateModelTest(TestCase):
         self.template.save()
         self.template.refresh_from_db()
         self.assertListEqual(self.template.template_fields(), ['NOME_EVENTO', 'NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE'])
+
+    def test_layout(self):
+        """Default fields for layouts"""
+        self.assertEqual(self.template.font, Template.ARIAL)
+        self.assertEqual(self.template.title_top_distance, 0)
+        self.assertEqual(self.template.title_section_align, Template.LEFT)
+        self.assertEqual(self.template.title_align, Template.LEFT)
+        self.assertEqual(self.template.title_color, Template.BLACK)
+        self.assertEqual(self.template.title_font_size, 30)
+        self.assertEqual(self.template.content_title_distance, 0)
+        self.assertEqual(self.template.content_section_align, Template.LEFT)
+        self.assertEqual(self.template.content_text_align, Template.LEFT)
+        self.assertEqual(self.template.content_text_color, Template.BLACK)
+        self.assertEqual(self.template.content_font_size, 12)
+        self.assertEqual(self.template.footer_title_distance, 0)
+        self.assertEqual(self.template.footer_section_align, Template.LEFT)
+        self.assertEqual(self.template.footer_text_align, Template.LEFT)
+        self.assertEqual(self.template.footer_text_color, Template.BLACK)

@@ -28,5 +28,6 @@ urlpatterns = [
         name='login'
     ),
     path('logout/', auth_views.LogoutView.as_view(next_page='/login/'), name='logout'),
+    path('tinymce/', include('tinymce.urls')),
     path('admin/', admin.site.urls),
 ]
