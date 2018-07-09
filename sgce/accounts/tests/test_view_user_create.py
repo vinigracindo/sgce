@@ -17,10 +17,10 @@ class UserCreateWithoutPermission(LoggedInTestCase):
         self.assertEqual(403, self.response.status_code)
 
 
-# class Base. Add permission: can_enable_or_disable_user
-class Base(LoggedInTestCase):
+# Permission: accounts.add_user
+class UserCreateWithPermission(LoggedInTestCase):
     def setUp(self):
-        super(Base, self).setUp()
+        super(UserCreateWithPermission, self).setUp()
         # permission required: profile.can_enable_or_disable_user
         content_type = ContentType.objects.get_for_model(get_user_model())
         self.permission = Permission.objects.get(
@@ -32,7 +32,7 @@ class Base(LoggedInTestCase):
         self.user_logged_in.refresh_from_db()
 
 
-class UserCreateGet(Base):
+class UserCreateGet(UserCreateWithPermission):
     def setUp(self):
         super(UserCreateGet, self).setUp()
         self.response = self.client.get(r('accounts:user-create'))
@@ -69,7 +69,7 @@ class UserCreateGet(Base):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
 
 
-class UserCreatePost(Base):
+class UserCreatePost(UserCreateWithPermission):
     def setUp(self):
         super(UserCreatePost, self).setUp()
         data = dict(
@@ -90,7 +90,7 @@ class UserCreatePost(Base):
         self.assertTrue(get_user_model().objects.filter(username='alanturing').exists())
 
 
-class UserCreatePostInvalid(Base):
+class UserCreatePostInvalid(UserCreateWithPermission):
     def setUp(self):
         super(UserCreatePostInvalid, self).setUp()
         self.response = self.client.post(r('accounts:user-create'), {})

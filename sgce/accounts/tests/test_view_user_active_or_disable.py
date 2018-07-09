@@ -17,10 +17,10 @@ class UserActiveOrDisableWithoutPermission(LoggedInTestCase):
         self.assertEqual(403, self.response.status_code)
 
 
-# class Base. Add permission: can_enable_or_disable_user
-class Base(LoggedInTestCase):
+# Permission: can_enable_or_disable_user
+class UserActiveOrDisableWithPermission(LoggedInTestCase):
     def setUp(self):
-        super(Base, self).setUp()
+        super(UserActiveOrDisableWithPermission, self).setUp()
         # permission required: profile.can_enable_or_disable_user
         content_type = ContentType.objects.get_for_model(Profile)
         self.permission = Permission.objects.get(
@@ -32,7 +32,7 @@ class Base(LoggedInTestCase):
         self.user_logged_in.refresh_from_db()
 
 
-class UserActiveOrDisable(Base):
+class UserActiveOrDisable(UserActiveOrDisableWithPermission):
     def setUp(self):
         super(UserActiveOrDisable, self).setUp()
         another_user = get_user_model().objects.create_user(
@@ -46,7 +46,7 @@ class UserActiveOrDisable(Base):
         self.assertEqual(302, self.response.status_code)
 
 
-class UserDisableGet(Base):
+class UserDisableGet(UserActiveOrDisableWithPermission):
     def setUp(self):
         super(UserDisableGet, self).setUp()
         self.another_user = get_user_model().objects.create_user(username='user_enable', password='password')
@@ -57,7 +57,7 @@ class UserDisableGet(Base):
         self.assertFalse(self.another_user.is_active)
 
 
-class UserEnableGet(Base):
+class UserEnableGet(UserActiveOrDisableWithPermission):
     def setUp(self):
         super(UserEnableGet, self).setUp()
         self.another_user = get_user_model().objects.create_user(username='user_enable', password='password', is_active=False)
@@ -68,7 +68,7 @@ class UserEnableGet(Base):
         self.assertTrue(self.another_user.is_active)
 
 
-class UserActiveOrDisableHimSelf(Base):
+class UserActiveOrDisableHimSelf(UserActiveOrDisableWithPermission):
     def setUp(self):
         super(UserActiveOrDisableHimSelf, self).setUp()
         self.response = self.client.get(r('accounts:user-active-or-disable', self.user_logged_in.pk))

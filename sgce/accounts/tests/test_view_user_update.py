@@ -17,10 +17,10 @@ class UserUpdateWithoutPermission(LoggedInTestCase):
         self.assertEqual(403, self.response.status_code)
 
 
-# class Base. Add permission: can_enable_or_disable_user
-class Base(LoggedInTestCase):
+# Permission: accounts.change_user
+class UserUpdateWithPermission(LoggedInTestCase):
     def setUp(self):
-        super(Base, self).setUp()
+        super(UserUpdateWithPermission, self).setUp()
         # permission required: profile.can_enable_or_disable_user
         content_type = ContentType.objects.get_for_model(get_user_model())
         self.permission = Permission.objects.get(
@@ -32,7 +32,7 @@ class Base(LoggedInTestCase):
         self.user_logged_in.refresh_from_db()
 
 
-class UserUpdateGet(Base):
+class UserUpdateGet(UserUpdateWithPermission):
     def setUp(self):
         super(UserUpdateGet, self).setUp()
         self.user_logged_in.first_name = 'Hello'
@@ -85,7 +85,7 @@ class UserUpdateGet(Base):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
 
 
-class UserUpdatePost(Base):
+class UserUpdatePost(UserUpdateWithPermission):
     def setUp(self):
         super(UserUpdatePost, self).setUp()
         # user created on LoggedInTestCase setUp()
