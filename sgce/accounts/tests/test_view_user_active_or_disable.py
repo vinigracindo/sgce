@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import resolve_url as r
+
 from sgce.accounts.models import Profile
 from sgce.core.tests.base import LoggedInTestCase
 

@@ -6,6 +6,6 @@ from sgce.accounts.models import Profile
 
 
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
+def create_user_profile(instance, created, **kwargs):
     if created:
         Profile.objects.get_or_create(user=instance)

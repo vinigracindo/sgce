@@ -1,6 +1,4 @@
 from django import forms
-from django.core.exceptions import SuspiciousOperation
-
 from sgce.core.models import Event
 from sgce.core.widgets import Html5DateInput
 

@@ -1,7 +1,6 @@
 from django import forms
 
 from sgce.certificates.models import Template
-from sgce.core.widgets import Html5DateInput
 
 
 class TemplateForm(forms.ModelForm):

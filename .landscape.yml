@@ -11,3 +11,4 @@ pylint:
   run: true
   disable:
     - invalid-encoded-data
+    - old-style-class
