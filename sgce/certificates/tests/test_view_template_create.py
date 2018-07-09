@@ -4,10 +4,8 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import resolve_url as r
 
-from sgce.accounts.models import Profile
 from sgce.certificates.forms import TemplateForm
 from sgce.certificates.models import Template
-from sgce.core.forms import EventForm
 from sgce.core.models import Event
 from sgce.core.tests.base import LoggedInTestCase
 
@@ -17,18 +15,26 @@ class TemplateCreateWithoutPermission(LoggedInTestCase):
         super(TemplateCreateWithoutPermission, self).setUp()
         self.response = self.client.get(r('certificates:template-create'))
 
-    #def test_get(self):
-    #    """Must return 403 HttpError (No permission)"""
-    #    self.assertEqual(403, self.response.status_code)
+    def test_get(self):
+        """Must return 403 HttpError (No permission)"""
+        self.assertEqual(403, self.response.status_code)
 
 
-#class Base. Add user as MANAGER
-class Base(LoggedInTestCase):
+# Permission: certificates.add_template
+class TemplateCreateWithPermission(LoggedInTestCase):
     def setUp(self):
-        super(Base, self).setUp()
+        super(TemplateCreateWithPermission, self).setUp()
+        # permission required: certificates.add_template
+        content_type = ContentType.objects.get_for_model(Template)
+        self.permission = Permission.objects.get(
+            codename='add_template',
+            content_type=content_type,
+        )
+        self.user_logged_in.user_permissions.add(self.permission)
+        self.user_logged_in.refresh_from_db()
 
 
-class TemplateCreateGet(Base):
+class TemplateCreateGet(TemplateCreateWithPermission):
     def setUp(self):
         super(TemplateCreateGet, self).setUp()
         self.response = self.client.get(r('certificates:template-create'))
@@ -62,7 +68,7 @@ class TemplateCreateGet(Base):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
 
 
-class TemplateCreatePost(Base):
+class TemplateCreatePost(TemplateCreateWithPermission):
     def setUp(self):
         super(TemplateCreatePost, self).setUp()
         event = Event.objects.create(
@@ -117,7 +123,7 @@ class TemplateCreatePost(Base):
         self.assertRedirects(self.response, r('certificates:template-list'))
 
 
-class TemplateCreatePostInvalid(Base):
+class TemplateCreatePostInvalid(TemplateCreateWithPermission):
     def setUp(self):
         super(TemplateCreatePostInvalid, self).setUp()
         self.response = self.client.post(r('certificates:template-create'), {})

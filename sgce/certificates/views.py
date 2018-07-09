@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -14,17 +14,14 @@ class TemplateListView(LoginRequiredMixin, ListView):
     context_object_name = 'templates'
 
 
-class TemplateCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class TemplateCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     model = Template
     form_class = TemplateForm
+    permission_required = 'certificates.add_template'
     raise_exception = True
     template_name = 'certificates/template/template_form.html'
     success_url = reverse_lazy('certificates:template-list')
     success_message = "O modelo %(name)s foi criado com sucesso."
-
-    # user_passes_test
-    #def test_func(self):
-    #    return self.request.user.is_superuser or self.request.user.profile.is_manager()
 
     def form_valid(self, form):
         obj = form.save(commit=False)
