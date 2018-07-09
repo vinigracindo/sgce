@@ -23,12 +23,12 @@ class UserCreateWithPermission(LoggedInTestCase):
         super(UserCreateWithPermission, self).setUp()
         # permission required: profile.can_enable_or_disable_user
         content_type = ContentType.objects.get_for_model(get_user_model())
-        self.permission = Permission.objects.get(
+        permission = Permission.objects.get(
             codename='add_user',
             content_type=content_type,
         )
 
-        self.user_logged_in.user_permissions.add(self.permission)
+        self.user_logged_in.user_permissions.add(permission)
         self.user_logged_in.refresh_from_db()
 
 

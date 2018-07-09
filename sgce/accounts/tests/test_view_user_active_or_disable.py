@@ -23,12 +23,12 @@ class UserActiveOrDisableWithPermission(LoggedInTestCase):
         super(UserActiveOrDisableWithPermission, self).setUp()
         # permission required: profile.can_enable_or_disable_user
         content_type = ContentType.objects.get_for_model(Profile)
-        self.permission = Permission.objects.get(
+        permission = Permission.objects.get(
             codename='can_enable_or_disable_user',
             content_type=content_type,
         )
 
-        self.user_logged_in.user_permissions.add(self.permission)
+        self.user_logged_in.user_permissions.add(permission)
         self.user_logged_in.refresh_from_db()
 
 
