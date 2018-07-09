@@ -15,19 +15,26 @@ class EventCreateWithoutPermission(LoggedInTestCase):
         super(EventCreateWithoutPermission, self).setUp()
         self.response = self.client.get(r('core:event-create'))
 
-    #def test_get(self):
-    #    """Must return 403 HttpError (No permission)"""
-    #    self.assertEqual(403, self.response.status_code)
+    def test_get(self):
+        """Must return 403 HttpError (No permission)"""
+        self.assertEqual(403, self.response.status_code)
 
 
-#class Base. Add user as MANAGER
-class Base(LoggedInTestCase):
+# Permission: core.add_event
+class EventCreateWithPermission(LoggedInTestCase):
     def setUp(self):
-        super(Base, self).setUp()
+        super(EventCreateWithPermission, self).setUp()
+        # permission required: core.add_event
+        content_type = ContentType.objects.get_for_model(Event)
+        self.permission = Permission.objects.get(
+            codename='add_event',
+            content_type=content_type,
+        )
+        self.user_logged_in.user_permissions.add(self.permission)
+        self.user_logged_in.refresh_from_db()
 
 
-
-class EventCreateGet(Base):
+class EventCreateGet(EventCreateWithPermission):
     def setUp(self):
         super(EventCreateGet, self).setUp()
         self.response = self.client.get(r('core:event-create'))
@@ -62,7 +69,7 @@ class EventCreateGet(Base):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
 
 
-class EventCreatePost(Base):
+class EventCreatePost(EventCreateWithPermission):
     def setUp(self):
         super(EventCreatePost, self).setUp()
         data = dict(
@@ -86,7 +93,7 @@ class EventCreatePost(Base):
         self.assertTrue(Event.objects.exists())
 
 
-class EventCreatePostInvalid(Base):
+class EventCreatePostInvalid(EventCreateWithPermission):
     def setUp(self):
         super(EventCreatePostInvalid, self).setUp()
         self.response = self.client.post(r('core:event-create'), {})

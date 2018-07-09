@@ -27,17 +27,14 @@ class EventListView(LoginRequiredMixin, ListView):
         return queryset if user.is_superuser else queryset.filter(created_by=self.request.user)
 
 
-class EventCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class EventCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     model = Event
     form_class = EventForm
+    permission_required = 'core.add_event'
     raise_exception = True
     template_name = 'core/event/event_form.html'
     success_url = reverse_lazy('core:event-list')
     success_message = "O evento %(name)s foi criado com sucesso."
-
-    # user_passes_test
-    # def test_func(self):
-    #    return self.request.user.is_superuser
 
     def form_valid(self, form):
         obj = form.save(commit=False)
@@ -84,5 +81,3 @@ class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         messages.success(self.request, self.success_message)
         return super(EventDeleteView, self).delete(request, *args, **kwargs)
 
-
-def event_detail(request, slug): pass

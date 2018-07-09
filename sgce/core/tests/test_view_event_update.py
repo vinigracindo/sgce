@@ -27,10 +27,10 @@ class EventUpdateWithoutPermission(LoggedInTestCase):
         self.assertEqual(403, self.response.status_code)
 
 
-#class Base. Add permission: user.profile.role=Profile.MANAGER and event must be created by yourself
-class Base(LoggedInTestCase):
+# Must be created by user logged in.
+class EventUpdateWithPermission(LoggedInTestCase):
     def setUp(self):
-        super(Base, self).setUp()
+        super(EventUpdateWithPermission, self).setUp()
         self.event = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
             start_date=datetime.date(2018, 6, 18),
@@ -40,7 +40,7 @@ class Base(LoggedInTestCase):
         )
 
 
-class EventUpdateGet(Base):
+class EventUpdateGet(EventUpdateWithPermission):
     def setUp(self):
         super(EventUpdateGet, self).setUp()
         self.response = self.client.get(r('core:event-update', self.event.pk))
@@ -87,7 +87,7 @@ class EventUpdateGet(Base):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
 
 
-class EventUpdatePost(Base):
+class EventUpdatePost(EventUpdateWithPermission):
     def setUp(self):
         super(EventUpdatePost, self).setUp()
         data = dict(

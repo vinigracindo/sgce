@@ -27,10 +27,10 @@ class EventDeleteWithoutPermission(LoggedInTestCase):
         self.assertEqual(403, self.response.status_code)
 
 
-#class Base. Add user as MANAGER
-class Base(LoggedInTestCase):
+# Must be created by user logged in.
+class EventDeleteWithPermission(LoggedInTestCase):
     def setUp(self):
-        super(Base, self).setUp()
+        super(EventDeleteWithPermission, self).setUp()
         self.event = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
             start_date=datetime.date(2018, 6, 18),
@@ -40,7 +40,7 @@ class Base(LoggedInTestCase):
         )
 
 
-class EventDeleteGet(Base):
+class EventDeleteGet(EventDeleteWithPermission):
     def setUp(self):
         super(EventDeleteGet, self).setUp()
         self.response = self.client.get(r('core:event-delete', self.event.pk))
@@ -68,7 +68,7 @@ class EventDeleteGet(Base):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
 
 
-class EventDeletePost(Base):
+class EventDeletePost(EventDeleteWithPermission):
     def setUp(self):
         super(EventDeletePost, self).setUp()
         self.response = self.client.post(r('core:event-delete', self.event.pk))

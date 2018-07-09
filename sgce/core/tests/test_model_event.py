@@ -35,7 +35,3 @@ class EventModelTest(TestCase):
         """Event should not have an editable slug field."""
         field = Event._meta.get_field('slug')
         self.assertFalse(field.editable)
-
-    def test_get_absolute_url(self):
-        url = r('core:event-detail', slug=self.event.slug)
-        self.assertEqual(url, self.event.get_absolute_url())

@@ -69,55 +69,20 @@ class EventListGet(LoggedInTestCase):
                self.assertIn(key, self.response.context)
 
 
-class EventListSuperUserGet(LoggedInTestCase):
+class EventListSuperUserGet(EventListGet):
     def setUp(self):
         super(EventListSuperUserGet, self).setUp()
-        self.user_logged_in.first_name = 'Grace'
-        self.user_logged_in.last_name = 'Hopper'
         self.user_logged_in.is_superuser = True
         self.user_logged_in.save()
         self.user_logged_in.refresh_from_db()
-        another_user = get_user_model().objects.create_user(
-            username='anotheruser',
-            email='anotheruser@mail.com',
-            password='pass',
-            first_name='Alan',
-            last_name='Turing',
-        )
-        self.e1 = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date='2018-06-18',
-            end_date='2018-06-18',
-            location='IFAL - Campus Arapiraca',
-            #user created on LoggedInTestCase setUp()
-            created_by=self.user_logged_in,
-        )
-        self.e2 = Event.objects.create(
-            name='Simpósio Brasileiro de Inteligência Artificial',
-            start_date='2018-06-19',
-            end_date='2018-06-19',
-            location='IFAL - Campus Arapiraca',
-            # user created on LoggedInTestCase setUp()
-            created_by=self.user_logged_in,
-        )
-        self.e3 = Event.objects.create(
-            name='Simpósio Brasileiro de Medicina',
-            start_date='2018-06-21',
-            end_date='2018-06-21',
-            location='IFAL - Campus Arapiraca',
-            # user created on LoggedInTestCase setUp()
-            created_by=another_user,
-        )
         self.response = self.client.get(r('core:event-list'))
 
     def test_html(self):
-        """Must show alls event and column created_by."""
+        """Must show alls events"""
         contents = [
             (1, 'Simpósio Brasileiro de Informática'),
             (1, 'Simpósio Brasileiro de Inteligência Artificial'),
             (1, 'Simpósio Brasileiro de Medicina'),
-            (2, 'Grace Hopper'),
-            (1, 'Alan Turing'),
             # Must have a link to create a new user.
             (1, 'href="{}"'.format(r('core:event-create'))),
         ]
