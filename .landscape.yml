@@ -2,7 +2,12 @@ python-targets: 3
 
 ignore-paths:
   - manage.py
-  - sgce/core/migrations/
-  - sgce/accounts/migrations/
-  - sgce/certificates/migrations/
   - sgce/wsgi.py
+
+ignore-patterns:
+  - (^|/)migrations(/|$)
+
+pylint:
+  run: true
+  disable:
+    - invalid-encoded-data
