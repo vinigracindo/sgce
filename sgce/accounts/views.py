@@ -41,13 +41,6 @@ class UserCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessage
     success_url = reverse_lazy('accounts:user-list')
     success_message = "O usuário %(username)s foi criado com sucesso."
 
-    # Override form_valid to update user.profile.role
-    def form_valid(self, form):
-        super(UserCreateView, self).form_valid(form)
-        form.instance.profile.role = form.cleaned_data['role']
-        form.instance.profile.save()
-        return HttpResponseRedirect(self.get_success_url())
-
 
 class UserUpdateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     permission_required = 'auth.change_user'
@@ -57,15 +50,3 @@ class UserUpdateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessage
     template_name = 'accounts/user/user_form.html'
     success_url = reverse_lazy('accounts:user-list')
     success_message = "O usuário %(username)s foi atualizado com sucesso."
-
-    def get_initial(self):
-        initial = super(UserUpdateView, self).get_initial()
-        initial['role'] = self.object.profile.role
-        return initial
-
-    # Override form_valid to update user.profile.role
-    def form_valid(self, form):
-        super(UserUpdateView, self).form_valid(form)
-        form.instance.profile.role = form.cleaned_data['role']
-        form.instance.profile.save()
-        return HttpResponseRedirect(self.get_success_url())

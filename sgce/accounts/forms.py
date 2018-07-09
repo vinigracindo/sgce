@@ -5,13 +5,6 @@ from sgce.accounts.models import Profile
 
 
 class UserForm(forms.ModelForm):
-
-    role = forms.ChoiceField(
-        choices=Profile.ROLES,
-        label='Nível de Acesso',
-        initial=Profile.USER,
-    )
-
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name', 'email', 'is_superuser', 'username', 'password']

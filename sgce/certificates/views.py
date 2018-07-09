@@ -14,7 +14,7 @@ class TemplateListView(LoginRequiredMixin, ListView):
     context_object_name = 'templates'
 
 
-class TemplateCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
+class TemplateCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Template
     form_class = TemplateForm
     raise_exception = True
@@ -23,8 +23,8 @@ class TemplateCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
     success_message = "O modelo %(name)s foi criado com sucesso."
 
     # user_passes_test
-    def test_func(self):
-        return self.request.user.is_superuser or self.request.user.profile.is_manager()
+    #def test_func(self):
+    #    return self.request.user.is_superuser or self.request.user.profile.is_manager()
 
     def form_valid(self, form):
         obj = form.save(commit=False)

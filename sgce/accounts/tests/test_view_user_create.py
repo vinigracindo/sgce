@@ -49,8 +49,6 @@ class UserCreateGet(Base):
             ('<form', 1),
             # Csrf, first_name, last_name, email, superuser, username and password
             ('<input', 7),
-            # Role
-            ('<select', 1),
             ('type="text"', 3),
             ('type="password"', 1),
             ('type="checkbox"', 1),
@@ -81,7 +79,6 @@ class UserCreatePost(Base):
             is_superuser = False,
             username = 'alanturing',
             password = 'password',
-            role = Profile.MANAGER
         )
         self.response = self.client.post(r('accounts:user-create'), data)
 
@@ -91,14 +88,6 @@ class UserCreatePost(Base):
 
     def test_save_user(self):
         self.assertTrue(get_user_model().objects.filter(username='alanturing').exists())
-
-    def test_role_change_in_profile(self):
-        """
-        Must update profile.role attr. By default profile.role is 'u'.
-        When a user is created, a signal is triggered: create_user_profile (core/signals.py)
-        """
-        profile = get_user_model().objects.get(username='alanturing').profile
-        self.assertEqual(Profile.MANAGER, profile.role)
 
 
 class UserCreatePostInvalid(Base):

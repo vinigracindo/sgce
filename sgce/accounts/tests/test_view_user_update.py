@@ -66,8 +66,6 @@ class UserUpdateGet(Base):
             ('<form', 1),
             # Csrf, first_name, last_name, email, superuser and username
             ('<input', 6),
-            # Role
-            ('<select', 1),
             ('type="text"', 3),
             ('type="checkbox"', 1),
             ('type="email"', 1),
@@ -97,7 +95,6 @@ class UserUpdatePost(Base):
             email = 'alan@turing.com',
             is_superuser = False,
             username = 'alanturing',
-            role = Profile.USER
         )
         self.response = self.client.post(r('accounts:user-update', self.user_logged_in.pk), data)
         self.user_logged_in.refresh_from_db()
@@ -112,4 +109,3 @@ class UserUpdatePost(Base):
         self.assertEqual('alan@turing.com', self.user_logged_in.email)
         self.assertFalse(self.user_logged_in.is_superuser)
         self.assertEqual('alanturing', self.user_logged_in.username)
-        self.assertEqual(Profile.USER, self.user_logged_in.profile.role)

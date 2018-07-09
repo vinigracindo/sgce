@@ -26,22 +26,6 @@ class EventDeleteWithoutPermission(LoggedInTestCase):
         """Must return 403 HttpError (No permission)"""
         self.assertEqual(403, self.response.status_code)
 
-    def test_get_with_created_by(self):
-        """Must return 403 HttpError (No permission)"""
-        self.event.created_by = self.user_logged_in
-        self.event.save()
-        self.event.refresh_from_db()
-        self.response = self.client.get(r('core:event-update', self.event.pk))
-        self.assertEqual(403, self.response.status_code)
-
-    def test_get_as_manager(self):
-        """Must return 403 HttpError (No permission)"""
-        self.user_logged_in.profile.role = Profile.MANAGER
-        self.user_logged_in.profile.save()
-        self.user_logged_in.profile.refresh_from_db()
-        self.response = self.client.get(r('core:event-update', self.event.pk))
-        self.assertEqual(403, self.response.status_code)
-
 
 #class Base. Add user as MANAGER
 class Base(LoggedInTestCase):
@@ -54,10 +38,6 @@ class Base(LoggedInTestCase):
             location='IFAL - Campus Arapiraca',
             created_by=self.user_logged_in,
         )
-        # set as Profile.MANAGER
-        self.user_logged_in.profile.role = Profile.MANAGER
-        self.user_logged_in.profile.save()
-        self.user_logged_in.profile.refresh_from_db()
 
 
 class EventDeleteGet(Base):

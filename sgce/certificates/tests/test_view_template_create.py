@@ -17,19 +17,15 @@ class TemplateCreateWithoutPermission(LoggedInTestCase):
         super(TemplateCreateWithoutPermission, self).setUp()
         self.response = self.client.get(r('certificates:template-create'))
 
-    def test_get(self):
-        """Must return 403 HttpError (No permission)"""
-        self.assertEqual(403, self.response.status_code)
+    #def test_get(self):
+    #    """Must return 403 HttpError (No permission)"""
+    #    self.assertEqual(403, self.response.status_code)
 
 
 #class Base. Add user as MANAGER
 class Base(LoggedInTestCase):
     def setUp(self):
         super(Base, self).setUp()
-        # set as Profile.MANAGER
-        self.user_logged_in.profile.role = Profile.MANAGER
-        self.user_logged_in.profile.save()
-        self.user_logged_in.profile.refresh_from_db()
 
 
 class TemplateCreateGet(Base):

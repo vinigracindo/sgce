@@ -18,7 +18,3 @@ class ProfileModelTest(TestCase):
 
     def test_str(self):
         self.assertEqual('Perfil de {}'.format(self.profile.user.get_full_name()), str(self.profile))
-
-    def test_role_default_to_common_user(self):
-        """By default must be 'u' (Profile.USER)"""
-        self.assertEqual(self.profile.role, Profile.USER)

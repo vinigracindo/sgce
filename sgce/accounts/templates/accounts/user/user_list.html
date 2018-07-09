@@ -40,7 +40,7 @@
     <tbody>
     {% for user in users %}
       <tr>
-        <td>{% if user.is_superuser %}Super Usuário{% else %}{{ user.profile.get_role_display }}{% endif %}</td>
+        <td>{% if user.is_superuser %}Administrador{% else %}Usuário{% endif %}</td>
         <td>{{ user.get_full_name }}</td>
         <td>{{ user.email }} </td>
         <td>

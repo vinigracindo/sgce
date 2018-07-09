@@ -27,7 +27,7 @@ class EventListView(LoginRequiredMixin, ListView):
         return queryset if user.is_superuser else queryset.filter(created_by=self.request.user)
 
 
-class EventCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
+class EventCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Event
     form_class = EventForm
     raise_exception = True
@@ -36,8 +36,8 @@ class EventCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMix
     success_message = "O evento %(name)s foi criado com sucesso."
 
     # user_passes_test
-    def test_func(self):
-        return self.request.user.is_superuser or self.request.user.profile.is_manager()
+    # def test_func(self):
+    #    return self.request.user.is_superuser
 
     def form_valid(self, form):
         obj = form.save(commit=False)
@@ -57,8 +57,8 @@ class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMix
     def test_func(self):
         user = self.request.user
         event = self.get_object()
-        #Superuser OR user is manager and event has been created by himself.
-        if user.is_superuser or (user.profile.is_manager() and (event.created_by == user)):
+        #Superuser OR event has been created by himself.
+        if user.is_superuser or event.created_by == user:
             return True
         return False
 
@@ -75,8 +75,8 @@ class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         user = self.request.user
         event = self.get_object()
-        # Superuser OR user is manager and event has been created by himself.
-        if user.is_superuser or (user.profile.is_manager() and (event.created_by == user)):
+        # Superuser OR event has been created by himself.
+        if user.is_superuser or event.created_by == user:
             return True
         return False
 
