@@ -30,7 +30,6 @@ class TemplateModelTest(TestCase):
             2 - Lorem Ipsum
             ''',
             background='core/tests/test.gif',
-            created_by=user,
         )
 
     def test_create(self):

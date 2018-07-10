@@ -32,8 +32,6 @@ class TemplateListGet(LoggedInTestCase):
                     2 - Lorem Ipsum
                     ''',
             background='core/tests/test.gif',
-            # user created on LoggedInTestCase setUp()
-            created_by=self.user_logged_in,
         )
 
         self.t2 = Template.objects.create(
@@ -49,8 +47,6 @@ class TemplateListGet(LoggedInTestCase):
                             2 - Lorem Ipsum
                             ''',
             background='core/tests/test.gif',
-            # user created on LoggedInTestCase setUp()
-            created_by=self.user_logged_in,
         )
         self.response = self.client.get(r('certificates:template-list'))
 

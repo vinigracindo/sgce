@@ -105,11 +105,6 @@ class Template(models.Model):
     )
     footer_text_color = models.CharField('cor do rodapé', max_length=10, choices=COLOR, default=BLACK)
 
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        verbose_name='criado por',
-        on_delete=models.PROTECT,
-    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

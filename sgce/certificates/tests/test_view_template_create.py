@@ -113,11 +113,6 @@ class TemplateCreatePost(TemplateCreateWithPermission):
     def test_save_user(self):
         self.assertTrue(Template.objects.exists())
 
-    def test_created_by_should_be_request_user(self):
-        """obj.created_by should be request.user (user logged)."""
-        obj = Template.objects.first()
-        self.assertEqual(obj.created_by, self.user_logged_in)
-
     def test_post(self):
         """ Valid POST should redirect to 'template-list' """
         self.assertRedirects(self.response, r('certificates:template-list'))
@@ -143,5 +138,5 @@ class TemplateCreatePostInvalid(TemplateCreateWithPermission):
         form = self.response.context['form']
         self.assertTrue(form.errors)
 
-    def test_dont_save_new_user(self):
+    def test_dont_save_new_template(self):
         self.assertFalse(Template.objects.exists())
