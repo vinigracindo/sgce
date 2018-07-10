@@ -9,6 +9,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from sgce.core.forms import EventForm
 from sgce.core.models import Event
+from sgce.core.utils.get_deleted_objects import get_deleted_objects
 
 
 @login_required
@@ -76,6 +77,14 @@ class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if user.is_superuser or event.created_by == user:
             return True
         return False
+
+    def get_context_data(self, **kwargs):
+        context = super(EventDeleteView, self).get_context_data(**kwargs)
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects'] = deletable_objects
+        context['model_count'] = model_count
+        context['protected'] = protected
+        return context
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
