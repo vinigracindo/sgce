@@ -109,7 +109,7 @@ class Template(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return '{}: {}'.format(self.event, self.name)
 
     def template_fields(self):
         """Must return the fields that will build the certificate. The pattern: UPPERCASE_UPPERCASE"""
