@@ -13,7 +13,6 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'perfil'
         verbose_name_plural = 'perfis'
-        permissions = (('can_enable_or_disable_user', 'Can change status is_active'),)
 
     def __str__(self):
         return 'Perfil de {}'.format(self.user.get_full_name())

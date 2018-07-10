@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block extra-css %}
+{{ form.media }}
+{% endblock %}
+
 {% block content-title %}Usuários{% endblock %}
 {% block content-description %}Cadastro de novo usuário{% endblock %}
 {% block link-back %}{% url 'accounts:user-list' %}{% endblock %}

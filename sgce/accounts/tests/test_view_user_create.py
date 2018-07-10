@@ -17,7 +17,7 @@ class UserCreateWithoutPermission(LoggedInTestCase):
         self.assertEqual(403, self.response.status_code)
 
 
-# Permission: accounts.add_user
+# Permission: auth.add_user
 class UserCreateWithPermission(LoggedInTestCase):
     def setUp(self):
         super(UserCreateWithPermission, self).setUp()

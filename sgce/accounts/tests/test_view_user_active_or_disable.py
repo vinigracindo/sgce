@@ -3,7 +3,6 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import resolve_url as r
 
-from sgce.accounts.models import Profile
 from sgce.core.tests.base import LoggedInTestCase
 
 
@@ -17,14 +16,14 @@ class UserActiveOrDisableWithoutPermission(LoggedInTestCase):
         self.assertEqual(403, self.response.status_code)
 
 
-# Permission: can_enable_or_disable_user
+# Permission: auth.delete_user
 class UserActiveOrDisableWithPermission(LoggedInTestCase):
     def setUp(self):
         super(UserActiveOrDisableWithPermission, self).setUp()
         # permission required: profile.can_enable_or_disable_user
-        content_type = ContentType.objects.get_for_model(Profile)
+        content_type = ContentType.objects.get_for_model(get_user_model())
         permission = Permission.objects.get(
-            codename='can_enable_or_disable_user',
+            codename='delete_user',
             content_type=content_type,
         )
 

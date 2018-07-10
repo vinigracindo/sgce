@@ -2,4 +2,5 @@ from django.apps import AppConfig
 
 
 class CertificatesConfig(AppConfig):
-    name = 'certificates'
+    name = 'sgce.certificates'
+    verbose_name = 'Certificados'

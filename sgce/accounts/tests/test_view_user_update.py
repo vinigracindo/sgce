@@ -17,7 +17,7 @@ class UserUpdateWithoutPermission(LoggedInTestCase):
         self.assertEqual(403, self.response.status_code)
 
 
-# Permission: accounts.change_user
+# Permission: auth.change_user
 class UserUpdateWithPermission(LoggedInTestCase):
     def setUp(self):
         super(UserUpdateWithPermission, self).setUp()

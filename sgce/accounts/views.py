@@ -13,7 +13,7 @@ from sgce.accounts.forms import UserForm, UserUpdateForm
 
 
 @login_required
-@permission_required('accounts.can_enable_or_disable_user', raise_exception=True)
+@permission_required('auth.delete_user', raise_exception=True)
 def user_active_or_disable(request, pk):
     user = get_user_model().objects.get(pk=pk)
     if user.pk is not request.user.pk:
