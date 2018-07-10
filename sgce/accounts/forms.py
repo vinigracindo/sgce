@@ -6,16 +6,12 @@ from sgce.accounts.models import Profile
 
 
 class UserForm(forms.ModelForm):
-    class Media:
-        css = {'all': ('/static/admin/css/widgets.css',), }
-        js = ('/admin/jsi18n/',)
-
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'email', 'is_superuser', 'username', 'password', 'user_permissions']
+        fields = ['first_name', 'last_name', 'email', 'is_superuser', 'username', 'password', 'groups']
         widgets = {
             'password': forms.PasswordInput,
-            'user_permissions': FilteredSelectMultiple('Permissões', is_stacked=False),
+            'groups':forms.CheckboxSelectMultiple
         }
 
     def __init__(self, *args, **kwargs):

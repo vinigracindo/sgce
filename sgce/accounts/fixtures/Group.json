@@ -1,0 +1,10 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "Gerenciador de Eventos",
+      "permissions": [19, 20, 21, 25, 26, 27]
+    }
+  }
+]
