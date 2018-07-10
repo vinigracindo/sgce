@@ -32,7 +32,6 @@
     <tr>
       <th>Nome</th>
       <th>Local</th>
-      <th>Período de Realização</th>
       {% if user.is_superuser %}
         <th>Criado por</th>
       {% endif %}
@@ -44,13 +43,13 @@
       <tr>
         <td>{{ event.name }}</td>
         <td>{{ event.location }}</td>
-        <td>{{ event.start_date }} a {{ event.end_date }}</td>
         {% if user.is_superuser %}
           <td>{{ event.created_by.get_full_name }}</td>
         {% endif %}
         <td>
+          <a href="{% url 'certificates:template-list' %}" class="fas fa-certificate fa-sm" title="Certificados"></a>
           {% if perms.core.change_event %}
-            <a href="{% url 'core:event-update' event.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
+            | <a href="{% url 'core:event-update' event.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
           {% endif %}
           {% if perms.core.delete_event %}
             | <a href="{% url 'core:event-delete' event.pk %}" class="fa fa-trash-alt fa-sm" title="Excluir"></a>
@@ -63,7 +62,6 @@
     <tr>
       <th>Nome</th>
       <th>Local</th>
-      <th>Período de Realização</th>
       {% if user.is_superuser %}
         <th>Criado por</th>
       {% endif %}
