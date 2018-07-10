@@ -41,6 +41,10 @@ class UserCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessage
     success_url = reverse_lazy('accounts:user-list')
     success_message = "O usuário %(username)s foi criado com sucesso."
 
+    def form_valid(self, form):
+        form.instance.set_password(form.instance.password)
+        return super(UserCreateView, self).form_valid(form)
+
 
 class UserUpdateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     permission_required = 'auth.change_user'
