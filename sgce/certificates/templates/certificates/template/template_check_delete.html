@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if protected %}
+    <h3>Não é possível excluir modelo</h3>
+    <p>Excluir o {{ object }} exigiria excluir os seguintes objetos protegidos relacionados:</p>
+    <ul>
+      {% for obj in protected %}
+        <li>{{ obj }}</li>
+      {% endfor %}
+    </ul>
+    <a href="{% url 'certificates:template-list' %}" class="btn btn-dark" value="Voltar">Voltar</a>
+  {% else %}
+    <form method="post">{% csrf_token %}
+        <p>Tem certeza que quer excluir o modelo "<b>{{ object }}</b>"?</p>
+        <a href="{% url 'certificates:template-list' %}" class="btn btn-dark" value="Voltar">Voltar</a>
+        <button type="submit" class="btn btn-warning">Confirmar</button>
+    </form>
+  {% endif %}
+{% endblock %}

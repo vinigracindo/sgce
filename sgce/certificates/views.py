@@ -5,10 +5,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm
 from sgce.certificates.models import Template
+from sgce.core.utils.get_deleted_objects import get_deleted_objects
 
 
 class TemplateListView(LoginRequiredMixin, ListView):
@@ -43,6 +44,35 @@ class TemplateUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
         if user.is_superuser or template.event.created_by == user:
             return True
         return False
+
+
+class TemplateDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Template
+    raise_exception = True
+    template_name = 'certificates/template/template_check_delete.html'
+    success_url = reverse_lazy('certificates:template-list')
+    success_message = "O modelo foi excluído com sucesso."
+
+    # user_passes_test
+    def test_func(self):
+        user = self.request.user
+        template = self.get_object()
+        # Superuser OR template.event has been created by himself.
+        if user.is_superuser or template.event.created_by == user:
+            return True
+        return False
+
+    def get_context_data(self, **kwargs):
+        context = super(TemplateDeleteView, self).get_context_data(**kwargs)
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects'] = deletable_objects
+        context['model_count'] = model_count
+        context['protected'] = protected
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(TemplateDeleteView, self).delete(request, *args, **kwargs)
 
 
 @login_required

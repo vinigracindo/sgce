@@ -41,12 +41,12 @@
         <td>{{ template.event }}</td>
         <td>{{ template.name }}</td>
         <td>
-          <a href="#" target="_blank" class="fas fa-eye fa-sm" title="Visualizar"></a>
+          <a href="#" target="_blank" class="fas fa-file-pdf fa-sm" title="Visualizar Modelo"></a>
           | <a href="{% url 'certificates:template-duplicate' template.pk %}" class="fas fa-copy fa-sm" title="Clonar"></a>
           {% if user.is_superuser or template.event.created_by == user %}
             | <a href="{% url 'certificates:template-update' template.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
+            | <a href="{% url 'certificates:template-delete' template.pk %}" class="fa fa-trash-alt fa-sm" title="Excluir"></a>
           {% endif %}
-          | <a href="#" class="fa fa-trash-alt fa-sm" title="Excluir"></a>
         </td>
       </tr>
     {% endfor %}
