@@ -50,4 +50,7 @@ class TemplateDuplicateFormTest(TestCase):
 
     def test_event_queryset_superuser(self):
         """must show all events case user is superuser"""
-        self.assertEqual(list(self.form_as_super_user.fields['event'].queryset), [self.event1, self.event2, self.event3])
+        self.assertEqual(
+            set(list(self.form_as_super_user.fields['event'].queryset)),
+            set([self.event1, self.event2, self.event3])
+        )
