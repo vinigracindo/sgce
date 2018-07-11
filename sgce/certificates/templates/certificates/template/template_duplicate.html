@@ -1,0 +1,7 @@
+{% extends 'generic_form.html' %}
+
+{% load static %}
+
+{% block content-title %}Modelo{% endblock %}
+{% block content-description %}Duplicando o modelo {{ template }}{% endblock %}
+{% block link-back %}{% url 'certificates:template-list' %}{% endblock %}

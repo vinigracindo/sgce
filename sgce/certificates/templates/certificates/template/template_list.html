@@ -42,7 +42,7 @@
         <td>{{ template.name }}</td>
         <td>
           <a href="#" target="_blank" class="fas fa-eye fa-sm" title="Visualizar"></a>
-          | <a href="#" class="fas fa-copy fa-sm" title="Clonar"></a>
+          | <a href="{% url 'certificates:template-duplicate' template.pk %}" class="fas fa-copy fa-sm" title="Clonar"></a>
           {% if user.is_superuser or template.event.created_by == user %}
             | <a href="{% url 'certificates:template-update' template.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
           {% endif %}
@@ -72,7 +72,7 @@
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
-      'ordering'    : true,
+      'ordering'    : false,
       'info'        : true,
       'autoWidth'   : true,
       'language': {
