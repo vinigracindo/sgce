@@ -29,7 +29,7 @@
                 <li class="nav-item"><a href="" data-target="#layout" data-toggle="tab" class="nav-link small text-uppercase">Layout</a></li>
             </ul>
             <br>
-            <form id="template-form" method="post">{% csrf_token %}
+            <form id="template-form" method="post" enctype="multipart/form-data">{% csrf_token %}
                 <div id="tabsJustifiedContent" class="tab-content">
                     <div id="description" class="tab-pane fade active show">
                         {% bootstrap_label "Nome" label_for="id_name" %}{% if form.name.field.required %}<span class="required-field">*</span>{% endif %}:

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'test_without_migrations',
     'tinymce',
     'bootstrap4',
+    'qr_code',
 
     #System Apps
     'sgce.core',

@@ -8,4 +8,5 @@ urlpatterns = [
     path('template/update/<int:pk>/', views.TemplateUpdateView.as_view(), name='template-update'),
     path('template/duplicate/<int:pk>/', views.template_duplicate, name='template-duplicate'),
     path('template/delete/<int:pk>/', views.TemplateDeleteView.as_view(), name='template-delete'),
+    path('template/preview/<int:template_pk>', views.render_pdf_view, name='template-pdf-preview')
 ]

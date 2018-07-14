@@ -11,3 +11,5 @@ gunicorn==19.9.0
 psycopg2==2.7.5
 coveralls==1.3.0
 django-tinymce==2.7.0
+xhtml2pdf==0.2.2
+django-qr-code==1.0.0

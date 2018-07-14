@@ -32,6 +32,7 @@
     <tr>
       <th>Evento</th>
       <th>Modelo do Certificado</th>
+      <th>Campos Definidos</th>
       <th>Ações</th>
     </tr>
     </thead>
@@ -41,7 +42,10 @@
         <td>{{ template.event }}</td>
         <td>{{ template.name }}</td>
         <td>
-          <a href="#" target="_blank" class="fas fa-file-pdf fa-sm" title="Visualizar Modelo"></a>
+          NUMERO_CPF{% for field in template.template_fields %}, {{ field }}{% endfor %}
+        </td>
+        <td style="white-space: nowrap;">
+          <a href="{% url 'certificates:template-pdf-preview' template.pk %}" class="fas fa-file-pdf fa-sm" title="Visualizar Modelo"></a>
           | <a href="{% url 'certificates:template-duplicate' template.pk %}" class="fas fa-copy fa-sm" title="Clonar"></a>
           {% if user.is_superuser or template.event.created_by == user %}
             | <a href="{% url 'certificates:template-update' template.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
@@ -55,6 +59,7 @@
     <tr>
       <th>Evento</th>
       <th>Modelo do Certificado</th>
+      <th>Campos Definidos</th>
       <th>Ações</th>
     </tr>
     </tfoot>

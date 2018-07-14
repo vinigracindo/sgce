@@ -2,13 +2,17 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.template.loader import get_template
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from reportlab.lib.styles import getSampleStyleSheet
+from xhtml2pdf import pisa
 
 from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm
 from sgce.certificates.models import Template
+from sgce.certificates.utils.pdf import link_callback
 from sgce.core.utils.get_deleted_objects import get_deleted_objects
 
 
@@ -96,3 +100,26 @@ def template_duplicate(request, pk):
     }
 
     return render(request, 'certificates/template/template_duplicate.html', context)
+
+
+def render_pdf_view(request, template_pk):
+    template = Template.objects.get(pk=template_pk)
+    template_path = 'certificates/template/pdf/certificate_preview.html'
+    context = {'template': template}
+
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="{}-{}.pdf"'.format(template.name, 'Modelo Teste')
+
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+
+    # if error then show some funy view
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+
+    return response

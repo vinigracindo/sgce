@@ -8,8 +8,8 @@ from sgce.core.models import Event
 
 
 class Template(models.Model):
-    ARIAL = 'a'
-    TIMES_NEW_ROMAN = 't'
+    ARIAL = 'arial'
+    TIMES_NEW_ROMAN = 'times'
     FONTS = (
         (ARIAL, 'Arial'),
         (TIMES_NEW_ROMAN, 'Times New Roman')
@@ -46,7 +46,19 @@ class Template(models.Model):
         on_delete=models.PROTECT
     )
     title = models.CharField('título', max_length=64, blank=True)
-    content = HTMLField('texto')
+    content = HTMLField(
+        'texto',
+        default='''
+        Exemplo: Certificamos que NOME_PARTICIPANTE participou do evento NOME_EVENTO, realizado em DATA_EVENTO.
+        ''',
+        help_text='''
+        O arquivo importado deve estar no formato CSV, com a separação dos campos por ponto-e-vírgula (;) e ter, 
+        obrigatoriamente, o campo NUMERO_CPF. Poderá também conter outros campos, desde que formados 
+        por duas palavras maiúsculas separadas pelo caractere sublinhado (underline), como no texto 
+        de exemplo. Evite usar o ponto-e-vírgula junto ao nome de um campo dentro do texto do certificado para evitar 
+        problemas na importação de dados.
+        '''
+    )
     backside_title = models.CharField('título do verso', max_length=64, blank=True)
     backside_content = HTMLField('texto do verso', blank=True)
     background = models.ImageField(
@@ -54,38 +66,38 @@ class Template(models.Model):
         upload_to='backgrounds',
         blank=True,
         help_text='''
-        A imagem de fundo deverá ter 3508 pixels de largura e 2480 pixels de altura, correspondendo a uma 
-        folha A4 na orientação de paisagem.
+        É recomendado que imagem de fundo deverá ter 3508 pixels de largura e 2480 pixels de altura, 
+        correspondendo a uma folha A4 na orientação de paisagem.
         '''
     )
-    font = models.CharField('fonte', max_length=1, choices=FONTS, default=ARIAL)
-    title_top_distance = models.PositiveIntegerField('distância do topo ao título', blank=True, default=0)
+    font = models.CharField('fonte', max_length=10, choices=FONTS, default=ARIAL)
+    title_top_distance = models.PositiveIntegerField('distância do topo ao título', blank=True, default=3)
     title_section_align = models.CharField(
         'alinhamento da seção',
         max_length=10,
         choices=SECTION_ALIGN,
-        default=LEFT
+        default=CENTER
     )
     title_align = models.CharField(
         'alinhamento do título',
         max_length=10,
         choices=TEXT_ALIGN,
-        default=LEFT
+        default=CENTER
     )
     title_color = models.CharField('cor do título', max_length=10, choices=COLOR, default=BLACK)
     title_font_size = models.PositiveIntegerField('tamanho da fonte do título', default=30)
-    content_title_distance = models.PositiveIntegerField('distância do título ao texto', blank=True, default=0)
+    content_title_distance = models.PositiveIntegerField('distância do título ao texto', blank=True, default=1)
     content_section_align = models.CharField(
         'alinhamento da seção',
         max_length=10,
         choices=SECTION_ALIGN,
-        default=LEFT
+        default=CENTER
     )
     content_text_align = models.CharField(
         'alinhmento do texto',
         max_length=10,
         choices=TEXT_ALIGN,
-        default=LEFT
+        default=JUSTIFY
     )
     content_text_color = models.CharField('cor do texto', max_length=10, choices=COLOR, default=BLACK)
     content_font_size = models.PositiveIntegerField('tamanho da fonte do texto', default=12)
@@ -95,13 +107,13 @@ class Template(models.Model):
         blank=True,
         max_length=10,
         choices=SECTION_ALIGN,
-        default=LEFT
+        default=CENTER
     )
     footer_text_align = models.CharField(
         'alinhamento do rodapé',
         max_length=10,
         choices=TEXT_ALIGN,
-        default=LEFT
+        default=CENTER
     )
     footer_text_color = models.CharField('cor do rodapé', max_length=10, choices=COLOR, default=BLACK)
 
