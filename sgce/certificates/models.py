@@ -1,7 +1,6 @@
-from django.db import models
-from django.conf import settings
 import re
-
+from django.db import models
+from django.core.validators import MaxValueValidator
 from tinymce.models import HTMLField
 
 from sgce.core.models import Event
@@ -71,7 +70,12 @@ class Template(models.Model):
         '''
     )
     font = models.CharField('fonte', max_length=10, choices=FONTS, default=ARIAL)
-    title_top_distance = models.PositiveIntegerField('distância do topo ao título', blank=True, default=3)
+    title_top_distance = models.PositiveIntegerField(
+        'distância do topo ao título',
+        blank=True,
+        default=3,
+        validators=[MaxValueValidator(10)]
+    )
     title_section_align = models.CharField(
         'alinhamento da seção',
         max_length=10,
@@ -86,7 +90,12 @@ class Template(models.Model):
     )
     title_color = models.CharField('cor do título', max_length=10, choices=COLOR, default=BLACK)
     title_font_size = models.PositiveIntegerField('tamanho da fonte do título', default=30)
-    content_title_distance = models.PositiveIntegerField('distância do título ao texto', blank=True, default=1)
+    content_title_distance = models.PositiveIntegerField(
+        'distância do título ao texto',
+        blank=True,
+        default=1,
+        validators=[MaxValueValidator(10)]
+    )
     content_section_align = models.CharField(
         'alinhamento da seção',
         max_length=10,
@@ -101,7 +110,12 @@ class Template(models.Model):
     )
     content_text_color = models.CharField('cor do texto', max_length=10, choices=COLOR, default=BLACK)
     content_font_size = models.PositiveIntegerField('tamanho da fonte do texto', default=12)
-    footer_title_distance = models.PositiveIntegerField('distância do texto ao rodapé', blank=True, default=0)
+    footer_title_distance = models.PositiveIntegerField(
+        'distância do texto ao rodapé',
+        blank=True,
+        default=0,
+        validators=[MaxValueValidator(10)]
+    )
     footer_section_align = models.CharField(
         'alinhamento da seção',
         blank=True,
