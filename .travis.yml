@@ -5,7 +5,7 @@ install:
   - cp contrib/env-sample .env
   - pip install -q -r requirements.txt
 script:
-  - coverage run --source=sgce.core manage.py test
+  - coverage run --source=sgce.core,sgce.accounts,sgce.certificates manage.py test
 
 after_success:
   - coveralls
