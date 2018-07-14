@@ -102,6 +102,7 @@ def template_duplicate(request, pk):
     return render(request, 'certificates/template/template_duplicate.html', context)
 
 
+@login_required
 def render_pdf_view(request, template_pk):
     template = Template.objects.get(pk=template_pk)
     template_path = 'certificates/template/pdf/certificate_preview.html'
