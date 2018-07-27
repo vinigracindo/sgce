@@ -22,7 +22,7 @@ class TemplateModelTest(TestCase):
             event=event,
             title='CERTIFICADO',
             content='''
-            Certificamos que NOME_PARTICIPANTE participou do evento NOME_EVENTO.
+            Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
             ''',
             backside_title='Programação',
             backside_content='''
@@ -63,12 +63,15 @@ class TemplateModelTest(TestCase):
         self.assertEqual('Simpósio Brasileiro de Informática: SBI - Certificado de Participante', str(self.template))
 
     def test_get_fields(self):
-        self.assertListEqual(self.template.template_fields(), ['NOME_PARTICIPANTE', 'NOME_EVENTO'])
+        self.assertListEqual(
+            self.template.template_fields(),
+            ['NUMERO_CPF', 'NOME_COMPLETO', 'NOME_EVENTO']
+        )
         # another test
         self.template.content = '''
         O campo nome_evento não fará parte dos campos, pois está em lowercase.
         O campo NOME_EVENTO deve fazer parte.
-        O campo NOME_PARTICIPANTE também deve fazer parte.
+        O campo NOME_COMPLETO também deve fazer parte.
         O CAMPO NOME_DO_EVENTO não deve fazer parte.
         ESTE_CAMPO_NAO_DEVE_FAZER_PARTE.
         EMAIL_PARTICIPANTE é um campo válido diferente de EMAIL_DO_PARTICIPANTE.
@@ -76,7 +79,10 @@ class TemplateModelTest(TestCase):
         '''
         self.template.save()
         self.template.refresh_from_db()
-        self.assertListEqual(self.template.template_fields(), ['NOME_EVENTO', 'NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE'])
+        self.assertListEqual(
+            self.template.template_fields(),
+            ['NUMERO_CPF', 'NOME_COMPLETO', 'NOME_EVENTO', 'EMAIL_PARTICIPANTE']
+        )
 
     def test_layout(self):
         """Default fields for layouts"""

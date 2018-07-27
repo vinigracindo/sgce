@@ -25,7 +25,7 @@ class TemplateDeleteWithoutPermission(LoggedInTestCase):
             event=event,
             title='CERTIFICADO',
             content='''
-                    Certificamos que NOME_PARTICIPANTE participou do evento NOME_EVENTO.
+                    Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
                     ''',
             backside_title='Programação',
             backside_content='''
@@ -58,7 +58,7 @@ class TemplateDeleteWithPermission(LoggedInTestCase):
             event=event,
             title='CERTIFICADO',
             content='''
-                            Certificamos que NOME_PARTICIPANTE participou do evento NOME_EVENTO.
+                            Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
                             ''',
             backside_title='Programação',
             backside_content='''

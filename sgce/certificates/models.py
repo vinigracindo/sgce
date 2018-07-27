@@ -1,9 +1,15 @@
 import re
+
 from django.db import models
 from django.core.validators import MaxValueValidator
+from jsonfield import JSONField
 from tinymce.models import HTMLField
 
+from sgce.certificates.managers import CertificateManager
+from sgce.certificates.validators import validate_cpf
 from sgce.core.models import Event
+from sgce.core.utils.list import remove_duplicates
+from sgce.core.utils.slugify import generate_unique_hash
 
 
 class Template(models.Model):
@@ -48,11 +54,11 @@ class Template(models.Model):
     content = HTMLField(
         'texto',
         default='''
-        Exemplo: Certificamos que NOME_PARTICIPANTE participou do evento NOME_EVENTO, realizado em DATA_EVENTO.
+        Exemplo: Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO, realizado em DATA_EVENTO.
         ''',
         help_text='''
         O arquivo importado deve estar no formato CSV, com a separação dos campos por ponto-e-vírgula (;) e ter, 
-        obrigatoriamente, o campo NUMERO_CPF. Poderá também conter outros campos, desde que formados 
+        obrigatoriamente, o campo NUMERO_CPF e NOME_COMPLETO. Poderá também conter outros campos, desde que formados 
         por duas palavras maiúsculas separadas pelo caractere sublinhado (underline), como no texto 
         de exemplo. Evite usar o ponto-e-vírgula junto ao nome de um campo dentro do texto do certificado para evitar 
         problemas na importação de dados.
@@ -142,4 +148,53 @@ class Template(models.Model):
 
     def template_fields(self):
         """Must return the fields that will build the certificate. The pattern: UPPERCASE_UPPERCASE"""
-        return re.findall(r'\b([A-Z]+_[A-Z]+)\b', self.content)
+        required_fields = ['NUMERO_CPF', 'NOME_COMPLETO']
+        another_fields = re.findall(r'\b([A-Z]+_[A-Z]+)\b', self.content)
+        return remove_duplicates(required_fields + another_fields)
+
+
+class Participant(models.Model):
+    cpf = models.CharField(max_length=11, unique=True, validators=[validate_cpf])
+    email = models.EmailField(blank=True)
+    name = models.CharField('nome', max_length=128)
+
+    def __str__(self):
+        cpf = '{}.{}.{}-{}'.format(self.cpf[:3], self.cpf[3:6], self.cpf[6:9], self.cpf[9:])
+        return '{} ({})'.format(self.name, cpf)
+
+
+class Certificate(models.Model):
+    PENDING = 'p'
+    VALID = 'v'
+    REVOKED = 'r'
+    STATUS_CHOICES = (
+        (PENDING, 'Pendente'),
+        (VALID, 'Válido'),
+        (REVOKED, 'Revogado'),
+    )
+    participant = models.ForeignKey(
+        Participant,
+        verbose_name='participante',
+        on_delete = models.PROTECT,
+    )
+    template = models.ForeignKey(
+        Template,
+        verbose_name='modelo',
+        on_delete=models.PROTECT,
+    )
+    hash = models.CharField(max_length=255, editable=False)
+    fields = JSONField()
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=PENDING)
+
+    objects = CertificateManager()
+
+    class Meta:
+        unique_together = ('participant', 'template', 'fields')
+
+    def __str__(self):
+        return 'Certificado de {} do modelo {}'.format(self.participant.name, self.template.name)
+
+    def save(self, *args, **kwargs):
+        if not self.hash:
+            self.hash = generate_unique_hash(Certificate)
+        super(Certificate, self).save(*args, **kwargs)

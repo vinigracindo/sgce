@@ -1,0 +1,52 @@
+{% extends 'generic_form.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+
+{% block extra-css %}
+  <link href="{% static 'css/select2.min.css' %}" type="text/css" media="screen" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/handsontable@5.0.0/dist/handsontable.full.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/handsontable@5.0.0/dist/handsontable.full.min.css" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block extra-js %}
+  <script type="text/javascript" src="{% static 'js/select2/select2.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/select2/pt-BR.js' %}"></script>
+  <script type="text/javascript" src="{% static 'django_select2/django_select2.js' %}"></script>
+  <script type="text/javascript" src="{% static 'certificates/js/spreedsheet.js' %}"></script>
+  {% if certificates %}
+    <script>
+      hot.updateSettings({
+        data : {{ certificates|safe }},
+      });
+    </script>
+  {% endif %}
+{% endblock %}
+
+{% block content-title %}Importar Dados{% endblock %}
+{% block content-description %}Gerar Novos Certificados{% endblock %}
+
+{% block content %}
+  {% if messages %}
+    <div class="row justify-content-center">
+    {% for message in messages %}
+      <div class="alert alert-danger" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <form id="form" method="post" enctype="multipart/form-data">{% csrf_token %}
+        {% bootstrap_form form layout='group' %}
+        <div id="spreedsheet"></div>
+        {% buttons %}
+          <a href="{% url 'certificates:template-list' %}" class="btn btn-dark" value="Voltar">Voltar</a>
+          <!--<button type="submit" class="btn btn-success">Gerar Certificados</button>-->
+          <button type="button" name="save" id="save" class="btn btn-success">Gerar Certificados</button>
+        {% endbuttons %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

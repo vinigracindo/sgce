@@ -26,7 +26,7 @@ class TemplateUpdateWithoutPermission(LoggedInTestCase):
             event=event,
             title='CERTIFICADO',
             content='''
-                    Certificamos que NOME_PARTICIPANTE participou do evento NOME_EVENTO.
+                    Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
                     ''',
             backside_title='Programação',
             backside_content='''
@@ -59,7 +59,7 @@ class TemplateUpdateWithPermission(LoggedInTestCase):
             event=self.event,
             title='CERTIFICADO',
             content='''
-                            Certificamos que NOME_PARTICIPANTE participou do evento NOME_EVENTO.
+                            Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
                             ''',
             backside_title='Programação',
             backside_content='''
@@ -87,7 +87,7 @@ class TemplateUpdateGet(TemplateUpdateWithPermission):
             'SBI - Certificado de Participante',
             'Simpósio Brasileiro de Informática',
             'CERTIFICADO',
-            'Certificamos que NOME_PARTICIPANTE participou do evento NOME_EVENTO.',
+            'Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.',
             'Programação',
             '1 - Abertura',
             '2 - Lorem Ipsum',
@@ -119,7 +119,7 @@ class TemplateUpdatePost(TemplateUpdateWithPermission):
             event=self.event.pk,
             title='CERTIFICADO DE PALESTRANTE',
             content='''
-                    Certificamos que NOME_PARTICIPANTE apresentou a palestra NOME_PALESTRA no evento NOME_EVENTO.
+                    Certificamos que NOME_COMPLETO apresentou a palestra NOME_PALESTRA no evento NOME_EVENTO.
                     ''',
             backside_title='Programação',
             backside_content='''
@@ -153,4 +153,4 @@ class TemplateUpdatePost(TemplateUpdateWithPermission):
     def test_update_user(self):
         self.assertEqual('SBI - Certificado do Palestrante', self.template.name)
         self.assertEqual('CERTIFICADO DE PALESTRANTE', self.template.title)
-        self.assertEqual('Certificamos que NOME_PARTICIPANTE apresentou a palestra NOME_PALESTRA no evento NOME_EVENTO.', self.template.content)
+        self.assertEqual('Certificamos que NOME_COMPLETO apresentou a palestra NOME_PALESTRA no evento NOME_EVENTO.', self.template.content)

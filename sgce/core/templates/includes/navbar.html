@@ -15,8 +15,10 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{% url 'core:event-list' %}">Eventos</a>
-          <!--<a class="dropdown-item" href="#">Participantes</a>-->
           <a class="dropdown-item" href="{% url 'accounts:user-list' %}">Usuários</a>
+          {% if user.is_superuser %}
+            <a class="dropdown-item" href="#">Participantes</a>
+          {% endif %}
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -26,7 +28,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#">Listagem de Certificados</a>
           <a class="dropdown-item" href="{% url 'certificates:template-list' %}">Modelos</a>
-          <a class="dropdown-item" href="#">Importar Dados</a>
+          <a class="dropdown-item" href="{% url 'certificates:certificates-creator' %}">Gerar Certificados</a>
           <a class="dropdown-item" href="#">Avaliação de Certificados</a>
           <a class="dropdown-item" href="#">Notificações de Participantes</a>
         </div>

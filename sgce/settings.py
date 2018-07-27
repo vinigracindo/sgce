@@ -29,6 +29,10 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
+
 
 # Application definition
 
@@ -44,6 +48,7 @@ INSTALLED_APPS = [
     'test_without_migrations',
     'tinymce',
     'bootstrap4',
+    'django_select2',
     'qr_code',
 
     #System Apps

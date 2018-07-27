@@ -42,7 +42,7 @@
         <td>{{ template.event }}</td>
         <td>{{ template.name }}</td>
         <td>
-          NUMERO_CPF{% for field in template.template_fields %}, {{ field }}{% endfor %}
+          {% for field in template.template_fields %}{{ field }}{% if not forloop.last %}, {% endif %}{% endfor %}
         </td>
         <td style="white-space: nowrap;">
           <a href="{% url 'certificates:template-pdf-preview' template.pk %}" class="fas fa-file-pdf fa-sm" title="Visualizar Modelo"></a>

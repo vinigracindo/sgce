@@ -1,7 +1,11 @@
+import json
+from ast import literal_eval
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db import IntegrityError
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.template.loader import get_template
@@ -10,9 +14,10 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from reportlab.lib.styles import getSampleStyleSheet
 from xhtml2pdf import pisa
 
-from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm
-from sgce.certificates.models import Template
+from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, CertificatesCreatorForm
+from sgce.certificates.models import Template, Participant, Certificate
 from sgce.certificates.utils.pdf import link_callback
+from sgce.certificates.validators import validate_cpf
 from sgce.core.utils.get_deleted_objects import get_deleted_objects
 
 
@@ -103,7 +108,7 @@ def template_duplicate(request, pk):
 
 
 @login_required
-def render_pdf_view(request, template_pk):
+def template_preview_render_pdf(request, template_pk):
     template = Template.objects.get(pk=template_pk)
     template_path = 'certificates/template/pdf/certificate_preview.html'
     context = {'template': template}
@@ -124,3 +129,48 @@ def render_pdf_view(request, template_pk):
         return HttpResponse('We had some errors <pre>' + html + '</pre>')
 
     return response
+
+
+@login_required
+def certificates_creator(request):
+    context = {}
+
+    if request.method == 'POST':
+        form = CertificatesCreatorForm(request.user, request.POST, request.FILES)
+        context['certificates'] = certificates = request.POST['certificates']
+        if form.is_valid():
+            certificates_list = []
+            template = form.cleaned_data['template']
+            for line, attrs_certificate in enumerate(json.loads(certificates), 1):
+                if any(attrs_certificate):
+                    if (None in attrs_certificate) or ('' in attrs_certificate):
+                        messages.error(request, 'A tabela não pode conter valores em branco')
+                        certificates_list = False
+                        break
+                    else:
+                        try:
+                            attrs_certificate[0] = validate_cpf(attrs_certificate[0])
+                        except Exception as e:
+                            messages.error(request, 'O CPF {} da linha {} é inválido.'.format(attrs_certificate[0], line))
+                            certificates_list = False
+                            break
+
+                        certificates_list.append(attrs_certificate)
+
+            if certificates_list:
+                inspector = {'certificates': [], 'error': []}
+                for attrs in certificates_list:
+                    try:
+                        certificate = Certificate.objects.create_certificate(template, attrs)
+                        inspector['certificates'].append(certificate)
+                    except IntegrityError:
+                        inspector['error'].append(attrs)
+
+                return render(request, 'certificates/template/inspector.html', {'inspector': inspector})
+
+    else:
+        form = CertificatesCreatorForm(request.user)
+
+    context['form'] = form
+
+    return render(request, 'certificates/template/certificates_creator.html', context)

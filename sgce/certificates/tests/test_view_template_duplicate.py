@@ -24,7 +24,7 @@ class TemplateDuplicateGet(LoggedInTestCase):
             event=event,
             title='CERTIFICADO',
             content='''
-                    Certificamos que NOME_PARTICIPANTE participou do evento NOME_EVENTO.
+                    Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
                     ''',
             backside_title='Programação',
             backside_content='''
@@ -88,7 +88,7 @@ class TemplateDuplicatePost(LoggedInTestCase):
             event=self.event,
             title='CERTIFICADO',
             content='''
-                            Certificamos que NOME_PARTICIPANTE participou do evento NOME_EVENTO.
+                            Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
                             ''',
             backside_title='Programação',
             backside_content='''

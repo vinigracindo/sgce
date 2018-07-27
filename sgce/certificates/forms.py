@@ -1,6 +1,12 @@
-from django import forms
+from io import StringIO
 
-from sgce.certificates.models import Template
+from django import forms
+from django.core.validators import FileExtensionValidator
+from django_select2.forms import Select2Widget
+
+import csv
+
+from sgce.certificates.models import Template, Certificate
 from sgce.core.models import Event
 
 
@@ -22,3 +28,18 @@ class TemplateDuplicateForm(forms.ModelForm):
         super(TemplateDuplicateForm, self).__init__(*args, **kwargs)
         if not user.is_superuser:
             self.fields['event'].queryset = Event.objects.filter(created_by=user)
+
+
+class CertificatesCreatorForm(forms.ModelForm):
+    class Meta:
+        model = Certificate
+        fields = ('template', )
+        widgets = {
+            'template': Select2Widget,
+        }
+
+    def __init__(self, user, *args, **kwargs):
+        super(CertificatesCreatorForm, self).__init__(*args, **kwargs)
+        if not user.is_superuser:
+            self.fields['template'].queryset = Template.objects.filter(event__created_by=user)
+

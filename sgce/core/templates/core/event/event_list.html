@@ -41,7 +41,7 @@
     <tbody>
     {% for event in events %}
       <tr>
-        <td>{{ event.name }}</td>
+        <td><a href="{{ event.get_absolute_url }}">{{ event.name }}</a></td>
         <td>{{ event.location }}</td>
         {% if user.is_superuser %}
           <td>{{ event.created_by.get_full_name }}</td>

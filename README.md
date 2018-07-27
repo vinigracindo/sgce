@@ -17,6 +17,10 @@ O SGCE está sendo desenvolvido baseado no [SGCE criado pela Universidade Federa
 Por este motivo, uma nova versão está sendo criada em python/django. Ressalto que essa versão não tem relação alguma com os servidores da
 Unipampa.
 
+## Requerimentos
+1. Django >= 2.0
+2. PostgresSQL >= 9.4
+
 ## Como desenvolver?
 
 1. Clone o repositório.

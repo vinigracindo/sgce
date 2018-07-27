@@ -1,0 +1,36 @@
+{% extends 'generic_form.html' %}
+
+
+{% block content-title %}Relatório de Importação{% endblock %}
+{% block content-description %}Importação concluída{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <p>Foram gerados <b>{{ inspector.certificates|length }}</b> certificados.</p>
+    {% if inspector.certificates %}
+      <table id="tableList" class="table table-bordered table-striped">
+        <tbody>
+        {% for certificate in inspector.certificates %}
+            <tr>
+                <td>{{ certificate }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+</div>
+<div class="row justify-content-center">
+    <p><b>{{ inspector.error|length }}</b> certificados duplicados não foram gerados.</p>
+    {% if inspector.error %}
+      <table id="tableList" class="table table-bordered table-striped">
+        <tbody>
+        {% for certificate in inspector.error %}
+            <tr>
+                <td>{{ certificate }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+</div>
+{% endblock %}
