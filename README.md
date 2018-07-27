@@ -19,7 +19,8 @@ Unipampa.
 
 ## Requerimentos
 1. Django >= 2.0
-2. PostgresSQL >= 9.4
+2. Python >= 3.6
+3. PostgresSQL >= 9.4
 
 ## Como desenvolver?
 
