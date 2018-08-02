@@ -141,6 +141,7 @@ class Template(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        verbose_name = 'modelo'
         ordering = ['-created_at']
 
     def __str__(self):
@@ -157,6 +158,9 @@ class Participant(models.Model):
     cpf = models.CharField(max_length=11, unique=True, validators=[validate_cpf])
     email = models.EmailField(blank=True)
     name = models.CharField('nome', max_length=128)
+
+    class Meta:
+        verbose_name = 'participante'
 
     def __str__(self):
         cpf = '{}.{}.{}-{}'.format(self.cpf[:3], self.cpf[3:6], self.cpf[6:9], self.cpf[9:])
@@ -189,6 +193,7 @@ class Certificate(models.Model):
     objects = CertificateManager()
 
     class Meta:
+        verbose_name = 'certificado'
         unique_together = ('participant', 'template', 'fields')
 
     def __str__(self):

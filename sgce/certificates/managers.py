@@ -14,6 +14,7 @@ class CertificateManager(models.Manager):
 
         from sgce.certificates.models import Participant
         cpf = validate_cpf(cpf)
+        #email = '' if not 'ENDERECO_EMAIL' in fields else fields['ENDERECO_EMAIL']
         participant, created = Participant.objects.get_or_create(
             cpf=cpf,
             defaults={'name': name}
