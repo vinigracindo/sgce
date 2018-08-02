@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 from django.conf import settings
 from sgce.core.utils.slugify import generate_unique_slug
@@ -25,9 +26,8 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return 'core:event-detail', (self.slug,)
+        return reverse('core:event-detail', args=[self.slug])
 
     def save(self, *args, **kwargs):
         # Edit
