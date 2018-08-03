@@ -12,5 +12,8 @@ urlpatterns = [
     path('template/preview/<int:template_pk>', views.template_preview_render_pdf, name='template-pdf-preview'),
 
     path('certificates/creator/', views.certificates_creator, name='certificates-creator'),
-    path('certificates/ajax/template/header/<int:template_pk>/', ajax_views.ajax_template_header, name='ajax_template_header')
+    path('certificates/ajax/template/header/<int:template_pk>/', ajax_views.ajax_template_header, name='ajax_template_header'),
+
+    path('participant/list/', views.ParticipantListView.as_view(), name='participant-list'),
+    path('participant/update/<int:pk>/', views.ParticipantUpdateView.as_view(), name='participant-update'),
 ]

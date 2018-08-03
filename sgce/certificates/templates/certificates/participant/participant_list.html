@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra-css %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/buttons.dataTables.min.css' %}">
+{% endblock %}
+
+{% block content-title %}Participantes{% endblock %}
+{% block content-description %}Página de Administração dos Participantes{% endblock %}
+
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-info" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+<div class="row">
+  <table id="tableList" class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>CPF</th>
+      <th>Nome</th>
+      <th>Email</th>
+      {% if user.is_superuser %}
+        <th>Ações</th>
+      {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for participant in participants %}
+      <tr>
+        <td>{{ participant.cpf }}</td>
+        <td>{{ participant.name }}</td>
+        <td>{{ participant.email }}</td>
+        {% if user.is_superuser %}
+          <td style="white-space: nowrap;">
+            <a href="{% url 'certificates:participant-update' participant.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
+          </td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+      <th>CPF</th>
+      <th>Nome</th>
+      <th>Email</th>
+      {% if user.is_superuser %}
+        <th>Ações</th>
+      {% endif %}
+    </tr>
+    </tfoot>
+  </table>
+</div>
+{% endblock %}
+
+{% block extra-js %}
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/dataTables.buttons.min.js' %}"></script>
+<script>
+  $(function () {
+    $('#tableList').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : false,
+      'info'        : true,
+      'autoWidth'   : true,
+      'language': {
+        "sEmptyTable": "Nenhum registro encontrado",
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sInfoThousands": ".",
+        "sLengthMenu": "_MENU_ resultados por página",
+        "sLoadingRecords": "Carregando...",
+        "sProcessing": "Processando...",
+        "sZeroRecords": "Nenhum registro encontrado",
+        "sSearch": "Pesquisar",
+        "oPaginate": {
+            "sNext": "Próximo",
+            "sPrevious": "Anterior",
+            "sFirst": "Primeiro",
+            "sLast": "Último"
+        },
+        "oAria": {
+            "sSortAscending": ": Ordenar colunas de forma ascendente",
+            "sSortDescending": ": Ordenar colunas de forma descendente"
+        },
+      },
+    })
+  })
+</script>
+{% endblock %}

@@ -1,5 +1,4 @@
 import json
-from ast import literal_eval
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -11,14 +10,37 @@ from django.shortcuts import render
 from django.template.loader import get_template
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from reportlab.lib.styles import getSampleStyleSheet
 from xhtml2pdf import pisa
 
-from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, CertificatesCreatorForm
+from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, CertificatesCreatorForm, ParticipantForm
 from sgce.certificates.models import Template, Participant, Certificate
 from sgce.certificates.utils.pdf import link_callback
 from sgce.certificates.validators import validate_cpf
 from sgce.core.utils.get_deleted_objects import get_deleted_objects
+
+
+class ParticipantListView(LoginRequiredMixin, ListView):
+    model = Participant
+    template_name = 'certificates/participant/participant_list.html'
+    context_object_name = 'participants'
+
+
+class ParticipantUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    model = Participant
+    form_class = ParticipantForm
+    raise_exception = True
+    template_name = 'certificates/participant/participant_form.html'
+    success_url = reverse_lazy('certificates:participant-list')
+    success_message = "O participante %(name)s foi atualizado com sucesso."
+
+    # user_passes_test
+    def test_func(self):
+        user = self.request.user
+        template = self.get_object()
+        #Superuser
+        if user.is_superuser:
+            return True
+        return False
 
 
 class TemplateListView(LoginRequiredMixin, ListView):

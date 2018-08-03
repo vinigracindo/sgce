@@ -6,7 +6,7 @@ from django_select2.forms import Select2Widget
 
 import csv
 
-from sgce.certificates.models import Template, Certificate
+from sgce.certificates.models import Template, Certificate, Participant
 from sgce.core.models import Event
 
 
@@ -43,3 +43,8 @@ class CertificatesCreatorForm(forms.ModelForm):
         if not user.is_superuser:
             self.fields['template'].queryset = Template.objects.filter(event__created_by=user)
 
+
+class ParticipantForm(forms.ModelForm):
+    class Meta:
+        model = Participant
+        exclude = ()
