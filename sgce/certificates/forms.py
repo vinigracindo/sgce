@@ -1,10 +1,5 @@
-from io import StringIO
-
 from django import forms
-from django.core.validators import FileExtensionValidator
 from django_select2.forms import Select2Widget
-
-import csv
 
 from sgce.certificates.models import Template, Certificate, Participant
 from sgce.core.models import Event

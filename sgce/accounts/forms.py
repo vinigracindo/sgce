@@ -1,8 +1,5 @@
 from django import forms
-from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth import get_user_model
-
-from sgce.accounts.models import Profile
 
 
 class UserForm(forms.ModelForm):
