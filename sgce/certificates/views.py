@@ -237,7 +237,7 @@ def certificates_evaluation_template(request, template_pk):
                         ip=request.META.get('REMOTE_ADDR'),
                         status=status,
                     )
-                return HttpResponseRedirect(reverse('core:event-detail', args=(template.event.slug,)))
+            return HttpResponseRedirect(reverse('core:event-detail', args=(template.event.slug,)))
     else:
         form = CertificateEvaluationTemplateForm(template_pk)
 
