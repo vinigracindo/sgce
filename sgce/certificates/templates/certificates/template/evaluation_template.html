@@ -1,0 +1,147 @@
+{% extends 'generic_form.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+
+{% block extra-css %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/buttons.dataTables.min.css' %}">
+{% endblock %}
+
+{% block content-title %}Avaliação de Certificado{% endblock %}
+{% block content-description %}{{ template }}{% endblock %}
+{% block link-back %}{% url 'certificates:certificates-evaluation' %}{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    {% if form.errors %}
+          {% for field in form.visible_fields  %}
+            {% if field.errors %}
+                {{ field.label }}: {{ field.errors }}
+            {% endif %}
+          {% endfor %}
+    {% endif %}
+    <div class="col-md-10">
+      <form method="post">{% csrf_token %}
+        {% bootstrap_field form.notes %}
+        {% bootstrap_field form.status %}
+        <div class="form-group">
+            <div id="id_certificates">
+                <table id="tableList" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col"><input id="checkAll" type="checkbox"></th>
+                      <th scope="col">Certificado</th>
+                      <th scope="col">Participante</th>
+                      <th scope="col">Código</th>
+                      <th scope="col">Situação</th>
+                      <th scope="col">Visualizar</th>
+                      <th scope="col">Histórico</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for certificate in form.fields.certificates.queryset %}
+                      <tr>
+                        <td>
+                            <div class="checkbox">
+                              <input id="id_certificates_{{ forloop.counter0 }}" value="{{ certificate.pk }}" type="checkbox" name="certificates">
+                            </div>
+                        </td>
+                        <td>{{ certificate.template }}</td>
+                        <td>{{ certificate.participant }}</td>
+                        <td>{{ certificate.hash }}</td>
+                        <td>{{ certificate.get_status_display }}</td>
+                        <td><a href="#" class="fas fa-file-pdf fa-sm" title="Visualizar"></a></td>
+                        <td><a href="#" class="fas fa-clock fa-sm" title="Histórico"></a></td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+        {% buttons %}
+          <a href="{% url 'certificates:certificates-evaluation' %}" class="btn btn-dark" value="Voltar">Voltar</a>
+          <button type="submit" class="btn btn-success">Avaliar</button>
+        {% endbuttons %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra-js %}
+<script>
+$("#checkAll").click(function(){
+    $('input[name="certificates"]').not(this).prop('checked', this.checked);
+});
+</script>
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/dataTables.buttons.min.js' %}"></script>
+<script>
+  $(function () {
+    $('#tableList').DataTable({
+      'paging'      : false,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : false,
+      'autoWidth'   : true,
+      'columnDefs': [
+        { "orderable": false, "targets": [0, 4, 5, 6] },
+      ],
+      "initComplete": function() {
+        this.api().columns().every( function (i) {
+            if (i == 4) {
+              var column = this;
+              var select = $('<select><option value=""></option></select>')
+                  .appendTo( $(column.header()).empty() )
+                  .on( 'change', function () {
+                      var val = $.fn.dataTable.util.escapeRegex(
+                          $(this).val()
+                      );
+
+                      column
+                          .search( val ? '^'+val+'$' : '', true, false )
+                          .draw();
+                  } );
+
+              column.data().unique().sort().each( function ( d, j ) {
+                  select.append( '<option value="'+d+'">'+d+'</option>' )
+              } );
+
+              select.val('Pendente').attr('selected', 'selected');
+              select.change();
+            }
+        } );
+      },
+      'order': [[ 1, "desc" ]],
+      'language': {
+        "sEmptyTable": "Nenhum registro encontrado",
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sInfoThousands": ".",
+        "sLengthMenu": "_MENU_ resultados por página",
+        "sLoadingRecords": "Carregando...",
+        "sProcessing": "Processando...",
+        "sZeroRecords": "Nenhum registro encontrado",
+        "sSearch": "Pesquisar",
+        "oPaginate": {
+            "sNext": "Próximo",
+            "sPrevious": "Anterior",
+            "sFirst": "Primeiro",
+            "sLast": "Último"
+        },
+        "oAria": {
+            "sSortAscending": ": Ordenar colunas de forma ascendente",
+            "sSortDescending": ": Ordenar colunas de forma descendente"
+        },
+      },
+    })
+  })
+</script>
+{% endblock %}
+
+

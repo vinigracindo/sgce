@@ -1,5 +1,6 @@
 import re
 
+from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator
 from jsonfield import JSONField
@@ -179,7 +180,7 @@ class Certificate(models.Model):
     participant = models.ForeignKey(
         Participant,
         verbose_name='participante',
-        on_delete = models.PROTECT,
+        on_delete=models.PROTECT,
     )
     template = models.ForeignKey(
         Template,
@@ -203,3 +204,20 @@ class Certificate(models.Model):
         if not self.hash:
             self.hash = generate_unique_hash(Certificate)
         super(Certificate, self).save(*args, **kwargs)
+
+
+class CertificateHistory(models.Model):
+    certificate = models.ForeignKey(
+        Certificate,
+        verbose_name='certificado',
+        on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='usuário',
+        on_delete=models.CASCADE
+    )
+    notes = models.TextField('observação', blank=True)
+    ip = models.GenericIPAddressField(protocol='IPv4')
+    status = models.CharField(max_length=1, choices=Certificate.STATUS_CHOICES)
+    datetime = models.DateTimeField(auto_now_add=True)

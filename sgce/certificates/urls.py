@@ -10,9 +10,12 @@ urlpatterns = [
     path('template/duplicate/<int:pk>/', views.template_duplicate, name='template-duplicate'),
     path('template/delete/<int:pk>/', views.TemplateDeleteView.as_view(), name='template-delete'),
     path('template/preview/<int:template_pk>', views.template_preview_render_pdf, name='template-pdf-preview'),
+    path('ajax/load/templates/', ajax_views.load_templates, name='ajax_load_templates'),
 
     path('certificates/creator/', views.certificates_creator, name='certificates-creator'),
     path('certificates/ajax/template/header/<int:template_pk>/', ajax_views.ajax_template_header, name='ajax_template_header'),
+    path('certificates/evaluation/', views.certificates_evaluation, name='certificates-evaluation'),
+    path('certificate/evaluation/<int:template_pk>/', views.certificates_evaluation_template, name='certificates-evaluation-template'),
 
     path('participant/list/', views.ParticipantListView.as_view(), name='participant-list'),
     path('participant/update/<int:pk>/', views.ParticipantUpdateView.as_view(), name='participant-update'),

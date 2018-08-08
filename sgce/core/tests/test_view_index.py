@@ -21,6 +21,7 @@ class IndexTest(LoggedInTestCase):
             'href="{}"'.format(r('core:event-list')),
             'href="{}"'.format(r('certificates:template-list')),
             'href="{}"'.format(r('certificates:certificates-creator')),
+            'href="{}"'.format(r('certificates:certificates-evaluation')),
         ]
 
         for link in links:

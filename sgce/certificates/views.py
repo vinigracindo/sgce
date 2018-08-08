@@ -1,7 +1,7 @@
 import json
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import IntegrityError
@@ -12,10 +12,12 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from xhtml2pdf import pisa
 
-from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, CertificatesCreatorForm, ParticipantForm
-from sgce.certificates.models import Template, Participant, Certificate
+from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, CertificatesCreatorForm, ParticipantForm, \
+    CertificateEvaluationForm, CertificateEvaluationTemplateForm
+from sgce.certificates.models import Template, Participant, Certificate, CertificateHistory
 from sgce.certificates.utils.pdf import link_callback
 from sgce.certificates.validators import validate_cpf
+from sgce.core.decorators import event_created_by_user_logged_in
 from sgce.core.utils.get_deleted_objects import get_deleted_objects
 
 
@@ -196,3 +198,48 @@ def certificates_creator(request):
     context['form'] = form
 
     return render(request, 'certificates/template/certificates_creator.html', context)
+
+
+@login_required
+def certificates_evaluation(request):
+    if request.method == 'POST':
+        form = CertificateEvaluationForm(request.user, request.POST)
+
+        if form.is_valid():
+            template = form.cleaned_data['template']
+            return HttpResponseRedirect(reverse('certificates:certificates-evaluation-template', args=(template.pk,)))
+
+    form = CertificateEvaluationForm(request.user)
+    return render(request, 'certificates/template/evaluation.html', {'form': form})
+
+
+@login_required
+@event_created_by_user_logged_in
+def certificates_evaluation_template(request, template_pk):
+    template = Template.objects.get(pk=template_pk)
+
+    context = {'template': template}
+
+    if request.method == 'POST':
+        form = CertificateEvaluationTemplateForm(template_pk, request.POST)
+        if form.is_valid():
+            notes = form.cleaned_data['notes']
+            status = form.cleaned_data['status']
+            certificates = form.cleaned_data['certificates']
+            for certificate in certificates:
+                if certificate.status != status:
+                    certificate.status = status
+                    certificate.save()
+                    CertificateHistory.objects.create(
+                        certificate=certificate,
+                        user=request.user,
+                        notes=notes,
+                        ip=request.META.get('REMOTE_ADDR'),
+                        status=status,
+                    )
+                return HttpResponseRedirect(reverse('core:event-detail', args=(template.event.slug,)))
+    else:
+        form = CertificateEvaluationTemplateForm(template_pk)
+
+    context['form'] = form
+    return render(request, 'certificates/template/evaluation_template.html', context)

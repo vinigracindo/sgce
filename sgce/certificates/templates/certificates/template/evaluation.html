@@ -1,0 +1,34 @@
+{% extends 'generic_form.html' %}
+
+{% load static %}
+
+{% block extra-js %}
+<script>
+$("#id_event").change(function () {
+  var url = $("#GenericForm").attr("data-templates-url");
+  var eventId = $(this).val();
+
+  $.ajax({
+    url: url,
+    data: {
+      'event': eventId
+    },
+    success: function (data) {
+      $("#id_template").html(data);
+    }
+  });
+});
+$('#id_template').change(function() {
+    $('#GenericForm').submit();
+});
+</script>
+
+{% endblock %}
+
+{% block form-attrs %}id="GenericForm" data-templates-url="{% url 'certificates:ajax_load_templates' %}"{% endblock %}
+
+{% block content-title %}Certificados{% endblock %}
+{% block content-description %}Avaliação de Certificados{% endblock %}
+{% block link-back %}#{% endblock %}
+
+{% block submit-button %}Avançar{% endblock %}

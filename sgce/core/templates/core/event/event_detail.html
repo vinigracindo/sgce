@@ -21,7 +21,7 @@
 
 {% block content %}
   <div class="row justify-content-center">
-    <a href="#" class="btn btn-success" value="Gerar Certificado">Gerar Certificados</a>
+    <a href="{% url 'certificates:certificates-creator' %}" class="btn btn-success" value="Gerar Certificado">Gerar Certificados</a>
   </div>
   {% for template in object.template_set.all %}
     <div class="row mt-4">
@@ -35,18 +35,18 @@
           <th>Nome</th>
           <th>Cód. Validação</th>
           <th>Situação</th>
-          <th>Histório</th>
+          <th>Histórico</th>
           <th>Ações</th>
         </tr>
         </thead>
         <tbody>
-        {% for event in events %}
+        {% for certificate in template.certificate_set.all %}
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{ certificate.template.name }}</td>
+            <td>{{ certificate.participant.name }}</td>
+            <td>{{ certificate.hash }}</td>
+            <td>{{ certificate.get_status_display }}</td>
+            <td><a href="#" class="fas fa-clock fa-sm" title="Histórico"></a></td>
             <td></td>
           </tr>
         {% endfor %}
@@ -57,7 +57,7 @@
           <th>Nome</th>
           <th>Cód. Validação</th>
           <th>Situação</th>
-          <th>Histório</th>
+          <th>Histórico</th>
           <th>Ações</th>
         </tr>
         </tfoot>
