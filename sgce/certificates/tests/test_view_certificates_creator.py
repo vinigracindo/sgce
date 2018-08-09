@@ -158,9 +158,9 @@ class CertificatesCreatorPost(LoggedInTestCase):
         self.assertEqual('Alan Turing', participant.name)
 
 
-class CertificatesCreatorInvalidPost(LoggedInTestCase):
+class CertificatesCreatorInvalidCpfPost(LoggedInTestCase):
     def setUp(self):
-        super(CertificatesCreatorInvalidPost, self).setUp()
+        super(CertificatesCreatorInvalidCpfPost, self).setUp()
         self.event = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
             start_date=datetime.date(2018, 6, 18),
@@ -199,4 +199,47 @@ class CertificatesCreatorInvalidPost(LoggedInTestCase):
 
     def test_html_has_errors(self):
         self.assertContains(self.response, 'O CPF 111.111.111-11 da linha 1 é inválido.')
+
+
+class CertificatesCreatorInvalidBlankValuesPost(LoggedInTestCase):
+    def setUp(self):
+        super(CertificatesCreatorInvalidBlankValuesPost, self).setUp()
+        self.event = Event.objects.create(
+            name='Simpósio Brasileiro de Informática',
+            start_date=datetime.date(2018, 6, 18),
+            end_date=datetime.date(2018, 6, 18),
+            location='IFAL - Campus Arapiraca',
+            created_by=self.user_logged_in,
+        )
+
+        self.template = Template.objects.create(
+            name='SBI - Certificado de Participante',
+            event=self.event,
+            title='CERTIFICADO',
+            content='''
+                            Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
+                            ''',
+            backside_title='Programação',
+            backside_content='''
+                            1 - Abertura
+                            2 - Lorem Ipsum
+                            ''',
+            background='core/tests/test.gif',
+        )
+
+        data = dict(
+            template=self.template.pk,
+            certificates='[["899.215.730-47", "", "Evento"]]',
+        )
+
+        self.response = self.client.post(r('certificates:certificates-creator'), data)
+
+    def test_post(self):
+        self.assertEqual(200, self.response.status_code)
+
+    def test_template(self):
+        self.assertTemplateUsed(self.response, 'certificates/template/certificates_creator.html')
+
+    def test_html_has_errors(self):
+        self.assertContains(self.response, 'A tabela não pode conter valores em branco')
 

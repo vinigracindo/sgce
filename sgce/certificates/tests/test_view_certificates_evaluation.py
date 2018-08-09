@@ -61,7 +61,7 @@ class CertificatesEvaluationPostTest(LoggedInTestCase):
 
         self.response = self.client.post(r('certificates:certificates-evaluation'), data)
 
-    def test_get(self):
+    def test_post_status(self):
         self.assertEqual(302, self.response.status_code)
 
     def test_post(self):
