@@ -2,13 +2,14 @@ import datetime
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from model_mommy import mommy
+
 from sgce.core.models import Event
-from django.shortcuts import resolve_url as r
 
 
 class EventModelTest(TestCase):
     def setUp(self):
-        user = get_user_model().objects.create_user('user', 'user@mail.com', 'pass')
+        user = mommy.make(get_user_model())
         self.event = Event.objects.create(
             name='Simpósio Brasileiro de Informática',
             start_date=datetime.date(2018, 6, 18),
@@ -30,6 +31,15 @@ class EventModelTest(TestCase):
     def test_created_at(self):
         """Event must have an auto created_at attr"""
         self.assertIsInstance(self.event.created_at, datetime.datetime)
+
+    def test_slug_auto_generate(self):
+        """Event must have an auto slugfield attr"""
+        self.assertTrue(self.event.slug)
+
+    def test_slug_unique(self):
+        """Event must have a unique slugfield"""
+        field = Event._meta.get_field('slug')
+        self.assertTrue(field.unique)
 
     def test_slug_cant_be_editable(self):
         """Event should not have an editable slug field."""

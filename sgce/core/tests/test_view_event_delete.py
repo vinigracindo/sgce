@@ -2,9 +2,8 @@ import datetime
 
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url as r
+from model_mommy import mommy
 
-from sgce.accounts.models import Profile
-from sgce.core.forms import EventForm
 from sgce.core.models import Event
 from sgce.core.tests.base import LoggedInTestCase
 
@@ -12,14 +11,9 @@ from sgce.core.tests.base import LoggedInTestCase
 class EventDeleteWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(EventDeleteWithoutPermission, self).setUp()
-        another_user = get_user_model().objects.create_user(username='another_user', password='password')
-        self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=another_user,
-        )
+        self.another_user = mommy.make(get_user_model())
+        self.event = mommy.make(Event, created_by=self.another_user)
+
         self.response = self.client.get(r('core:event-delete', self.event.pk))
 
     def test_get(self):
@@ -31,13 +25,7 @@ class EventDeleteWithoutPermission(LoggedInTestCase):
 class EventDeleteWithPermission(LoggedInTestCase):
     def setUp(self):
         super(EventDeleteWithPermission, self).setUp()
-        self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
+        self.event = mommy.make(Event, created_by=self.user_logged_in)
 
 
 class EventDeleteGet(EventDeleteWithPermission):

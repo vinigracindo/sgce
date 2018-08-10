@@ -15,3 +15,4 @@ xhtml2pdf==0.2.2
 django-qr-code==1.0.0
 django_select2==6.1.1
 jsonfield==2.0.2
+model_mommy==1.6.0

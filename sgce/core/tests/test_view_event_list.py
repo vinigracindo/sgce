@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url as r
+from model_mommy import mommy
+
 from sgce.core.tests.base import LoggedInTestCase
 from sgce.core.models import Event
 
@@ -7,31 +9,12 @@ from sgce.core.models import Event
 class EventListGet(LoggedInTestCase):
     def setUp(self):
         super(EventListGet, self).setUp()
-        another_user = get_user_model().objects.create_user('anotheruser', 'anotheruser@mail.com', 'pass')
-        self.e1 = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date='2018-06-18',
-            end_date='2018-06-18',
-            location='IFAL - Campus Arapiraca',
-            #user created on LoggedInTestCase setUp()
-            created_by=self.user_logged_in,
-        )
-        self.e2 = Event.objects.create(
-            name='Simpósio Brasileiro de Inteligência Artificial',
-            start_date='2018-06-19',
-            end_date='2018-06-19',
-            location='IFAL - Campus Arapiraca',
-            # user created on LoggedInTestCase setUp()
-            created_by=self.user_logged_in,
-        )
-        self.e3 = Event.objects.create(
-            name='Simpósio Brasileiro de Medicina',
-            start_date='2018-06-21',
-            end_date='2018-06-21',
-            location='IFAL - Campus Arapiraca',
-            # user created on LoggedInTestCase setUp()
-            created_by=another_user,
-        )
+        self.another_user = mommy.make(get_user_model())
+
+        self.e1 = mommy.make(Event, created_by=self.user_logged_in)
+        self.e2 = mommy.make(Event, created_by=self.user_logged_in)
+        self.e3 = mommy.make(Event, created_by=self.another_user)
+
         self.response = self.client.get(r('core:event-list'))
 
     def test_get(self):
@@ -43,8 +26,8 @@ class EventListGet(LoggedInTestCase):
     def test_html(self):
         """Must show only event created by user logged in."""
         contents_that_should_be_shown = [
-            (1, 'Simpósio Brasileiro de Informática'),
-            (1, 'Simpósio Brasileiro de Inteligência Artificial'),
+            (1, self.e1.name),
+            (1, self.e2.name),
             # Must have a link to create a new user.
             (1, 'href="{}"'.format(r('core:event-create'))),
         ]
@@ -54,7 +37,7 @@ class EventListGet(LoggedInTestCase):
                 self.assertContains(self.response, expected, count)
 
         contents_that_should_not_be_shown = [
-            'Simpósio Brasileiro de Medicina',
+            self.e3.name,
         ]
 
         for expected in contents_that_should_not_be_shown:
@@ -62,11 +45,11 @@ class EventListGet(LoggedInTestCase):
                 self.assertNotContains(self.response, expected)
 
     def test_context(self):
-       variables = ['events']
+        variables = ['events']
 
-       for key in variables:
-           with self.subTest():
-               self.assertIn(key, self.response.context)
+        for key in variables:
+            with self.subTest():
+                self.assertIn(key, self.response.context)
 
 
 class EventListSuperUserGet(EventListGet):
@@ -80,9 +63,9 @@ class EventListSuperUserGet(EventListGet):
     def test_html(self):
         """Must show alls events"""
         contents = [
-            (1, 'Simpósio Brasileiro de Informática'),
-            (1, 'Simpósio Brasileiro de Inteligência Artificial'),
-            (1, 'Simpósio Brasileiro de Medicina'),
+            (1, self.e1.name),
+            (1, self.e2.name),
+            (1, self.e3.name),
             # Must have a link to create a new user.
             (1, 'href="{}"'.format(r('core:event-create'))),
         ]

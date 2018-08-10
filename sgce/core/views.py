@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
 from sgce.core.forms import EventForm
+from sgce.core.mixins import EventCreatedByPermission
 from sgce.core.models import Event
 from sgce.core.utils.get_deleted_objects import get_deleted_objects
 
@@ -42,40 +43,20 @@ class EventCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessag
         return super(EventCreateView, self).form_valid(form)
 
 
-class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+class EventUpdateView(LoginRequiredMixin, EventCreatedByPermission, SuccessMessageMixin, UpdateView):
     model = Event
     form_class = EventForm
-    raise_exception = True
     template_name = 'core/event/event_form.html'
     success_url = reverse_lazy('core:event-list')
     success_message = "O evento %(name)s foi atualizado com sucesso."
 
-    # user_passes_test
-    def test_func(self):
-        user = self.request.user
-        event = self.get_object()
-        #Superuser OR event has been created by yourself.
-        if user.is_superuser or event.created_by == user:
-            return True
-        return False
 
-
-class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class EventDeleteView(LoginRequiredMixin, EventCreatedByPermission, DeleteView):
     model = Event
     form_class = EventForm
-    raise_exception = True
     template_name = 'core/event/event_check_delete.html'
     success_url = reverse_lazy('core:event-list')
     success_message = "O evento foi excluído com sucesso."
-
-    # user_passes_test
-    def test_func(self):
-        user = self.request.user
-        event = self.get_object()
-        # Superuser OR event has been created by yourself.
-        if user.is_superuser or event.created_by == user:
-            return True
-        return False
 
     def get_context_data(self, **kwargs):
         context = super(EventDeleteView, self).get_context_data(**kwargs)
@@ -90,16 +71,6 @@ class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return super(EventDeleteView, self).delete(request, *args, **kwargs)
 
 
-class EventDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class EventDetailView(LoginRequiredMixin, EventCreatedByPermission, DetailView):
     model = Event
     template_name = 'core/event/event_detail.html'
-    raise_exception = True
-
-    # user_passes_test
-    def test_func(self):
-        user = self.request.user
-        event = self.get_object()
-        # Superuser OR event has been created by yourself.
-        if user.is_superuser or event.created_by == user:
-            return True
-        return False

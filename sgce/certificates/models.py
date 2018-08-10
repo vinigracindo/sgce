@@ -221,3 +221,9 @@ class CertificateHistory(models.Model):
     ip = models.GenericIPAddressField(protocol='IPv4')
     status = models.CharField(max_length=1, choices=Certificate.STATUS_CHOICES)
     datetime = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'histórico'
+
+    def __str__(self):
+        return '{} - {}'.format(self.certificate, self.user)
