@@ -1,6 +1,7 @@
 import datetime
 
 from django.shortcuts import resolve_url as r
+from model_mommy import mommy
 
 from sgce.certificates.forms import CertificatesCreatorForm
 from sgce.certificates.models import Template, Certificate, Participant
@@ -11,28 +12,9 @@ from sgce.core.tests.base import LoggedInTestCase
 class CertificatesCreatorGet(LoggedInTestCase):
     def setUp(self):
         super(CertificatesCreatorGet, self).setUp()
-        event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
+        event = mommy.make(Event, created_by=self.user_logged_in)
+        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
 
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=event,
-            title='CERTIFICADO',
-            content='''
-                    Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                    ''',
-            backside_title='Programação',
-            backside_content='''
-                    1 - Abertura
-                    2 - Lorem Ipsum
-                    ''',
-            background='core/tests/test.gif',
-        )
         self.response = self.client.get(r('certificates:certificates-creator'))
 
     def test_get(self):
@@ -68,28 +50,8 @@ class CertificatesCreatorGet(LoggedInTestCase):
 class CertificatesCreatorBlankDataPost(LoggedInTestCase):
     def setUp(self):
         super(CertificatesCreatorBlankDataPost, self).setUp()
-        self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
-
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=self.event,
-            title='CERTIFICADO',
-            content='''
-                            Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                            ''',
-            backside_title='Programação',
-            backside_content='''
-                            1 - Abertura
-                            2 - Lorem Ipsum
-                            ''',
-            background='core/tests/test.gif',
-        )
+        event = mommy.make(Event, created_by=self.user_logged_in)
+        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
 
         data = dict(
             template=self.template.pk,
@@ -108,32 +70,12 @@ class CertificatesCreatorBlankDataPost(LoggedInTestCase):
 class CertificatesCreatorPost(LoggedInTestCase):
     def setUp(self):
         super(CertificatesCreatorPost, self).setUp()
-        self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
-
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=self.event,
-            title='CERTIFICADO',
-            content='''
-                            Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                            ''',
-            backside_title='Programação',
-            backside_content='''
-                            1 - Abertura
-                            2 - Lorem Ipsum
-                            ''',
-            background='core/tests/test.gif',
-        )
+        event = mommy.make(Event, created_by=self.user_logged_in)
+        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
 
         data = dict(
             template=self.template.pk,
-            certificates='[["181.144.390-76", "Alan Turing", "Evento"]]',
+            certificates='[["181.144.390-76", "Alan Turing", "Evento", "01/01/2018"]]',
         )
 
         self.response = self.client.post(r('certificates:certificates-creator'), data)
@@ -147,7 +89,7 @@ class CertificatesCreatorPost(LoggedInTestCase):
 
     def test_create_certificate_attrs(self):
         certificate = Certificate.objects.first()
-        self.assertEqual("{'NOME_EVENTO': 'Evento'}", certificate.fields)
+        self.assertEqual("{'NOME_EVENTO': 'Evento', 'DATA_EVENTO': '01/01/2018'}", certificate.fields)
 
     def test_create_participant(self):
         self.assertTrue(Participant.objects.exists())
@@ -161,32 +103,12 @@ class CertificatesCreatorPost(LoggedInTestCase):
 class CertificatesCreatorInvalidCpfPost(LoggedInTestCase):
     def setUp(self):
         super(CertificatesCreatorInvalidCpfPost, self).setUp()
-        self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
-
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=self.event,
-            title='CERTIFICADO',
-            content='''
-                            Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                            ''',
-            backside_title='Programação',
-            backside_content='''
-                            1 - Abertura
-                            2 - Lorem Ipsum
-                            ''',
-            background='core/tests/test.gif',
-        )
+        event = mommy.make(Event, created_by=self.user_logged_in)
+        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
 
         data = dict(
             template=self.template.pk,
-            certificates='[["111.111.111-11", "Alan Turing", "Evento"]]',
+            certificates='[["111.111.111-11", "Alan Turing", "Evento", "01/01/2018"]]',
         )
 
         self.response = self.client.post(r('certificates:certificates-creator'), data)
@@ -204,32 +126,35 @@ class CertificatesCreatorInvalidCpfPost(LoggedInTestCase):
 class CertificatesCreatorInvalidBlankValuesPost(LoggedInTestCase):
     def setUp(self):
         super(CertificatesCreatorInvalidBlankValuesPost, self).setUp()
-        self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
-
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=self.event,
-            title='CERTIFICADO',
-            content='''
-                            Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                            ''',
-            backside_title='Programação',
-            backside_content='''
-                            1 - Abertura
-                            2 - Lorem Ipsum
-                            ''',
-            background='core/tests/test.gif',
-        )
+        event = mommy.make(Event, created_by=self.user_logged_in)
+        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
 
         data = dict(
             template=self.template.pk,
-            certificates='[["899.215.730-47", "", "Evento"]]',
+            certificates='[["899.215.730-47", "", "Evento", "01/01/2018"]]',
+        )
+
+        self.response = self.client.post(r('certificates:certificates-creator'), data)
+
+    def test_post(self):
+        self.assertEqual(200, self.response.status_code)
+
+    def test_template(self):
+        self.assertTemplateUsed(self.response, 'certificates/template/certificates_creator.html')
+
+    def test_html_has_errors(self):
+        self.assertContains(self.response, 'A tabela não pode conter valores em branco')
+
+
+class CertificatesCreatorInvalidMissValuePost(LoggedInTestCase):
+    def setUp(self):
+        super(CertificatesCreatorInvalidMissValuePost, self).setUp()
+        event = mommy.make(Event, created_by=self.user_logged_in)
+        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
+
+        data = dict(
+            template=self.template.pk,
+            certificates='[["899.215.730-47", "", "Evento"]]', # miss DATA_EVENTO
         )
 
         self.response = self.client.post(r('certificates:certificates-creator'), data)

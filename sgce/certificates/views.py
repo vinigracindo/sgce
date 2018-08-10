@@ -14,6 +14,7 @@ from xhtml2pdf import pisa
 
 from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, CertificatesCreatorForm, ParticipantForm, \
     CertificateEvaluationForm, CertificateEvaluationTemplateForm
+from sgce.certificates.mixins import TemplateEventCreatedByPermission
 from sgce.certificates.models import Template, Participant, Certificate, CertificateHistory
 from sgce.certificates.utils.pdf import link_callback
 from sgce.certificates.validators import validate_cpf
@@ -23,6 +24,7 @@ from sgce.core.utils.get_deleted_objects import get_deleted_objects
 
 class ParticipantListView(LoginRequiredMixin, ListView):
     model = Participant
+    raise_exception = True
     template_name = 'certificates/participant/participant_list.html'
     context_object_name = 'participants'
 
@@ -37,12 +39,7 @@ class ParticipantUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMess
 
     # user_passes_test
     def test_func(self):
-        user = self.request.user
-        template = self.get_object()
-        #Superuser
-        if user.is_superuser:
-            return True
-        return False
+        return self.request.user.is_superuser
 
 
 class TemplateListView(LoginRequiredMixin, ListView):
@@ -61,39 +58,19 @@ class TemplateCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMes
     success_message = "O modelo %(name)s foi criado com sucesso."
 
 
-class TemplateUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+class TemplateUpdateView(LoginRequiredMixin, TemplateEventCreatedByPermission, SuccessMessageMixin, UpdateView):
     model = Template
     form_class = TemplateForm
-    raise_exception = True
     template_name = 'certificates/template/template_form.html'
     success_url = reverse_lazy('certificates:template-list')
     success_message = "O modelo %(name)s foi atualizado com sucesso."
 
-    # user_passes_test
-    def test_func(self):
-        user = self.request.user
-        template = self.get_object()
-        #Superuser OR template.event has been created by himself.
-        if user.is_superuser or template.event.created_by == user:
-            return True
-        return False
 
-
-class TemplateDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class TemplateDeleteView(LoginRequiredMixin, TemplateEventCreatedByPermission, DeleteView):
     model = Template
-    raise_exception = True
     template_name = 'certificates/template/template_check_delete.html'
     success_url = reverse_lazy('certificates:template-list')
     success_message = "O modelo foi excluído com sucesso."
-
-    # user_passes_test
-    def test_func(self):
-        user = self.request.user
-        template = self.get_object()
-        # Superuser OR template.event has been created by himself.
-        if user.is_superuser or template.event.created_by == user:
-            return True
-        return False
 
     def get_context_data(self, **kwargs):
         context = super(TemplateDeleteView, self).get_context_data(**kwargs)
@@ -111,6 +88,7 @@ class TemplateDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 @login_required
 def template_duplicate(request, pk):
     template = Template.objects.get(pk=pk)
+
     if request.method == "POST":
         form = TemplateDuplicateForm(request.user, request.POST)
         if form.is_valid():
@@ -161,34 +139,33 @@ def certificates_creator(request):
 
     if request.method == 'POST':
         form = CertificatesCreatorForm(request.user, request.POST, request.FILES)
-        context['certificates'] = certificates = request.POST['certificates']
+        context['certificates'] = request.POST['certificates']
+
         if form.is_valid():
-            certificates_list = []
             template = form.cleaned_data['template']
-            for line, attrs_certificate in enumerate(json.loads(certificates), 1):
-                if any(attrs_certificate):
-                    if (None in attrs_certificate) or ('' in attrs_certificate):
-                        messages.error(request, 'A tabela não pode conter valores em branco')
-                        certificates_list = False
-                        break
-                    else:
-                        try:
-                            attrs_certificate[0] = validate_cpf(attrs_certificate[0])
-                        except Exception as e:
-                            messages.error(request, 'O CPF {} da linha {} é inválido.'.format(attrs_certificate[0], line))
-                            certificates_list = False
-                            break
+            certificates = form.cleaned_data['certificates']
 
-                        certificates_list.append(attrs_certificate)
+            certificates = json.loads(certificates)
 
-            if certificates_list:
-                inspector = {'certificates': [], 'error': []}
-                for attrs in certificates_list:
-                    try:
-                        certificate = Certificate.objects.create_certificate(template, attrs)
-                        inspector['certificates'].append(certificate)
-                    except IntegrityError:
-                        inspector['error'].append(attrs)
+            inspector = {'certificates': [], 'error': []}
+
+            for certificate_attrs in certificates:
+                cpf, name, *args = certificate_attrs
+                attrs = {}
+
+                for key, value in enumerate(args, 2):
+                    attrs[template.template_fields()[key]] = value
+
+                participant, created = Participant.objects.get_or_create(
+                    cpf=validate_cpf(cpf),
+                    defaults={'name': name}
+                )
+
+                try:
+                    certificate = Certificate.objects.create(participant=participant, template=template, fields=str(attrs))
+                    inspector['certificates'].append(certificate)
+                except IntegrityError:
+                    inspector['error'].append(certificate_attrs)
 
                 return render(request, 'certificates/template/inspector.html', {'inspector': inspector})
 
@@ -226,17 +203,20 @@ def certificates_evaluation_template(request, template_pk):
             notes = form.cleaned_data['notes']
             status = form.cleaned_data['status']
             certificates = form.cleaned_data['certificates']
+
+            certificates = certificates.exclude(status=status)
+
             for certificate in certificates:
-                if certificate.status != status:
-                    certificate.status = status
-                    certificate.save()
-                    CertificateHistory.objects.create(
-                        certificate=certificate,
-                        user=request.user,
-                        notes=notes,
-                        ip=request.META.get('REMOTE_ADDR'),
-                        status=status,
-                    )
+                CertificateHistory.objects.create(
+                    certificate=certificate,
+                    user=request.user,
+                    notes=notes,
+                    ip=request.META.get('REMOTE_ADDR'),
+                    status=status,
+                )
+
+            certificates.update(status=status)
+
             return HttpResponseRedirect(reverse('core:event-detail', args=(template.event.slug,)))
     else:
         form = CertificateEvaluationTemplateForm(template_pk)

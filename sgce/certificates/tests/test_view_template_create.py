@@ -1,8 +1,7 @@
-import datetime
-
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import resolve_url as r
+from model_mommy import mommy
 
 from sgce.certificates.forms import TemplateForm
 from sgce.certificates.models import Template
@@ -71,13 +70,7 @@ class TemplateCreateGet(TemplateCreateWithPermission):
 class TemplateCreatePost(TemplateCreateWithPermission):
     def setUp(self):
         super(TemplateCreatePost, self).setUp()
-        event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
+        event = mommy.make(Event, created_by=self.user_logged_in)
 
         data = dict(
             name='SBI - Certificado de Participante',

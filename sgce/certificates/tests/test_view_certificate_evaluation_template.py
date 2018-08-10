@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url as r
+from model_mommy import mommy
 
 from sgce.certificates.forms import CertificateEvaluationTemplateForm
 from sgce.certificates.models import Template, Certificate, Participant, CertificateHistory
@@ -12,29 +13,10 @@ from sgce.core.tests.base import LoggedInTestCase
 class CertificateEvaluationTemplateWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(CertificateEvaluationTemplateWithoutPermission, self).setUp()
-        another_user = get_user_model().objects.create_user(username='another_user', password='password')
-        event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=another_user,
-        )
+        another_user = mommy.make(get_user_model())
+        event = mommy.make(Event, created_by=another_user)
+        self.template = mommy.make(Template, event=event, background='core/tests/teste.gif')
 
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=event,
-            title='CERTIFICADO',
-            content='''
-                                    Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                                    ''',
-            backside_title='Programação',
-            backside_content='''
-                                    1 - Abertura
-                                    2 - Lorem Ipsum
-                                    ''',
-            background='core/tests/test.gif',
-        )
         self.response = self.client.get(r('certificates:certificates-evaluation-template', self.template.pk))
 
     def test_get(self):
@@ -46,28 +28,8 @@ class CertificateEvaluationTemplateWithoutPermission(LoggedInTestCase):
 class CertificateEvaluationTemplateWithPermission(LoggedInTestCase):
     def setUp(self):
         super(CertificateEvaluationTemplateWithPermission, self).setUp()
-        self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
-
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=self.event,
-            title='CERTIFICADO',
-            content='''
-                                            Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                                            ''',
-            backside_title='Programação',
-            backside_content='''
-                                            1 - Abertura
-                                            2 - Lorem Ipsum
-                                            ''',
-            background='core/tests/test.gif',
-        )
+        event = mommy.make(Event, created_by=self.user_logged_in)
+        self.template = mommy.make(Template, event=event, background='core/tests/teste.gif')
 
 
 class CertificateEvaluationTemplateTest(CertificateEvaluationTemplateWithPermission):
@@ -95,17 +57,8 @@ class CertificateEvaluationTemplatePostTest(CertificateEvaluationTemplateWithPer
     def setUp(self):
         super(CertificateEvaluationTemplatePostTest, self).setUp()
 
-        participant = Participant.objects.create(
-            cpf='37377420812',
-            email='alan@turing.com',
-            name='Alan Turing',
-        )
-
-        participant2 = Participant.objects.create(
-            cpf='07535867030',
-            email='carol@shaw.com',
-            name='Carol Shaw',
-        )
+        participant = mommy.make(Participant)
+        participant2 = mommy.make(Participant)
 
         self.c1 = Certificate.objects.create(
             participant=participant,

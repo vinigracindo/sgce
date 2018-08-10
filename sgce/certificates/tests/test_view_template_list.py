@@ -1,7 +1,9 @@
-from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url as r
 
 import datetime
+
+from model_mommy import mommy
+
 from sgce.certificates.models import Template
 from sgce.core.models import Event
 from sgce.core.tests.base import LoggedInTestCase
@@ -10,44 +12,10 @@ from sgce.core.tests.base import LoggedInTestCase
 class TemplateListGet(LoggedInTestCase):
     def setUp(self):
         super(TemplateListGet, self).setUp()
-        event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            # user created on LoggedInTestCase setUp()
-            created_by=self.user_logged_in,
-        )
+        self.event = mommy.make(Event, created_by=self.user_logged_in)
+        self.t1 = mommy.make(Template, event=self.event, background='core/tests/test.gif')
+        self.t2 = mommy.make(Template, event=self.event, background='core/tests/test.gif')
 
-        self.t1 = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=event,
-            title='CERTIFICADO',
-            content='''
-                    Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                    ''',
-            backside_title='Programação',
-            backside_content='''
-                    1 - Abertura
-                    2 - Lorem Ipsum
-                    ''',
-            background='core/tests/test.gif',
-        )
-
-        self.t2 = Template.objects.create(
-            name='SBI - Certificado de Palestrante',
-            event=event,
-            title='CERTIFICADO',
-            content='''
-                            Certificamos que NOME_COMPLETO palestrou no evento NOME_EVENTO.
-                            ''',
-            backside_title='Programação',
-            backside_content='''
-                            1 - Abertura
-                            2 - Lorem Ipsum
-                            ''',
-            background='core/tests/test.gif',
-        )
         self.response = self.client.get(r('certificates:template-list'))
 
     def test_get(self):
@@ -58,9 +26,9 @@ class TemplateListGet(LoggedInTestCase):
 
     def test_html(self):
         contents = [
-            (2, 'Simpósio Brasileiro de Informática'),
-            (1, 'SBI - Certificado de Participante'),
-            (1, 'SBI - Certificado de Palestrante'),
+            (2, self.event.name),
+            (1, self.t1.name),
+            (1, self.t2.name),
         ]
 
         for count, expected in contents:

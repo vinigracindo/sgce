@@ -1,6 +1,7 @@
 import datetime
 
 from django.shortcuts import resolve_url as r
+from model_mommy import mommy
 
 from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm
 from sgce.certificates.models import Template
@@ -11,28 +12,8 @@ from sgce.core.tests.base import LoggedInTestCase
 class TemplateDuplicateGet(LoggedInTestCase):
     def setUp(self):
         super(TemplateDuplicateGet, self).setUp()
-        event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
-
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=event,
-            title='CERTIFICADO',
-            content='''
-                    Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                    ''',
-            backside_title='Programação',
-            backside_content='''
-                    1 - Abertura
-                    2 - Lorem Ipsum
-                    ''',
-            background='core/tests/test.gif',
-        )
+        event = mommy.make(Event, created_by=self.user_logged_in)
+        self.template = mommy.make(Template, event=event, background='core/testes/test.gif')
         self.response = self.client.get(r('certificates:template-duplicate', self.template.pk))
 
     def test_get(self):
@@ -68,24 +49,12 @@ class TemplateDuplicateGet(LoggedInTestCase):
 class TemplateDuplicatePost(LoggedInTestCase):
     def setUp(self):
         super(TemplateDuplicatePost, self).setUp()
-        self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
-        self.event2 = Event.objects.create(
-            name='Simpósio Brasileiro de Medicina',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
+        self.e1 = mommy.make(Event, created_by=self.user_logged_in)
+        self.e2 = mommy.make(Event, created_by=self.user_logged_in)
 
         self.template = Template.objects.create(
             name='SBI - Certificado de Participante',
-            event=self.event,
+            event=self.e1,
             title='CERTIFICADO',
             content='''
                             Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
@@ -99,7 +68,7 @@ class TemplateDuplicatePost(LoggedInTestCase):
         )
 
         data = dict(
-            event=self.event2.pk
+            event=self.e2.pk
         )
 
         self.response = self.client.post(r('certificates:template-duplicate', self.template.pk), data)
@@ -116,7 +85,7 @@ class TemplateDuplicatePost(LoggedInTestCase):
         """The new template created must have the same attrs of self.template"""
         new_template = Template.objects.get(pk=2)
 
-        self.assertEqual(new_template.event, self.event2)
+        self.assertEqual(new_template.event, self.e2)
 
         self.assertEqual(self.template.name, new_template.name)
         self.assertEqual(self.template.title, new_template.title)

@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url as r
+from model_mommy import mommy
 
 from sgce.certificates.models import Template
 from sgce.core.models import Event
@@ -11,29 +12,10 @@ from sgce.core.tests.base import LoggedInTestCase
 class TemplateDeleteWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(TemplateDeleteWithoutPermission, self).setUp()
-        user = get_user_model().objects.create_user('user', 'user@mail.com', 'pass')
-        event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=user,
-        )
+        another_user = mommy.make(get_user_model())
+        event = mommy.make(Event, created_by=another_user)
+        self.template = mommy.make(Template, event=event, background='core/testes/test.gif')
 
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=event,
-            title='CERTIFICADO',
-            content='''
-                    Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                    ''',
-            backside_title='Programação',
-            backside_content='''
-                    1 - Abertura
-                    2 - Lorem Ipsum
-                    ''',
-            background='core/tests/test.gif',
-        )
         self.response = self.client.get(r('certificates:template-delete', self.template.pk))
 
     def test_get(self):
@@ -45,28 +27,8 @@ class TemplateDeleteWithoutPermission(LoggedInTestCase):
 class TemplateDeleteWithPermission(LoggedInTestCase):
     def setUp(self):
         super(TemplateDeleteWithPermission, self).setUp()
-        event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
-
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=event,
-            title='CERTIFICADO',
-            content='''
-                            Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                            ''',
-            backside_title='Programação',
-            backside_content='''
-                            1 - Abertura
-                            2 - Lorem Ipsum
-                            ''',
-            background='core/tests/test.gif',
-        )
+        event = mommy.make(Event, created_by=self.user_logged_in)
+        self.template = mommy.make(Template, event=event, background='core/testes/test.gif')
 
 
 class TemplateDeleteGet(TemplateDeleteWithPermission):

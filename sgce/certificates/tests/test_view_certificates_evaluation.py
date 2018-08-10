@@ -1,6 +1,7 @@
 import datetime
 
 from django.shortcuts import resolve_url as r
+from model_mommy import mommy
 
 from sgce.certificates.forms import CertificateEvaluationForm
 from sgce.certificates.models import Template
@@ -32,28 +33,9 @@ class CertificatesEvaluationTest(LoggedInTestCase):
 class CertificatesEvaluationPostTest(LoggedInTestCase):
     def setUp(self):
         super(CertificatesEvaluationPostTest, self).setUp()
-        event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
+        event = mommy.make(Event, created_by=self.user_logged_in)
+        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
 
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=event,
-            title='CERTIFICADO',
-            content='''
-                    Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                    ''',
-            backside_title='Programação',
-            backside_content='''
-                    1 - Abertura
-                    2 - Lorem Ipsum
-                    ''',
-            background='core/tests/test.gif',
-        )
         data = dict(
             event=event.pk,
             template=self.template.pk,

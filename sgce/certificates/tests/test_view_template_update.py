@@ -1,7 +1,6 @@
-import datetime
-
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url as r
+from model_mommy import mommy
 
 from sgce.certificates.forms import TemplateForm
 from sgce.core.models import Event
@@ -12,29 +11,10 @@ from sgce.certificates.models import Template
 class TemplateUpdateWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(TemplateUpdateWithoutPermission, self).setUp()
-        another_user = get_user_model().objects.create_user(username='another_user', password='password')
-        event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=another_user,
-        )
+        another_user = mommy.make(get_user_model())
+        event = mommy.make(Event, created_by=another_user)
+        self.template = mommy.make(Template, event=event, background='core/testes/test.gif')
 
-        self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=event,
-            title='CERTIFICADO',
-            content='''
-                    Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
-                    ''',
-            backside_title='Programação',
-            backside_content='''
-                    1 - Abertura
-                    2 - Lorem Ipsum
-                    ''',
-            background='core/tests/test.gif',
-        )
         self.response = self.client.get(r('certificates:template-update', self.template.pk))
 
     def test_get(self):
@@ -46,13 +26,8 @@ class TemplateUpdateWithoutPermission(LoggedInTestCase):
 class TemplateUpdateWithPermission(LoggedInTestCase):
     def setUp(self):
         super(TemplateUpdateWithPermission, self).setUp()
-        self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
-        )
+        self.event = mommy.make(Event, created_by=self.user_logged_in)
+        self.template = mommy.make(Template, event=self.event, background='core/testes/test.gif')
 
         self.template = Template.objects.create(
             name='SBI - Certificado de Participante',
@@ -84,14 +59,13 @@ class TemplateUpdateGet(TemplateUpdateWithPermission):
     def test_inputs(self):
         """Html must contain filled inputs"""
         inputs = [
-            'SBI - Certificado de Participante',
-            'Simpósio Brasileiro de Informática',
-            'CERTIFICADO',
-            'Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.',
-            'Programação',
-            '1 - Abertura',
-            '2 - Lorem Ipsum',
-            'core/tests/test.gif',
+            self.template.name,
+            self.template.event.name,
+            self.template.title,
+            self.template.content,
+            self.template.backside_title,
+            self.template.backside_content,
+            self.template.background,
             Template.ARIAL,
             Template.LEFT,
             Template.BLACK,
@@ -153,4 +127,7 @@ class TemplateUpdatePost(TemplateUpdateWithPermission):
     def test_update_user(self):
         self.assertEqual('SBI - Certificado do Palestrante', self.template.name)
         self.assertEqual('CERTIFICADO DE PALESTRANTE', self.template.title)
-        self.assertEqual('Certificamos que NOME_COMPLETO apresentou a palestra NOME_PALESTRA no evento NOME_EVENTO.', self.template.content)
+        self.assertEqual(
+            'Certificamos que NOME_COMPLETO apresentou a palestra NOME_PALESTRA no evento NOME_EVENTO.',
+            self.template.content
+        )

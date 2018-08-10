@@ -36,10 +36,17 @@
     {% endfor %}
     </div>
   {% endif %}
+  {% if form.errors %}
+        {% for field in form.visible_fields  %}
+          {% if field.errors %}
+              {{ field.label }}: {{ field.errors }}
+          {% endif %}
+        {% endfor %}
+  {% endif %}
   <div class="row justify-content-center">
     <div class="col-md-10">
       <form id="form" method="post" enctype="multipart/form-data">{% csrf_token %}
-        {% bootstrap_form form layout='group' %}
+        {% bootstrap_field form.template layout='group' %}
         <div id="spreedsheet"></div>
         {% buttons %}
           <a href="{% url 'certificates:template-list' %}" class="btn btn-dark" value="Voltar">Voltar</a>

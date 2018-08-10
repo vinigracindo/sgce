@@ -1,7 +1,10 @@
+import json
+
 from django import forms
 from django_select2.forms import Select2Widget
 
 from sgce.certificates.models import Template, Certificate, Participant
+from sgce.certificates.validators import validate_cpf
 from sgce.core.models import Event
 
 
@@ -25,18 +28,41 @@ class TemplateDuplicateForm(forms.ModelForm):
             self.fields['event'].queryset = Event.objects.filter(created_by=user)
 
 
-class CertificatesCreatorForm(forms.ModelForm):
-    class Meta:
-        model = Certificate
-        fields = ('template', )
-        widgets = {
-            'template': Select2Widget,
-        }
+class CertificatesCreatorForm(forms.Form):
+    template = forms.ModelChoiceField(queryset=Template.objects, widget=Select2Widget)
+    certificates = forms.CharField()
 
     def __init__(self, user, *args, **kwargs):
         super(CertificatesCreatorForm, self).__init__(*args, **kwargs)
         if not user.is_superuser:
             self.fields['template'].queryset = Template.objects.filter(event__created_by=user)
+
+    def clean_certificates(self):
+        data = self.cleaned_data['certificates']
+
+        template = self.cleaned_data['template']
+
+        certificates = json.loads(data)
+
+        any_object = False
+
+        for line, attrs_certificate in enumerate(certificates, 1):
+            if any(attrs_certificate):
+                any_object = True
+                if (None in attrs_certificate) or ('' in attrs_certificate) or (len(template.template_fields()) != len(attrs_certificate)):
+                    raise forms.ValidationError('A tabela não pode conter valores em branco')
+                    break
+                else:
+                    try:
+                        attrs_certificate[0] = validate_cpf(attrs_certificate[0])
+                    except Exception as e:
+                        raise forms.ValidationError('O CPF {} da linha {} é inválido.'.format(attrs_certificate[0], line))
+                        break
+
+        if any_object is False:
+            raise forms.ValidationError('A tabela não pode conter valores em branco')
+
+        return data
 
 
 class ParticipantForm(forms.ModelForm):

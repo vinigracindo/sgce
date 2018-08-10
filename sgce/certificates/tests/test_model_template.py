@@ -2,20 +2,16 @@ import datetime
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from model_mommy import mommy
+
 from sgce.certificates.models import Template
 from sgce.core.models import Event
 
 
 class TemplateModelTest(TestCase):
     def setUp(self):
-        user = get_user_model().objects.create_user('user', 'user@mail.com', 'pass')
-        event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=user,
-        )
+        user = mommy.make(get_user_model())
+        event = mommy.make(Event, created_by=user)
 
         self.template = Template.objects.create(
             name='SBI - Certificado de Participante',
@@ -60,7 +56,7 @@ class TemplateModelTest(TestCase):
         self.assertTrue(field.blank)
 
     def test_str(self):
-        self.assertEqual('Simpósio Brasileiro de Informática: SBI - Certificado de Participante', str(self.template))
+        self.assertEqual('{}: {}'.format(self.template.event.name, self.template.name), str(self.template))
 
     def test_get_fields(self):
         self.assertListEqual(

@@ -6,7 +6,6 @@ from django.core.validators import MaxValueValidator
 from jsonfield import JSONField
 from tinymce.models import HTMLField
 
-from sgce.certificates.managers import CertificateManager
 from sgce.certificates.validators import validate_cpf
 from sgce.core.models import Event
 from sgce.core.utils.list import remove_duplicates
@@ -49,6 +48,7 @@ class Template(models.Model):
     event = models.ForeignKey(
         Event,
         verbose_name='evento',
+        related_name='templates',
         on_delete=models.PROTECT
     )
     title = models.CharField('título', max_length=64, blank=True)
@@ -180,18 +180,18 @@ class Certificate(models.Model):
     participant = models.ForeignKey(
         Participant,
         verbose_name='participante',
+        related_name='certificates',
         on_delete=models.PROTECT,
     )
     template = models.ForeignKey(
         Template,
         verbose_name='modelo',
+        related_name='certificates',
         on_delete=models.PROTECT,
     )
     hash = models.CharField(max_length=255, editable=False)
     fields = JSONField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=PENDING)
-
-    objects = CertificateManager()
 
     class Meta:
         verbose_name = 'certificado'
@@ -210,6 +210,7 @@ class CertificateHistory(models.Model):
     certificate = models.ForeignKey(
         Certificate,
         verbose_name='certificado',
+        related_name='logs',
         on_delete=models.CASCADE
     )
     user = models.ForeignKey(
