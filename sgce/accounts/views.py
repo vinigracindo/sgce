@@ -16,23 +16,25 @@ from sgce.accounts.forms import UserForm, UserUpdateForm
 def user_active_or_disable(request, pk):
     user = get_user_model().objects.get(pk=pk)
     if user.pk is not request.user.pk:
-        value = not user.is_active
-        user.is_active = value
+        status = not user.is_active
+        user.is_active = status
         user.save()
-        messages.success(request, 'O usuário {} foi {} com sucesso.'.format(user.username, 'ativado' if value else 'desativado'))
+        messages.success(request, 'O usuário {} foi {} com sucesso.'.format(user.username, 'ativado' if status else 'desativado'))
     else:
         messages.error(request, 'Não é possível desativar o próprio usuário.')
     return HttpResponseRedirect(reverse('accounts:user-list'))
 
 
-class UserListView(LoginRequiredMixin, ListView):
+class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    permission_required = 'auth.view_user'
+    raise_exception = True
     model = get_user_model()
     template_name = 'accounts/user/user_list.html'
     context_object_name = 'users'
 
 
 class UserCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
-    permission_required = 'auth.add_user'
+    permission_required = ('auth.add_user', 'auth.view_user')
     raise_exception = True
     model = get_user_model()
     form_class = UserForm
@@ -46,7 +48,7 @@ class UserCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessage
 
 
 class UserUpdateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
-    permission_required = 'auth.change_user'
+    permission_required = ('auth.change_user', 'auth.view_user')
     raise_exception = True
     model = get_user_model()
     form_class = UserUpdateForm

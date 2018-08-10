@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import resolve_url as r
+from model_mommy import mommy
 
 from sgce.core.tests.base import LoggedInTestCase
 
@@ -34,10 +35,7 @@ class UserActiveOrDisableWithPermission(LoggedInTestCase):
 class UserActiveOrDisable(UserActiveOrDisableWithPermission):
     def setUp(self):
         super(UserActiveOrDisable, self).setUp()
-        another_user = get_user_model().objects.create_user(
-            username='user_without_permission',
-            password='password',
-        )
+        another_user = mommy.make(get_user_model())
         self.response = self.client.get(r('accounts:user-active-or-disable', another_user.pk))
 
     def test_get(self):
@@ -48,7 +46,7 @@ class UserActiveOrDisable(UserActiveOrDisableWithPermission):
 class UserDisableGet(UserActiveOrDisableWithPermission):
     def setUp(self):
         super(UserDisableGet, self).setUp()
-        self.another_user = get_user_model().objects.create_user(username='user_enable', password='password')
+        self.another_user = mommy.make(get_user_model(), is_active=True)
         self.response = self.client.get(r('accounts:user-active-or-disable', self.another_user.pk))
         self.another_user.refresh_from_db()
 
@@ -59,7 +57,7 @@ class UserDisableGet(UserActiveOrDisableWithPermission):
 class UserEnableGet(UserActiveOrDisableWithPermission):
     def setUp(self):
         super(UserEnableGet, self).setUp()
-        self.another_user = get_user_model().objects.create_user(username='user_enable', password='password', is_active=False)
+        self.another_user = mommy.make(get_user_model(), is_active=False)
         self.response = self.client.get(r('accounts:user-active-or-disable', self.another_user.pk))
         self.another_user.refresh_from_db()
 

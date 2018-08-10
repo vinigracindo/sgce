@@ -1,11 +1,13 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from model_mommy import mommy
+
 from sgce.accounts.models import Profile
 
 
 class ProfileModelTest(TestCase):
     def setUp(self):
-        user = get_user_model().objects.create_user('user', 'user@mail.com', 'pass')
+        user = mommy.make(get_user_model())
         # When a user is created a profile is created too.
         self.profile = user.profile
 

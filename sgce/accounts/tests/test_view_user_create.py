@@ -17,18 +17,23 @@ class UserCreateWithoutPermission(LoggedInTestCase):
         self.assertEqual(403, self.response.status_code)
 
 
-# Permission: auth.add_user
+# Permission: auth.add_user and auth.view_user
 class UserCreateWithPermission(LoggedInTestCase):
     def setUp(self):
         super(UserCreateWithPermission, self).setUp()
         # permission required: profile.can_enable_or_disable_user
         content_type = ContentType.objects.get_for_model(get_user_model())
-        permission = Permission.objects.get(
+        p1 = Permission.objects.get(
             codename='add_user',
             content_type=content_type,
         )
 
-        self.user_logged_in.user_permissions.add(permission)
+        p2 = Permission.objects.get(
+            codename='view_user',
+            content_type=content_type,
+        )
+
+        self.user_logged_in.user_permissions.add(p1, p2)
         self.user_logged_in.refresh_from_db()
 
 
