@@ -23,7 +23,7 @@
   <div class="row justify-content-center">
     <a href="{% url 'certificates:certificates-creator' %}" class="btn btn-success" value="Gerar Certificado">Gerar Certificados</a>
   </div>
-  {% for template in object.template_set.all %}
+  {% for template in object.templates.all %}
     <div class="row mt-4">
         <h3>{{ template.name }}</h3>
     </div>
@@ -40,7 +40,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for certificate in template.certificate_set.all %}
+        {% for certificate in template.certificates.all %}
           <tr>
             <td>{{ certificate.template.name }}</td>
             <td>{{ certificate.participant.name }}</td>

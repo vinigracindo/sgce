@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template.loader import get_template
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -117,7 +117,31 @@ def template_preview_render_pdf(request, template_pk):
 
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="{}-{}.pdf"'.format(template.name, 'Modelo Teste')
+    response['Content-Disposition'] = 'inline; filename="{}-{}.pdf"'.format(template.name, 'Modelo Teste')
+
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+
+    # if error then show some funy view
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+
+    return response
+
+
+def certificate_render_pdf(request, hash):
+    certificate = get_object_or_404(Certificate, hash=hash)
+    template_path = 'certificates/template/pdf/certificate_pdf.html'
+    context = {'certificate': certificate}
+
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="{}-{}.pdf"'.format(certificate.participant.name,
+                                                                                certificate.template.event.name)
 
     # find the template and render it.
     template = get_template(template_path)
@@ -162,7 +186,7 @@ def certificates_creator(request):
                 )
 
                 try:
-                    certificate = Certificate.objects.create(participant=participant, template=template, fields=str(attrs))
+                    certificate = Certificate.objects.create(participant=participant, template=template, fields=attrs)
                     inspector['certificates'].append(certificate)
                 except IntegrityError:
                     inspector['error'].append(certificate_attrs)

@@ -12,6 +12,7 @@ urlpatterns = [
     path('template/preview/<int:template_pk>', views.template_preview_render_pdf, name='template-pdf-preview'),
     path('ajax/load/templates/', ajax_views.load_templates, name='ajax_load_templates'),
 
+    path('certificate/pdf/<str:hash>/', views.certificate_render_pdf, name='certificate-pdf'),
     path('certificates/creator/', views.certificates_creator, name='certificates-creator'),
     path('certificates/ajax/template/header/<int:template_pk>/', ajax_views.ajax_template_header, name='ajax_template_header'),
     path('certificates/evaluation/', views.certificates_evaluation, name='certificates-evaluation'),

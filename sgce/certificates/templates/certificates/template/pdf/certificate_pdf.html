@@ -1,0 +1,94 @@
+{% load static %}
+{% load qr_code %}
+<html xml:lang="pt-br" lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="{% static 'certificates/css/' %}{{ certificate.template.font }}.css" />
+        <style>
+            @page{
+                size: a4 landscape;
+                background-image: url('{% if certificate.template.background %}{{ certificate.template.background.path }}{% endif %}');
+                background-position: center;
+                @frame content_frame {
+                    left: 10mm;
+                    top: 10mm;
+                    width: 277mm;
+                    height: 190mm;
+                }
+            }
+            @page back-page{
+                size: a4 landscape;
+                @frame content_frame {
+                    left: 10mm;
+                    top: 10mm;
+                    width: 277mm;
+                    height: 190mm;
+                }
+            }
+            .content {
+                margin-left: 20mm;
+                margin-right: 20mm;
+            }
+            .footer {
+                font-size:9pt;
+                position: absolute;
+            }
+            .backside {
+                page-break-before:always;
+            }
+            .backside-title {
+                text-align: center;
+                font-weight: bold;
+                position: relative;
+                font-size: 20pt;
+            }
+            .backside-content {
+                font-size:11.5pt;
+            }
+        </style>
+        <!-- 297mm x 210mm -->
+    </head>
+    <body>
+        <div class="title"
+             style="padding-top: {{ certificate.template.title_top_distance }}cm;
+                    float: {{ certificate.template.title_section_align }};
+                    text-align: {{ certificate.template.title_align }};
+                    color: {{ certificate.template.title_color }};
+                    font-size: {{ certificate.template.title_font_size }}pt;">
+
+            <p><b>{{ certificate.template.title }}&nbsp;</b></p>
+        </div>
+        <div class="content"
+             style="padding-top: {{ certificate.template.content_title_distance }}cm;
+                    float: {{ certificate.template.content_section_align }};
+                    text-align:{{ certificate.template.content_text_align }};
+                    color: {{ certificate.template.content_text_color }};
+                    font-size: {{ certificate.template.content_font_size }}pt;">
+
+            {{ certificate.get_safe_content }}
+        </div>
+        <div class="footer"
+             style="padding-top: {{ certificate.template.footer_title_distance }}cm;
+                    float: {{ certificate.template.footer_section_align }};
+                    text-align: {{ certificate.template.footer_text_align }};
+                    color: {{ certificate.template.footer_text_color }};">
+            <p>
+                {% qr_from_text "https://sgce.ifal.edu.br/sgce/certificados/validar/{{ certificate.hash }}" size="2" image_format="png" error_correction="L" %} <br/>
+                Este documento dispensa o uso de assinatura, <br/>
+                a autenticidade pode ser verificada através da URL: <br/>
+                https://sgce.ifal.edu.br/sgce/certificados/validar/{{ certificate.hash }}
+            </p>
+        </div>
+        {% if certificate.template.backside_title or certificate.template.backside_content %}
+            <pdf:nexttemplate name="back-page">
+            <div class="backside">
+                <div class="backside-title">
+                    <p><b>{{ certificate.template.backside_title }}</b></p>
+                </div>
+                <div class="backside-content">
+                    <p>{{ certificate.template.backside_content|safe }}</p>
+                </div>
+            </div>
+        {% endif %}
+    </body>
+</html>

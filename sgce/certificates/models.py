@@ -3,6 +3,7 @@ import re
 from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator
+from django.utils.safestring import mark_safe
 from jsonfield import JSONField
 from tinymce.models import HTMLField
 
@@ -44,14 +45,14 @@ class Template(models.Model):
         (LIGHT_GRAY, 'Cinza claro'),
         (DARK_GRAY, 'Cinza escuro'),
     )
-    name = models.CharField('nome', max_length=64)
+    name = models.CharField('nome', max_length=128)
     event = models.ForeignKey(
         Event,
         verbose_name='evento',
         related_name='templates',
         on_delete=models.PROTECT
     )
-    title = models.CharField('título', max_length=64, blank=True)
+    title = models.CharField('título', max_length=128, blank=True)
     content = HTMLField(
         'texto',
         default='''
@@ -65,7 +66,7 @@ class Template(models.Model):
         problemas na importação de dados.
         '''
     )
-    backside_title = models.CharField('título do verso', max_length=64, blank=True)
+    backside_title = models.CharField('título do verso', max_length=128, blank=True)
     backside_content = HTMLField('texto do verso', blank=True)
     background = models.ImageField(
         verbose_name='imagem de fundo',
@@ -189,7 +190,7 @@ class Certificate(models.Model):
         related_name='certificates',
         on_delete=models.PROTECT,
     )
-    hash = models.CharField(max_length=255, editable=False)
+    hash = models.CharField(max_length=255, editable=False, unique=True)
     fields = JSONField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=PENDING)
 
@@ -199,6 +200,15 @@ class Certificate(models.Model):
 
     def __str__(self):
         return 'Certificado de {} do modelo {}'.format(self.participant.name, self.template.name)
+
+    def get_safe_content(self):
+        content = self.template.content
+        content = content.replace('NOME_COMPLETO', self.participant.name).replace('NUMERO_CPF', self.participant.cpf)
+
+        for key in self.fields:
+            content = content.replace(key, self.fields[key])
+
+        return mark_safe(content)
 
     def save(self, *args, **kwargs):
         if not self.hash:

@@ -52,7 +52,7 @@
                         <td>{{ certificate.participant }}</td>
                         <td>{{ certificate.hash }}</td>
                         <td>{{ certificate.get_status_display }}</td>
-                        <td><a href="#" class="fas fa-file-pdf fa-sm" title="Visualizar"></a></td>
+                        <td><a href="{% url 'certificates:certificate-pdf' certificate.hash %}" class="fas fa-file-pdf fa-sm" title="Visualizar"></a></td>
                         <td><a href="#" class="fas fa-clock fa-sm" title="Histórico"></a></td>
                       </tr>
                     {% endfor %}

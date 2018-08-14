@@ -89,7 +89,7 @@ class CertificatesCreatorPost(LoggedInTestCase):
 
     def test_create_certificate_attrs(self):
         certificate = Certificate.objects.first()
-        self.assertEqual("{'NOME_EVENTO': 'Evento', 'DATA_EVENTO': '01/01/2018'}", certificate.fields)
+        self.assertEqual({'NOME_EVENTO': 'Evento', 'DATA_EVENTO': '01/01/2018'}, certificate.fields)
 
     def test_create_participant(self):
         self.assertTrue(Participant.objects.exists())
