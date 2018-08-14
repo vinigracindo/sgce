@@ -8,9 +8,9 @@
 
 Sistema Gerenciador de Certificados Eletrônicos.
 
-Live demo: https://sgce-app.herokuapp.com/login/
-
-User: admin | Password: adm11200
+Live demo:
+https://sgce-app.herokuapp.com/
+https://sgce-app.herokuapp.com/login/ (User: admin | Password: adm11200)
 
 
 O SGCE está sendo desenvolvido baseado no [SGCE criado pela Universidade Federal de Pampa](https://softwarepublico.gov.br/social/sgce) que foi descontinuado.
