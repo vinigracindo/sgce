@@ -6,15 +6,11 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
-from sgce.core.forms import EventForm, HomeForm
+from sgce.core.forms import EventForm
 from sgce.core.mixins import EventCreatedByPermission
 from sgce.core.models import Event
 from sgce.core.utils.get_deleted_objects import get_deleted_objects
 
-
-def home(request):
-    form = HomeForm()
-    return render(request, 'home.html', {'form': form})
 
 @login_required
 def index(request):

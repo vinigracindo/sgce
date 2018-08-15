@@ -13,13 +13,32 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from xhtml2pdf import pisa
 
 from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, CertificatesCreatorForm, ParticipantForm, \
-    CertificateEvaluationForm, CertificateEvaluationTemplateForm
+    CertificateEvaluationForm, CertificateEvaluationTemplateForm, HomeForm
 from sgce.certificates.mixins import TemplateEventCreatedByPermission
 from sgce.certificates.models import Template, Participant, Certificate, CertificateHistory
 from sgce.certificates.utils.pdf import link_callback
 from sgce.certificates.validators import validate_cpf
 from sgce.core.decorators import event_created_by_user_logged_in
 from sgce.core.utils.get_deleted_objects import get_deleted_objects
+
+
+def home(request):
+    context = {}
+    if request.method == 'POST':
+        form = HomeForm(request.POST)
+        if form.is_valid():
+            cpf = form.cleaned_data['cpf']
+
+            certificates = Certificate.objects\
+                .filter(participant__cpf=cpf,status=Certificate.VALID)\
+                .order_by('-created_at')\
+                .select_related()
+
+            context['certificates'] = certificates
+    else:
+        form = HomeForm()
+    context['form'] = form
+    return render(request, 'home.html', context)
 
 
 class ParticipantListView(LoginRequiredMixin, ListView):

@@ -8,6 +8,20 @@ from sgce.certificates.validators import validate_cpf
 from sgce.core.models import Event
 
 
+class HomeForm(forms.Form):
+    cpf = forms.CharField(
+        max_length=14,
+        label='CPF',
+        widget=forms.TextInput(attrs={'placeholder': 'Digite seu CPF para buscar seus Certificados',
+                                      'data-mask': '000.000.000-00'}),
+    )
+
+    def clean_cpf(self):
+        cpf = self.cleaned_data['cpf']
+        cpf = validate_cpf(cpf)
+        return cpf
+
+
 class TemplateForm(forms.ModelForm):
     class Meta:
         model = Template

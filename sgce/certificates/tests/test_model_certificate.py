@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
 from django.test import TestCase
@@ -23,6 +25,10 @@ class CertificateModelTest(TestCase):
 
     def test_create(self):
         self.assertTrue(Certificate.objects.exists())
+
+    def test_created_at(self):
+        """Template must have an auto created_at attr"""
+        self.assertIsInstance(self.certificate.created_at, datetime.datetime)
 
     def test_str(self):
         self.assertEqual('Certificado de {} do modelo {}'.format(self.certificate.participant.name,

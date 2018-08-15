@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 
-from sgce.core.views import home
+from sgce.certificates.views import home
 
 urlpatterns = [
     path('', home, name='home'),

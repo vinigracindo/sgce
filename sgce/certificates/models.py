@@ -193,6 +193,7 @@ class Certificate(models.Model):
     hash = models.CharField(max_length=255, editable=False, unique=True)
     fields = JSONField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'certificado'
