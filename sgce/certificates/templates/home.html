@@ -62,6 +62,15 @@
                 <h4 class="my-0 font-weight-normal">Baixar Certificados</h4>
               </div>
               <div class="card-body">
+                {% if messages %}
+                  <div class="row justify-content-center">
+                  {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                  </div>
+                {% endif %}
                 <form method="post">
                   {% csrf_token %}
                   {% bootstrap_form form layout='horizontal' %}

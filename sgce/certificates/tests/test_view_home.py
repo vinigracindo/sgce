@@ -72,3 +72,11 @@ class HomeTestPost(TestCase):
         for count, expected in contents:
             with self.subTest():
                 self.assertContains(self.response, expected, count)
+
+    def test_error(self):
+        data = dict(
+            cpf='376.727.930-47',
+        )
+        self.response = self.client.post(r('home'), data)
+
+        self.assertContains(self.response, 'Não existem certificados válidos para este CPF.')

@@ -34,7 +34,10 @@ def home(request):
                 .order_by('-created_at')\
                 .select_related()
 
-            context['certificates'] = certificates
+            if certificates.exists():
+                context['certificates'] = certificates
+            else:
+                messages.error(request, 'Não existem certificados válidos para este CPF.')
     else:
         form = HomeForm()
     context['form'] = form
