@@ -13,7 +13,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from xhtml2pdf import pisa
 
 from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, CertificatesCreatorForm, ParticipantForm, \
-    CertificateEvaluationForm, CertificateEvaluationTemplateForm, HomeForm
+    CertificateEvaluationForm, CertificateEvaluationTemplateForm, HomeForm, CertificateValidateForm
 from sgce.certificates.mixins import TemplateEventCreatedByPermission
 from sgce.certificates.models import Template, Participant, Certificate, CertificateHistory
 from sgce.certificates.utils.pdf import link_callback
@@ -42,6 +42,26 @@ def home(request):
         form = HomeForm()
     context['form'] = form
     return render(request, 'home.html', context)
+
+
+def certificate_validate(request):
+    context = {}
+    if request.method == 'POST':
+        form = CertificateValidateForm(request.POST)
+        if form.is_valid():
+            hash = form.cleaned_data['hash']
+
+            try:
+                certificate = Certificate.objects.get(hash=hash)
+                context['certificate'] = certificate
+
+            except Certificate.DoesNotExist:
+                messages.error(request, 'Não existe certificado válido para este código de autenticação.')
+
+    else:
+        form = CertificateValidateForm()
+    context['form'] = form
+    return render(request, 'certificates/certificate/validate.html', context)
 
 
 class ParticipantListView(LoginRequiredMixin, ListView):

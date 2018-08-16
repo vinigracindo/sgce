@@ -44,69 +44,52 @@
       </ul>
     </nav>
 
-
-    {% if certificates %}
-    <div class="main-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-      <h1 class="display-4">Certificados do Participante</h1>
-      <p class="lead">{{ certificates.0.participant }}</p>
-    </div>
-    {% endif %}
-
     <div class="container">
-      {% if not certificates %}
-        <div class="main-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-          <h1 class="display-4"><img width="120px" src="{% static 'images/instituto.png' %}"></h1>
-          <p class="lead">Sistema de Gestão de Certificados Eletrônicos</p>
-          <div class="card mb-4 shadow-sm">
-              <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Baixar Certificados</h4>
-              </div>
-              <div class="card-body">
-                {% if messages %}
-                  <div class="row justify-content-center">
-                  {% for message in messages %}
-                    <div class="alert alert-danger" role="alert">
-                      {{ message }}
-                    </div>
-                  {% endfor %}
+        {% if not certificate %}
+          <div class="main-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4"><img width="120px" src="{% static 'images/instituto.png' %}"></h1>
+              <p class="lead">Sistema de Gestão de Certificados Eletrônicos</p>
+              <div class="card mb-4 shadow-sm">
+                  <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Autenticação de Certificados</h4>
                   </div>
-                {% endif %}
-                <form method="post">
-                  {% csrf_token %}
-                  {% bootstrap_form form layout='horizontal' %}
-                  {% buttons %}
-                    <button type="submit" class="btn btn-md btn-block btn-outline-primary">Buscar</button>
-                  {% endbuttons %}
-                </form>
-                <a href="{% url 'certificates:certificate-validate' %}" role="button" class="btn btn-md btn-block btn-outline-success">Verificar validade de um certificado</a>
+                  <div class="card-body">
+                    {% if messages %}
+                      <div class="row justify-content-center">
+                      {% for message in messages %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ message }}
+                        </div>
+                      {% endfor %}
+                      </div>
+                    {% endif %}
+                    <form method="post">
+                      {% csrf_token %}
+                      {% bootstrap_form form layout='horizontal' %}
+                      {% buttons %}
+                        <button type="submit" class="btn btn-md btn-block btn-outline-primary">Verificar Validade</button>
+                      {% endbuttons %}
+                    </form>
+                  </div>
               </div>
           </div>
-        </div>
-      {% else %}
-        <div class="row">
-          <table id="tableList" class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th scope="col">Evento</th>
-                <th scope="col">Tipo de Certificado</th>
-                <th scope="col">Download</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for certificate in certificates %}
-                <tr>
-                  <td>{{ certificate.template.event.name }}</td>
-                  <td>{{ certificate.template.name }}</td>
-                  <td><a href="{% url 'certificates:certificate-pdf' certificate.hash %}" class="fas fa-file-pdf fa-sm" title="Download"></a></td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+        {% else %}
+          <div class="main-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4"><img width="120px" src="{% static 'images/instituto.png' %}"></h1>
+            <p class="lead">Detalhes do Certificado</p>
+          </div>
+          <div class="main-header px-3 py-3 pt-md-1 pb-md-4 mx-auto">
+            <p>O Código do certificado informado retornou os seguintes dados:</p>
+            <p><strong>Concedido a :</strong> {{ certificate.participant.name }}</p>
+            <p><strong>Texto do Certificado :</strong> {{ certificate.get_safe_content }}</p>
+            <p><strong>Validade :</strong> <span style="font-weight: bold; color: green;">{{ certificate.get_status_display }}</span></p>
+            <p><a href="{% url 'certificates:certificate-pdf' certificate.hash %}" class="fas fa-file-pdf fa-sm" title="Download">Clique aqui para baixar o certificado</a></p>
+          </div>
+        {% endif %}
         </div>
         <div class="row justify-content-center">
           <a href="{% url 'home' %}" class="btn btn-dark" value="Voltar">Voltar</a>
         </div>
-      {% endif %}
     </div>
 
     <!-- Bootstrap core JavaScript

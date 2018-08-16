@@ -22,6 +22,10 @@ class HomeForm(forms.Form):
         return cpf
 
 
+class CertificateValidateForm(forms.Form):
+    hash = forms.CharField(label='Código de Autenticação')
+
+
 class TemplateForm(forms.ModelForm):
     class Meta:
         model = Template
