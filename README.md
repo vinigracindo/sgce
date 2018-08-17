@@ -19,6 +19,10 @@ O SGCE está sendo desenvolvido baseado no [SGCE criado pela Universidade Federa
 Por este motivo, uma nova versão está sendo criada em python/django. Ressalto que essa versão não tem relação alguma com os servidores da
 Unipampa.
 
+## Screenshots
+![Main](https://user-images.githubusercontent.com/999040/44290422-0b453080-a24f-11e8-9075-fbcdfab8a96e.png)
+![Certificado](https://user-images.githubusercontent.com/999040/44290578-b81fad80-a24f-11e8-9277-2fcdb33d071a.png)
+
 ## Requerimentos
 1. Django >= 2.0
 2. Python >= 3.6
