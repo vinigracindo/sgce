@@ -26,7 +26,7 @@
           Certificados
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Listagem de Certificados</a>
+          <a class="dropdown-item" href="{% url 'certificates:certificate-list' %}">Listagem de Certificados</a>
           <a class="dropdown-item" href="{% url 'certificates:template-list' %}">Modelos</a>
           <a class="dropdown-item" href="{% url 'certificates:certificates-creator' %}">Gerar Certificados</a>
           <a class="dropdown-item" href="{% url 'certificates:certificates-evaluation' %}">Validar Certificados</a>

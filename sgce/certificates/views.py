@@ -289,3 +289,15 @@ def certificates_evaluation_template(request, template_pk):
 
     context['form'] = form
     return render(request, 'certificates/template/evaluation_template.html', context)
+
+
+class CertificateListView(LoginRequiredMixin, ListView):
+    model = Certificate
+    raise_exception = True
+    template_name = 'certificates/certificate/certificate_list.html'
+    context_object_name = 'certificates'
+
+    def get_queryset(self):
+        queryset = super(CertificateListView, self).get_queryset()
+        user = self.request.user
+        return queryset if user.is_superuser else queryset.filter(template__event__created_by=self.request.user)

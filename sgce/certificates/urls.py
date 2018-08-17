@@ -18,6 +18,7 @@ urlpatterns = [
     path('certificates/evaluation/', views.certificates_evaluation, name='certificates-evaluation'),
     path('certificate/evaluation/<int:template_pk>/', views.certificates_evaluation_template, name='certificates-evaluation-template'),
     path('certificate/validate/', views.certificate_validate, name='certificate-validate'),
+    path('certificate/list/', views.CertificateListView.as_view(), name='certificate-list'),
 
     path('participant/list/', views.ParticipantListView.as_view(), name='participant-list'),
     path('participant/update/<int:pk>/', views.ParticipantUpdateView.as_view(), name='participant-update'),
