@@ -26,17 +26,42 @@ Unipampa.
 
 1. Clone o repositório.
 2. Crie um virtualenv com Python 3.6
-3. Ative se virtualenv.
+3. Ative o virtualenv.
 4. Instale as depêndencias.
 5. Configure a instância com o .env
-6. Execute os testes.
+6. Rode as Migrações
+7. Importe os Dados Iniciais
+8. Execute os testes.
+9. Crie um super usuário.
+9. Rode o servidor
 
+
+### Linux
 ```console
-git clone git@github.com:vinigracindo/sgce.git sgce
+git clone https://github.com/vinigracindo/sgce.git sgce
 cd sgce
 python -m venv .sgce
-source .sgce/bin/activate #Unix CMD
+source .sgce/bin/activate
 pip install -r requirements.txt
 cp contrib/env-sample .env
+python manage.py migrate
+python manage.py loaddata Group
 python manage.py test
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+### Windows
+```console
+git clone https://github.com/vinigracindo/sgce.git sgce
+cd sgce
+python -m venv .sgce
+.sgce\Scripts\activate
+pip install -r requirements.txt
+copy contrib/env-sample .env
+python manage.py migrate
+python manage.py loaddata Group
+python manage.py test
+python manage.py createsuperuser
+python manage.py runserver
 ```
