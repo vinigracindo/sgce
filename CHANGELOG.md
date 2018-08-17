@@ -4,22 +4,23 @@ Todas as mudanças notáveis ​​neste projeto serão documentadas neste arqui
 O formato é baseado em [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 e o projeto adere ao [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## 0.0.1 - 2018-08-17
+## 0.0.1 - Em Desenvolvimento
 ### Adicionado
-- Listar Usuário
-- Criar Usuário
-- Ativar/Desativar Usuário
-- Atualizar Usuário
-- Listar Evento
-- Criar Evento
-- Atualizar Evento
-- Excluir Evento
-- Listar Participante
-- Listar Modelo
-- Criar Modelo
-- Alterar Modelo
-- Excluir Modelo
-- Gerar Certificados
-- Validar Certificado
-- Notificar Participantes por Email
-- Listar Certificados
+- [x] Listar Usuário
+- [x] Criar Usuário
+- [x] Ativar/Desativar Usuário
+- [x] Atualizar Usuário
+- [x] Listar Evento
+- [x] Criar Evento
+- [x] Atualizar Evento
+- [x] Excluir Evento
+- [x] Listar Participante
+- [x] Listar Modelo
+- [x] Criar Modelo
+- [x] Alterar Modelo
+- [x] Excluir Modelo
+- [x] Gerar Certificados
+- [x] Validar Certificado
+- [x] Listar Certificados
+- [ ] Histórico de Certificado
+- [ ] Notificar Participantes por Email
