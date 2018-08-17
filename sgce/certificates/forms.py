@@ -30,12 +30,18 @@ class TemplateForm(forms.ModelForm):
     class Meta:
         model = Template
         exclude = ('created_by',)
+        widgets = {
+            'event': Select2Widget,
+        }
 
 
 class TemplateDuplicateForm(forms.ModelForm):
     class Meta:
         model = Template
         fields = ('event',)
+        widgets = {
+            'event': Select2Widget,
+        }
         help_texts = {
             'event': ('Escolha o evento que você quer aplicar este modelo'),
         }
@@ -90,8 +96,8 @@ class ParticipantForm(forms.ModelForm):
 
 
 class CertificateEvaluationForm(forms.Form):
-    event = forms.ModelChoiceField(Event.objects.all(), label='Evento')
-    template = forms.ModelChoiceField(Template.objects.all(), label='Modelo')
+    event = forms.ModelChoiceField(Event.objects.all(), label='Evento', widget=Select2Widget)
+    template = forms.ModelChoiceField(Template.objects.all(), label='Modelo', widget=Select2Widget)
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)

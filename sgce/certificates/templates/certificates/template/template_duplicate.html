@@ -2,6 +2,16 @@
 
 {% load static %}
 
+{% block extra-css %}
+<link href="{% static 'css/select2.min.css' %}" type="text/css" media="screen" rel="stylesheet" />
+{% endblock %}
+
+{% block extra-js %}
+<script type="text/javascript" src="{% static 'js/select2/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/select2/pt-BR.js' %}"></script>
+<script type="text/javascript" src="{% static 'django_select2/django_select2.js' %}"></script>
+{% endblock %}
+
 {% block content-title %}Modelo{% endblock %}
 {% block content-description %}Duplicando o modelo {{ template }}{% endblock %}
 {% block link-back %}{% url 'certificates:template-list' %}{% endblock %}

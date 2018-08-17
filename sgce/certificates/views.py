@@ -240,7 +240,7 @@ def certificates_creator(request):
 
     context['form'] = form
 
-    return render(request, 'certificates/template/certificates_creator.html', context)
+    return render(request, 'certificates/certificate/certificates_creator.html', context)
 
 
 @login_required
