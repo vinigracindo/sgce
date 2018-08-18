@@ -195,7 +195,7 @@ def certificate_render_pdf(request, hash):
 
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename="{}-{}.pdf"'.format(certificate.participant.name,
+    response['Content-Disposition'] = 'attachment; filename="{}-{}.pdf"'.format(certificate.participant.name,
                                                                                 certificate.template.event.name)
 
     # find the template and render it.
