@@ -6,9 +6,9 @@
 [![Requirements Status](https://requires.io/github/vinigracindo/sgce/requirements.svg?branch=develop)](https://requires.io/github/vinigracindo/sgce/requirements/?branch=develop)
 [![License](https://img.shields.io/pypi/l/django-treenode.svg)](https://img.shields.io/pypi/l/django-treenode.svg)
 
-## [Changelog](CHANGELOG.md)
+## Sistema Gerenciador de Certificados Eletrônicos
 
-## Sistema Gerenciador de Certificados Eletrônicos.
+### [Changelog](CHANGELOG.md)
 
 Live demo:<br/>
 https://sgce-app.herokuapp.com/<br/>
