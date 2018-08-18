@@ -48,13 +48,13 @@
         </style>
         <!-- 297mm x 210mm -->
     </head>
-    <body>
+   <body>
         <div class="title"
              style="padding-top: {{ template.title_top_distance }}cm;
                     float: {{ template.title_section_align }};
-                    text-align:{{ template.title_align }};
+                    text-align: {{ template.title_align }};
                     color: {{ template.title_color }};
-                    font-size: {{ template.title_font_size }}pt;">
+                    font-size: {{ template.title_font_size }}pt; ">
 
             <p><b>{{ template.title }}&nbsp;</b></p>
         </div>
@@ -65,7 +65,7 @@
                     color: {{ template.content_text_color }};
                     font-size: {{ template.content_font_size }}pt;">
 
-            <p>{{ template.content|safe }}&nbsp;</p>
+            {{ template.content|safe }}
         </div>
         <div class="footer"
              style="padding-top: {{ template.footer_title_distance }}cm;

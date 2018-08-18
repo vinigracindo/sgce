@@ -2,7 +2,7 @@ import re
 
 from django.conf import settings
 from django.db import models
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from jsonfield import JSONField
@@ -79,11 +79,12 @@ class Template(models.Model):
         '''
     )
     font = models.CharField('fonte', max_length=10, choices=FONTS, default=ARIAL)
-    title_top_distance = models.PositiveIntegerField(
+    title_top_distance = models.DecimalField(
         'distância do topo ao título',
-        blank=True,
+        decimal_places=1,
+        max_digits=2,
         default=3,
-        validators=[MaxValueValidator(10)]
+        validators=[MinValueValidator(0), MaxValueValidator(10)]
     )
     title_section_align = models.CharField(
         'alinhamento da seção',
@@ -99,11 +100,12 @@ class Template(models.Model):
     )
     title_color = models.CharField('cor do título', max_length=10, choices=COLOR, default=BLACK)
     title_font_size = models.PositiveIntegerField('tamanho da fonte do título', default=30)
-    content_title_distance = models.PositiveIntegerField(
+    content_title_distance = models.DecimalField(
         'distância do título ao texto',
-        blank=True,
-        default=1,
-        validators=[MaxValueValidator(10)]
+        decimal_places=1,
+        max_digits=2,
+        default=1.0,
+        validators=[MinValueValidator(0), MaxValueValidator(10)]
     )
     content_section_align = models.CharField(
         'alinhamento da seção',
@@ -119,15 +121,15 @@ class Template(models.Model):
     )
     content_text_color = models.CharField('cor do texto', max_length=10, choices=COLOR, default=BLACK)
     content_font_size = models.PositiveIntegerField('tamanho da fonte do texto', default=12)
-    footer_title_distance = models.PositiveIntegerField(
+    footer_title_distance = models.DecimalField(
         'distância do texto ao rodapé',
-        blank=True,
+        decimal_places=1,
+        max_digits=2,
         default=0,
-        validators=[MaxValueValidator(10)]
+        validators=[MinValueValidator(0), MaxValueValidator(10)]
     )
     footer_section_align = models.CharField(
         'alinhamento da seção',
-        blank=True,
         max_length=10,
         choices=SECTION_ALIGN,
         default=CENTER
