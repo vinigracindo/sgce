@@ -185,11 +185,17 @@ def template_preview_render_pdf(request, template_pk):
 def certificate_render_pdf(request, hash):
     certificate = get_object_or_404(Certificate, hash=hash)
     template_path = 'certificates/certificate/pdf/certificate.html'
-    context = {'certificate': certificate}
+
+    if request.is_secure():
+        domain = '{}{}'.format('https://', request.META['HTTP_HOST'])
+    else:
+        domain = '{}{}'.format('http://', request.META['HTTP_HOST'])
+
+    context = {'certificate': certificate, 'domain': domain}
 
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="{}-{}.pdf"'.format(certificate.participant.name,
+    response['Content-Disposition'] = 'inline; filename="{}-{}.pdf"'.format(certificate.participant.name,
                                                                                 certificate.template.event.name)
 
     # find the template and render it.
