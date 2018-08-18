@@ -8,7 +8,7 @@ from sgce.certificates.models import Template, Participant, Certificate
 from sgce.core.models import Event
 
 
-class ValidateTest(TestCase):
+class CertificateValidateTest(TestCase):
     def setUp(self):
         self.response = self.client.get(r('certificates:certificate-validate'))
 
@@ -25,7 +25,7 @@ class ValidateTest(TestCase):
         self.assertIsInstance(form, CertificateValidateForm)
 
 
-class ValidateTestPost(TestCase):
+class CertificateValidateTestPost(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
         event = mommy.make(Event, name='Simpósio Brasileiro de Informática', created_by=user)
@@ -43,32 +43,9 @@ class ValidateTestPost(TestCase):
         )
         self.response = self.client.post(r('certificates:certificate-validate'), data)
 
-    def test_template(self):
-        """Must use index.html"""
-        self.assertTemplateUsed(self.response, 'certificates/certificate/validate.html')
+    def test_post_status(self):
+        self.assertEqual(302, self.response.status_code)
 
-    def test_context(self):
-        variables = ['certificate']
-
-        for key in variables:
-            with self.subTest():
-                self.assertIn(key, self.response.context)
-
-    def test_html(self):
-
-        contents = [
-            self.certificate.participant.name,
-            self.certificate.get_safe_content(),
-        ]
-
-        for expected in contents:
-            with self.subTest():
-                self.assertContains(self.response, expected)
-
-    def test_error(self):
-        data = dict(
-            hash='INVALID_HASH',
-        )
-        self.response = self.client.post(r('certificates:certificate-validate'), data)
-
-        self.assertContains(self.response, 'Não existe certificado válido para este código de autenticação.')
+    def test_post(self):
+        """ Valid POST should redirect to 'certificates-evaluation-template' """
+        self.assertRedirects(self.response, r('certificates:certificate-detail', self.certificate.hash))

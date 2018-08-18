@@ -3,6 +3,7 @@ import re
 from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 from jsonfield import JSONField
 from tinymce.models import HTMLField
@@ -202,6 +203,14 @@ class Certificate(models.Model):
     def __str__(self):
         return 'Certificado de {} do modelo {}'.format(self.participant.name, self.template.name)
 
+    def get_absolute_url(self):
+        return reverse('certificates:certificate-detail', args=[self.hash])
+
+    def save(self, *args, **kwargs):
+        if not self.hash:
+            self.hash = generate_unique_hash(Certificate)
+        super(Certificate, self).save(*args, **kwargs)
+
     def get_safe_content(self):
         content = self.template.content
         content = content.replace('NOME_COMPLETO', self.participant.name).replace('NUMERO_CPF', self.participant.cpf)
@@ -211,10 +220,8 @@ class Certificate(models.Model):
 
         return mark_safe(content)
 
-    def save(self, *args, **kwargs):
-        if not self.hash:
-            self.hash = generate_unique_hash(Certificate)
-        super(Certificate, self).save(*args, **kwargs)
+    def is_valid(self):
+        return True if self.status == Certificate.VALID else False
 
 
 class CertificateHistory(models.Model):

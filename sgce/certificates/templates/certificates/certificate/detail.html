@@ -46,31 +46,22 @@
 
     <div class="container">
         <div class="main-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-          <h1 class="display-4"><img width="120px" src="{% static 'images/instituto.png' %}"></h1>
-            <p class="lead">Sistema de Gestão de Certificados Eletrônicos</p>
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header">
-                  <h4 class="my-0 font-weight-normal">Autenticação de Certificados</h4>
-                </div>
-                <div class="card-body">
-                  {% if messages %}
-                    <div class="row justify-content-center">
-                    {% for message in messages %}
-                      <div class="alert alert-danger" role="alert">
-                        {{ message }}
-                      </div>
-                    {% endfor %}
-                    </div>
-                  {% endif %}
-                  <form method="post">
-                    {% csrf_token %}
-                    {% bootstrap_form form layout='horizontal' %}
-                    {% buttons %}
-                      <button type="submit" class="btn btn-md btn-block btn-outline-primary">Verificar Validade</button>
-                    {% endbuttons %}
-                  </form>
-                </div>
+            <h1 class="display-4"><img width="120px" src="{% static 'images/instituto.png' %}"></h1>
+            <p class="lead">Detalhes do Certificado</p>
+        </div>
+        <div class="main-header px-3 py-3 pt-md-1 pb-md-4 mx-auto">
+          {% if certificate.is_valid %}
+            <p>O Código do certificado informado retornou os seguintes dados:</p>
+            <p><strong>Concedido a :</strong> {{ certificate.participant.name }}</p>
+            <p><strong>Texto do Certificado :</strong> {{ certificate.get_safe_content }}</p>
+            <p><strong>Validade :</strong> <span style="font-weight: bold; color: green;">{{ certificate.get_status_display }}</span></p>
+            <p><a href="{% url 'certificates:certificate-pdf' certificate.hash %}" class="fas fa-file-pdf fa-sm" title="Download">Clique aqui para baixar o certificado</a></p>
+          {% else %}
+            <div class="alert alert-danger text-center" role="alert">
+              Certificado inválido
             </div>
+            <p>Caso tenha sido um engano, entre em contato com a instituição.</p>
+          {% endif %}
         </div>
     </div>
     <div class="row justify-content-center">

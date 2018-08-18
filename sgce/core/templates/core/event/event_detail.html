@@ -36,7 +36,7 @@
           <th>Cód. Validação</th>
           <th>Situação</th>
           <th>Histórico</th>
-          <th>Ações</th>
+          <th>Visualizar</th>
         </tr>
         </thead>
         <tbody>
@@ -47,7 +47,7 @@
             <td>{{ certificate.hash }}</td>
             <td>{{ certificate.get_status_display }}</td>
             <td><a href="#" class="fas fa-clock fa-sm" title="Histórico"></a></td>
-            <td></td>
+            <td><a href="{% url 'certificates:certificate-pdf' certificate.hash %}" class="fas fa-file-pdf fa-sm" title="Visualizar"></a></td>
           </tr>
         {% endfor %}
         </tbody>
@@ -58,7 +58,7 @@
           <th>Cód. Validação</th>
           <th>Situação</th>
           <th>Histórico</th>
-          <th>Ações</th>
+          <th>Visualizar</th>
         </tr>
         </tfoot>
       </table>

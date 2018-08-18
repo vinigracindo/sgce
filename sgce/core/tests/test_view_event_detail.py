@@ -3,10 +3,8 @@ import datetime
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url as r
 
-from sgce.core.forms import EventForm
 from sgce.core.models import Event
 from sgce.core.tests.base import LoggedInTestCase
-from sgce.accounts.models import Profile
 
 
 class EventDetailWithoutPermission(LoggedInTestCase):
@@ -59,3 +57,12 @@ class EventDetailGet(EventDetailWithPermission):
         for text in contents:
             with self.subTest():
                 self.assertContains(self.response, text)
+
+
+class EventDetailInvalidGet(EventDetailWithPermission):
+    def setUp(self):
+        super(EventDetailInvalidGet, self).setUp()
+        self.response = self.client.get(r('core:event-detail', 'event-does-not-exist'))
+
+    def test_get(self):
+        self.assertEqual(404, self.response.status_code)

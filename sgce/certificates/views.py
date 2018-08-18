@@ -6,10 +6,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import get_template
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from xhtml2pdf import pisa
 
 from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, CertificatesCreatorForm, ParticipantForm, \
@@ -50,18 +50,24 @@ def certificate_validate(request):
         form = CertificateValidateForm(request.POST)
         if form.is_valid():
             hash = form.cleaned_data['hash']
+            return redirect('certificates:certificate-detail', hash=hash)
 
-            try:
-                certificate = Certificate.objects.get(hash=hash)
-                context['certificate'] = certificate
-
-            except Certificate.DoesNotExist:
-                messages.error(request, 'Não existe certificado válido para este código de autenticação.')
+            # try:
+            #     certificate = Certificate.objects.get(hash=hash, status=Certificate.VALID)
+            #     return redirect('certificates:certificate-detail', hash=certificate.hash)
+            #
+            # except Certificate.DoesNotExist:
+            #     messages.error(request, 'Não existe certificado válido para este código de autenticação.')
 
     else:
         form = CertificateValidateForm()
     context['form'] = form
     return render(request, 'certificates/certificate/validate.html', context)
+
+
+def certificate_detail(request, hash):
+    certificate = get_object_or_404(Certificate, hash=hash)
+    return render(request, 'certificates/certificate/detail.html', {'certificate': certificate})
 
 
 class ParticipantListView(LoginRequiredMixin, ListView):
