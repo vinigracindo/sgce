@@ -38,7 +38,7 @@ class ParticipantUpdateGet(ParticipantUpdateWithPermission):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/participant/participant_form.html')
+        self.assertTemplateUsed(self.response, 'certificates/participant/form.html')
 
     def test_inputs(self):
         """Html must contain filled inputs"""

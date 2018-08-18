@@ -26,7 +26,7 @@ class CertificatesCreatorGet(LoggedInTestCase):
         self.assertIsInstance(form, CertificatesCreatorForm)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/certificate/certificates_creator.html')
+        self.assertTemplateUsed(self.response, 'certificates/certificate/generator.html')
 
     def test_html(self):
         """Html must contain input tags"""
@@ -64,7 +64,7 @@ class CertificatesCreatorBlankDataPost(LoggedInTestCase):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/certificate/certificates_creator.html')
+        self.assertTemplateUsed(self.response, 'certificates/certificate/generator.html')
 
 
 class CertificatesCreatorPost(LoggedInTestCase):
@@ -117,7 +117,7 @@ class CertificatesCreatorInvalidCpfPost(LoggedInTestCase):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/certificate/certificates_creator.html')
+        self.assertTemplateUsed(self.response, 'certificates/certificate/generator.html')
 
     def test_html_has_errors(self):
         self.assertContains(self.response, 'O CPF 111.111.111-11 da linha 1 é inválido.')
@@ -140,7 +140,7 @@ class CertificatesCreatorInvalidBlankValuesPost(LoggedInTestCase):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/certificate/certificates_creator.html')
+        self.assertTemplateUsed(self.response, 'certificates/certificate/generator.html')
 
     def test_html_has_errors(self):
         self.assertContains(self.response, 'A tabela não pode conter valores em branco')
@@ -163,7 +163,7 @@ class CertificatesCreatorInvalidMissValuePost(LoggedInTestCase):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/certificate/certificates_creator.html')
+        self.assertTemplateUsed(self.response, 'certificates/certificate/generator.html')
 
     def test_html_has_errors(self):
         self.assertContains(self.response, 'A tabela não pode conter valores em branco')

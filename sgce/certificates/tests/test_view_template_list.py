@@ -22,7 +22,7 @@ class TemplateListGet(LoggedInTestCase):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/template/template_list.html')
+        self.assertTemplateUsed(self.response, 'certificates/template/list.html')
 
     def test_html(self):
         contents = [

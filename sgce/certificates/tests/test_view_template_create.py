@@ -42,7 +42,7 @@ class TemplateCreateGet(TemplateCreateWithPermission):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/template/template_form.html')
+        self.assertTemplateUsed(self.response, 'certificates/template/form.html')
 
     def test_html(self):
         """Html must contain input tags"""
@@ -121,7 +121,7 @@ class TemplateCreatePostInvalid(TemplateCreateWithPermission):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/template/template_form.html')
+        self.assertTemplateUsed(self.response, 'certificates/template/form.html')
 
     def test_has_form(self):
         form = self.response.context['form']

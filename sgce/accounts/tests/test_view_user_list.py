@@ -55,7 +55,7 @@ class UserListGet(UserListWithPermission):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'accounts/user/user_list.html')
+        self.assertTemplateUsed(self.response, 'accounts/user/list.html')
 
     def test_html(self):
         contents = [

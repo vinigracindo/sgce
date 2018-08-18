@@ -40,7 +40,7 @@ class TemplateDeleteGet(TemplateDeleteWithPermission):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/template/template_check_delete.html')
+        self.assertTemplateUsed(self.response, 'certificates/template/delete.html')
 
     def test_html(self):
         """Html must contain input tags"""

@@ -19,7 +19,7 @@ def index(request):
 
 class EventListView(LoginRequiredMixin, ListView):
     model = Event
-    template_name = 'core/event/event_list.html'
+    template_name = 'core/event/list.html'
     context_object_name = 'events'
 
     def get_queryset(self):
@@ -33,7 +33,7 @@ class EventCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessag
     form_class = EventForm
     permission_required = 'core.add_event'
     raise_exception = True
-    template_name = 'core/event/event_form.html'
+    template_name = 'core/event/form.html'
     success_url = reverse_lazy('core:event-list')
     success_message = "O evento %(name)s foi criado com sucesso."
 
@@ -46,7 +46,7 @@ class EventCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessag
 class EventUpdateView(LoginRequiredMixin, EventCreatedByPermission, SuccessMessageMixin, UpdateView):
     model = Event
     form_class = EventForm
-    template_name = 'core/event/event_form.html'
+    template_name = 'core/event/form.html'
     success_url = reverse_lazy('core:event-list')
     success_message = "O evento %(name)s foi atualizado com sucesso."
 
@@ -54,7 +54,7 @@ class EventUpdateView(LoginRequiredMixin, EventCreatedByPermission, SuccessMessa
 class EventDeleteView(LoginRequiredMixin, EventCreatedByPermission, DeleteView):
     model = Event
     form_class = EventForm
-    template_name = 'core/event/event_check_delete.html'
+    template_name = 'core/event/delete.html'
     success_url = reverse_lazy('core:event-list')
     success_message = "O evento foi excluído com sucesso."
 
@@ -73,4 +73,4 @@ class EventDeleteView(LoginRequiredMixin, EventCreatedByPermission, DeleteView):
 
 class EventDetailView(LoginRequiredMixin, EventCreatedByPermission, DetailView):
     model = Event
-    template_name = 'core/event/event_detail.html'
+    template_name = 'core/event/detail.html'

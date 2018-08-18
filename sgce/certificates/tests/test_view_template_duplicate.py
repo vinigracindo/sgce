@@ -25,7 +25,7 @@ class TemplateDuplicateGet(LoggedInTestCase):
         self.assertIsInstance(form, TemplateDuplicateForm)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/template/template_duplicate.html')
+        self.assertTemplateUsed(self.response, 'certificates/template/duplicate.html')
 
     def test_html(self):
         """Html must contain input tags"""

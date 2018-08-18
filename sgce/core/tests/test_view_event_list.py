@@ -21,7 +21,7 @@ class EventListGet(LoggedInTestCase):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'core/event/event_list.html')
+        self.assertTemplateUsed(self.response, 'core/event/list.html')
 
     def test_html(self):
         """Must show only event created by user logged in."""

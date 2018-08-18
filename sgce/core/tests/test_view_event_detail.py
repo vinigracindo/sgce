@@ -47,7 +47,7 @@ class EventDetailGet(EventDetailWithPermission):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'core/event/event_detail.html')
+        self.assertTemplateUsed(self.response, 'core/event/detail.html')
 
     def test_html(self):
         """Html must contain event attrs"""

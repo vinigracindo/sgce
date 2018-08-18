@@ -29,7 +29,7 @@ class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = 'auth.view_user'
     raise_exception = True
     model = get_user_model()
-    template_name = 'accounts/user/user_list.html'
+    template_name = 'accounts/user/list.html'
     context_object_name = 'users'
 
 
@@ -38,7 +38,7 @@ class UserCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessage
     raise_exception = True
     model = get_user_model()
     form_class = UserForm
-    template_name = 'accounts/user/user_form.html'
+    template_name = 'accounts/user/form.html'
     success_url = reverse_lazy('accounts:user-list')
     success_message = "O usuário %(username)s foi criado com sucesso."
 
@@ -52,6 +52,6 @@ class UserUpdateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessage
     raise_exception = True
     model = get_user_model()
     form_class = UserUpdateForm
-    template_name = 'accounts/user/user_form.html'
+    template_name = 'accounts/user/form.html'
     success_url = reverse_lazy('accounts:user-list')
     success_message = "O usuário %(username)s foi atualizado com sucesso."

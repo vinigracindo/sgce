@@ -73,7 +73,7 @@ def certificate_detail(request, hash):
 class ParticipantListView(LoginRequiredMixin, ListView):
     model = Participant
     raise_exception = True
-    template_name = 'certificates/participant/participant_list.html'
+    template_name = 'certificates/participant/list.html'
     context_object_name = 'participants'
 
 
@@ -81,7 +81,7 @@ class ParticipantUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMess
     model = Participant
     form_class = ParticipantForm
     raise_exception = True
-    template_name = 'certificates/participant/participant_form.html'
+    template_name = 'certificates/participant/form.html'
     success_url = reverse_lazy('certificates:participant-list')
     success_message = "O participante %(name)s foi atualizado com sucesso."
 
@@ -92,7 +92,7 @@ class ParticipantUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMess
 
 class TemplateListView(LoginRequiredMixin, ListView):
     model = Template
-    template_name = 'certificates/template/template_list.html'
+    template_name = 'certificates/template/list.html'
     context_object_name = 'templates'
 
 
@@ -101,7 +101,7 @@ class TemplateCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMes
     form_class = TemplateForm
     permission_required = 'certificates.add_template'
     raise_exception = True
-    template_name = 'certificates/template/template_form.html'
+    template_name = 'certificates/template/form.html'
     success_url = reverse_lazy('certificates:template-list')
     success_message = "O modelo %(name)s foi criado com sucesso."
 
@@ -109,14 +109,14 @@ class TemplateCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMes
 class TemplateUpdateView(LoginRequiredMixin, TemplateEventCreatedByPermission, SuccessMessageMixin, UpdateView):
     model = Template
     form_class = TemplateForm
-    template_name = 'certificates/template/template_form.html'
+    template_name = 'certificates/template/form.html'
     success_url = reverse_lazy('certificates:template-list')
     success_message = "O modelo %(name)s foi atualizado com sucesso."
 
 
 class TemplateDeleteView(LoginRequiredMixin, TemplateEventCreatedByPermission, DeleteView):
     model = Template
-    template_name = 'certificates/template/template_check_delete.html'
+    template_name = 'certificates/template/delete.html'
     success_url = reverse_lazy('certificates:template-list')
     success_message = "O modelo foi excluído com sucesso."
 
@@ -154,13 +154,13 @@ def template_duplicate(request, pk):
         'template': template,
     }
 
-    return render(request, 'certificates/template/template_duplicate.html', context)
+    return render(request, 'certificates/template/duplicate.html', context)
 
 
 @login_required
 def template_preview_render_pdf(request, template_pk):
     template = Template.objects.get(pk=template_pk)
-    template_path = 'certificates/template/pdf/certificate_preview.html'
+    template_path = 'certificates/template/pdf/preview.html'
     context = {'template': template}
 
     # Create a Django response object, and specify content_type as pdf
@@ -183,7 +183,7 @@ def template_preview_render_pdf(request, template_pk):
 
 def certificate_render_pdf(request, hash):
     certificate = get_object_or_404(Certificate, hash=hash)
-    template_path = 'certificates/template/pdf/certificate_pdf.html'
+    template_path = 'certificates/certificate/pdf/certificate.html'
     context = {'certificate': certificate}
 
     # Create a Django response object, and specify content_type as pdf
@@ -246,7 +246,7 @@ def certificates_creator(request):
 
     context['form'] = form
 
-    return render(request, 'certificates/certificate/certificates_creator.html', context)
+    return render(request, 'certificates/certificate/generator.html', context)
 
 
 @login_required
@@ -300,7 +300,7 @@ def certificates_evaluation_template(request, template_pk):
 class CertificateListView(LoginRequiredMixin, ListView):
     model = Certificate
     raise_exception = True
-    template_name = 'certificates/certificate/certificate_list.html'
+    template_name = 'certificates/certificate/list.html'
     context_object_name = 'certificates'
 
     def get_queryset(self):

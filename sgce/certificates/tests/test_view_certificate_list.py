@@ -27,7 +27,7 @@ class CertificateListGet(LoggedInTestCase):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/certificate/certificate_list.html')
+        self.assertTemplateUsed(self.response, 'certificates/certificate/list.html')
 
     def test_html(self):
         """Must show only certificate where certificate.template.event was created by user logged in."""

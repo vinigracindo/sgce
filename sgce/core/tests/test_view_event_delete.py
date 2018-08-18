@@ -37,7 +37,7 @@ class EventDeleteGet(EventDeleteWithPermission):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'core/event/event_check_delete.html')
+        self.assertTemplateUsed(self.response, 'core/event/delete.html')
 
     def test_html(self):
         """Html must contain input tags"""
