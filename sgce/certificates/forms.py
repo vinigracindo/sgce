@@ -62,6 +62,7 @@ class CertificatesCreatorForm(forms.Form):
             self.fields['template'].queryset = Template.objects.filter(event__created_by=user)
 
     def clean_certificates(self):
+        # TODO: Refactor
         data = self.cleaned_data['certificates']
 
         template = self.cleaned_data['template']
@@ -73,14 +74,15 @@ class CertificatesCreatorForm(forms.Form):
         for line, attrs_certificate in enumerate(certificates, 1):
             if any(attrs_certificate):
                 any_object = True
-                if (None in attrs_certificate) or ('' in attrs_certificate) or (len(template.template_fields()) != len(attrs_certificate)):
+                # ('' in attrs_certificate[1:] = Remove ENDERECO_EMAIL (optional)
+                if (None in attrs_certificate[1:]) or ('' in attrs_certificate[1:]) or (len(template.template_fields()) != len(attrs_certificate)):
                     raise forms.ValidationError('A tabela não pode conter valores em branco')
                     break
                 else:
                     try:
-                        attrs_certificate[0] = validate_cpf(attrs_certificate[0])
+                        attrs_certificate[1] = validate_cpf(attrs_certificate[1])
                     except Exception as e:
-                        raise forms.ValidationError('O CPF {} da linha {} é inválido.'.format(attrs_certificate[0], line))
+                        raise forms.ValidationError('O CPF {} da linha {} é inválido.'.format(attrs_certificate[1], line))
                         break
 
         if any_object is False:

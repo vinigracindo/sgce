@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.validators import validate_email
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -205,6 +206,7 @@ def certificate_render_pdf(request, hash):
     return response
 
 
+# TODO: Refactor
 @login_required
 def certificates_creator(request):
     context = {}
@@ -222,16 +224,23 @@ def certificates_creator(request):
             inspector = {'certificates': [], 'error': []}
 
             for certificate_attrs in certificates:
-                cpf, name, *args = certificate_attrs
+                email, cpf, name, *args = certificate_attrs
                 attrs = {}
 
-                for key, value in enumerate(args, 2):
+                for key, value in enumerate(args, 3):
                     attrs[template.template_fields()[key]] = value
 
                 participant, created = Participant.objects.get_or_create(
                     cpf=validate_cpf(cpf),
                     defaults={'name': name}
                 )
+
+                if email:
+                    try:
+                        validate_email(email)
+                        participant.email = email
+                        participant.save()
+                    except: pass
 
                 try:
                     certificate = Certificate.objects.create(participant=participant, template=template, fields=attrs)

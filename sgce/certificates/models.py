@@ -60,11 +60,9 @@ class Template(models.Model):
         Exemplo: Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO, realizado em DATA_EVENTO.
         ''',
         help_text='''
-        O arquivo importado deve estar no formato CSV, com a separação dos campos por ponto-e-vírgula (;) e ter, 
-        obrigatoriamente, o campo NUMERO_CPF e NOME_COMPLETO. Poderá também conter outros campos, desde que formados 
-        por duas palavras maiúsculas separadas pelo caractere sublinhado (underline), como no texto 
-        de exemplo. Evite usar o ponto-e-vírgula junto ao nome de um campo dentro do texto do certificado para evitar 
-        problemas na importação de dados.
+        Os campos que compõem o certificado devem ser formados por duas palavras maísculas separadas pelo
+        caractere sublinhado (underline), como no texto de exemplo:
+        Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO, realizado em DATA_EVENTO
         '''
     )
     backside_title = models.CharField('título do verso', max_length=128, blank=True)
@@ -154,9 +152,10 @@ class Template(models.Model):
 
     def template_fields(self):
         """Must return the fields that will build the certificate. The pattern: UPPERCASE_UPPERCASE"""
+        optional_field = ['ENDERECO_EMAIL']
         required_fields = ['NUMERO_CPF', 'NOME_COMPLETO']
         another_fields = re.findall(r'\b([A-Z]+_[A-Z]+)\b', self.content)
-        return remove_duplicates(required_fields + another_fields)
+        return remove_duplicates(optional_field + required_fields + another_fields)
 
 
 class Participant(models.Model):
