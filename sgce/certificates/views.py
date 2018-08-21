@@ -72,7 +72,7 @@ def certificate_detail(request, hash):
     try:
         context['certificate'] = Certificate.objects.get(hash=hash)
     except Certificate.DoesNotExist: pass
-    
+
     return render(request, 'certificates/certificate/detail.html', context)
 
 

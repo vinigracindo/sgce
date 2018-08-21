@@ -2,7 +2,7 @@ language: python
 python:
   - "3.6"
 install:
-  - cp contrib/env-sample .env
+  - cp contrib/ini-sample settings.ini
   - pip install -q -r requirements.txt
 script:
   - coverage run --source=sgce.core,sgce.accounts,sgce.certificates manage.py test
