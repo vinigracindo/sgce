@@ -49,7 +49,7 @@ cd sgce
 python -m venv .sgce
 source .sgce/bin/activate
 pip install -r requirements.txt
-cp contrib/env-sample .env
+cp contrib/ini-sample settings.ini
 python manage.py migrate
 python manage.py loaddata Group
 python manage.py test
@@ -64,7 +64,7 @@ cd sgce
 python -m venv .sgce
 .sgce\Scripts\activate
 pip install -r requirements.txt
-copy contrib/env-sample .env
+copy contrib\ini-sample settings.ini
 python manage.py migrate
 python manage.py loaddata Group
 python manage.py test
