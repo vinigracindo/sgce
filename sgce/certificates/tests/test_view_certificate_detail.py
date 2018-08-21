@@ -51,7 +51,7 @@ class CertificateDetailInvalidGet(TestCase):
         self.response = self.client.get(r('certificates:certificate-detail', 'invalid-hash'))
 
     def test_get(self):
-        self.assertEqual(404, self.response.status_code)
+        self.assertContains(self.response, 'Certificado inválido')
 
 
 class CertificateDetailTestInvalidStatusGet(TestCase):

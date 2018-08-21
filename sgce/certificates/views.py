@@ -68,8 +68,12 @@ def certificate_validate(request):
 
 
 def certificate_detail(request, hash):
-    certificate = get_object_or_404(Certificate, hash=hash)
-    return render(request, 'certificates/certificate/detail.html', {'certificate': certificate})
+    context = {}
+    try:
+        context['certificate'] = Certificate.objects.get(hash=hash)
+    except Certificate.DoesNotExist: pass
+    
+    return render(request, 'certificates/certificate/detail.html', context)
 
 
 class ParticipantListView(LoginRequiredMixin, ListView):
