@@ -11,6 +11,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import get_template
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.conf import settings
 from xhtml2pdf import pisa
 
 from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, CertificatesCreatorForm, ParticipantForm, \
@@ -186,12 +187,7 @@ def certificate_render_pdf(request, hash):
     certificate = get_object_or_404(Certificate, hash=hash)
     template_path = 'certificates/certificate/pdf/certificate.html'
 
-    if request.is_secure():
-        domain = '{}{}'.format('https://', request.META['HTTP_HOST'])
-    else:
-        domain = '{}{}'.format('http://', request.META['HTTP_HOST'])
-
-    context = {'certificate': certificate, 'domain': domain}
+    context = {'certificate': certificate, 'domain': settings.SITE_URL}
 
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
