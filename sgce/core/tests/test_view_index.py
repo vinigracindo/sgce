@@ -15,19 +15,6 @@ class IndexTest(LoggedInTestCase):
         """Must use index.html"""
         self.assertTemplateUsed(self.response, 'core/index.html')
 
-    def test_menu_html(self):
-        links = [
-            'href="{}"'.format(r('accounts:user-list')),
-            'href="{}"'.format(r('core:event-list')),
-            'href="{}"'.format(r('certificates:template-list')),
-            'href="{}"'.format(r('certificates:certificates-creator')),
-            'href="{}"'.format(r('certificates:certificates-evaluation')),
-        ]
-
-        for link in links:
-            with self.subTest():
-                self.assertContains(self.response, link)
-
     def test_html(self):
         contents = [
             'href="{}"'.format(r('core:index')),
