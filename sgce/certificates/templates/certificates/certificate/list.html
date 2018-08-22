@@ -44,8 +44,7 @@
         {% if user.is_superuser %}
           <td style="white-space: nowrap;">
             <a href="{% url 'certificates:certificate-pdf' certificate.hash %}" class="fas fa-file-pdf fa-sm" title="Visualizar"></a> |
-            <a href="#" class="fas fa-clock fa-sm" title="Histórico"></a> |
-            <a href="#" class="fas fa-edit fa-sm" title="Editar"></a> |
+            <a target="_blank" href="{% url 'certificates:certificate-history' certificate.pk %}" class="fas fa-clock fa-sm" title="Histórico"></a> |
             <a href="{{ certificate.get_absolute_url }}" target="_blank" class="fas fa-info-circle fa-sm" title="Detalhes"></a>
           </td>
         {% endif %}

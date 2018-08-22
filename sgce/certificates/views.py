@@ -20,7 +20,8 @@ from sgce.certificates.mixins import TemplateEventCreatedByPermission
 from sgce.certificates.models import Template, Participant, Certificate, CertificateHistory
 from sgce.certificates.utils.pdf import link_callback
 from sgce.certificates.validators import validate_cpf
-from sgce.core.decorators import event_created_by_user_logged_in
+from sgce.core.decorators import template_event_created_by_user_logged_in_required, \
+    certificate_event_created_by_user_logged_in_required
 from sgce.core.utils.get_deleted_objects import get_deleted_objects
 
 
@@ -53,13 +54,6 @@ def certificate_validate(request):
         if form.is_valid():
             hash = form.cleaned_data['hash']
             return redirect('certificates:certificate-detail', hash=hash)
-
-            # try:
-            #     certificate = Certificate.objects.get(hash=hash, status=Certificate.VALID)
-            #     return redirect('certificates:certificate-detail', hash=certificate.hash)
-            #
-            # except Certificate.DoesNotExist:
-            #     messages.error(request, 'Não existe certificado válido para este código de autenticação.')
 
     else:
         form = CertificateValidateForm()
@@ -265,6 +259,13 @@ def certificates_creator(request):
 
 
 @login_required
+@certificate_event_created_by_user_logged_in_required
+def certificate_history(request, certificate_pk):
+    certificate = get_object_or_404(Certificate, pk=certificate_pk)
+    return render(request, 'certificates/certificate/history.html', {'certificate': certificate})
+
+
+@login_required
 def certificates_evaluation(request):
     if request.method == 'POST':
         form = CertificateEvaluationForm(request.user, request.POST)
@@ -278,7 +279,7 @@ def certificates_evaluation(request):
 
 
 @login_required
-@event_created_by_user_logged_in
+@template_event_created_by_user_logged_in_required
 def certificates_evaluation_template(request, template_pk):
     template = Template.objects.get(pk=template_pk)
 

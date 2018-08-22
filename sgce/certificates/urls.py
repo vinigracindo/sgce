@@ -20,6 +20,7 @@ urlpatterns = [
     path('certificate/validate/', views.certificate_validate, name='certificate-validate'),
     path('certificate/list/', views.CertificateListView.as_view(), name='certificate-list'),
     path('certificate/<str:hash>/', views.certificate_detail, name='certificate-detail'),
+    path('certificate/history/<int:certificate_pk>/', views.certificate_history, name='certificate-history'),
 
     path('participant/list/', views.ParticipantListView.as_view(), name='participant-list'),
     path('participant/update/<int:pk>/', views.ParticipantUpdateView.as_view(), name='participant-update'),

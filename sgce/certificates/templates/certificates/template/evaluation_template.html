@@ -37,7 +37,6 @@
                       <th scope="col">Código</th>
                       <th scope="col">Situação</th>
                       <th scope="col">Visualizar</th>
-                      <th scope="col">Histórico</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -53,7 +52,6 @@
                         <td>{{ certificate.hash }}</td>
                         <td>{{ certificate.get_status_display }}</td>
                         <td><a href="{% url 'certificates:certificate-pdf' certificate.hash %}" class="fas fa-file-pdf fa-sm" title="Visualizar"></a></td>
-                        <td><a href="#" class="fas fa-clock fa-sm" title="Histórico"></a></td>
                       </tr>
                     {% endfor %}
                   </tbody>
@@ -88,7 +86,7 @@ $("#checkAll").click(function(){
       'info'        : false,
       'autoWidth'   : true,
       'columnDefs': [
-        { "orderable": false, "targets": [0, 4, 5, 6] },
+        { "orderable": false, "targets": [0, 4, 5] },
       ],
       "initComplete": function() {
         this.api().columns().every( function (i) {

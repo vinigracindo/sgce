@@ -244,6 +244,7 @@ class CertificateHistory(models.Model):
 
     class Meta:
         verbose_name = 'histórico'
+        ordering = ['-datetime']
 
     def __str__(self):
         return '{} - {}'.format(self.certificate, self.user)
