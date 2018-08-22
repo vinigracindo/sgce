@@ -15,9 +15,7 @@ https://sgce-app.herokuapp.com/<br/>
 https://sgce-app.herokuapp.com/login/ (User: admin | Password: adm11200)
 
 
-O SGCE está sendo desenvolvido baseado no [SGCE criado pela Universidade Federal de Pampa](https://softwarepublico.gov.br/social/sgce) que foi descontinuado.
-Por este motivo, uma nova versão está sendo criada em python/django. Ressalto que essa versão não tem relação alguma com os servidores da
-Unipampa.
+O SGCE está sendo desenvolvido baseado no [SGCE criado pela Universidade Federal de Pampa](https://softwarepublico.gov.br/social/sgce). Diferente do SGCE da Unipampa, esta versão foi criada em Python com o Framework Django.
 
 ## Screenshots
 ![Main](https://user-images.githubusercontent.com/999040/44290422-0b453080-a24f-11e8-9075-fbcdfab8a96e.png)
