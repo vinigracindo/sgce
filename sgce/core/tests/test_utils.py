@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from sgce.core.models import Event
-from sgce.core.utils import slugify
 
 
 class SlugifyTest(TestCase):
