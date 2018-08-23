@@ -18,7 +18,7 @@
 
   <body class="text-center">
     <form method="post" class="form-signin"> {% csrf_token %}
-      <a href="{% url 'home' %}"><img class="mb-4" src="{% static 'images/logo.png' %}" alt="" width="96" height="96"></a>
+      <a href="{% url 'home' %}"><img class="mb-4" src="{% static 'images/logo.png' %}" alt="" width="96"></a>
       {% if form.errors %}
         {% for error in form.non_field_errors %}
           <div class="alert alert-danger" role="alert">
