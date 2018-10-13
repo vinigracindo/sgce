@@ -22,5 +22,5 @@ e o projeto adere ao [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 - [x] Gerar Certificados
 - [x] Validar Certificado
 - [x] Listar Certificados
-- [ ] Histórico de Certificado
+- [x] Histórico de Certificado
 - [ ] Notificar Participantes por Email
