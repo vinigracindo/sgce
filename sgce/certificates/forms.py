@@ -75,14 +75,14 @@ class CertificatesCreatorForm(forms.Form):
             if any(attrs_certificate):
                 any_object = True
                 # ('' in attrs_certificate[1:] = Remove ENDERECO_EMAIL (optional)
-                if (None in attrs_certificate[1:]) or ('' in attrs_certificate[1:]) or (len(template.template_fields()) != len(attrs_certificate)):
+                if (None in attrs_certificate) or ('' in attrs_certificate) or (len(template.template_fields()) != len(attrs_certificate)):
                     raise forms.ValidationError('A tabela não pode conter valores em branco')
                     break
                 else:
                     try:
-                        attrs_certificate[1] = validate_cpf(attrs_certificate[1])
+                        attrs_certificate[0] = validate_cpf(attrs_certificate[0])
                     except Exception as e:
-                        raise forms.ValidationError('O CPF {} da linha {} é inválido.'.format(attrs_certificate[1], line))
+                        raise forms.ValidationError('O CPF {} da linha {} é inválido.'.format(attrs_certificate[0], line))
                         break
 
         if any_object is False:

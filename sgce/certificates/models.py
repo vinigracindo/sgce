@@ -152,10 +152,11 @@ class Template(models.Model):
 
     def template_fields(self):
         """Must return the fields that will build the certificate. The pattern: UPPERCASE_UPPERCASE"""
-        optional_field = ['ENDERECO_EMAIL']
+        #optional_field = ['ENDERECO_EMAIL']
         required_fields = ['NUMERO_CPF', 'NOME_COMPLETO']
         another_fields = re.findall(r'\b([A-Z]+_[A-Z]+)\b', self.content)
-        return remove_duplicates(optional_field + required_fields + another_fields)
+        #return remove_duplicates(optional_field + required_fields + another_fields)
+        return remove_duplicates(required_fields + another_fields)
 
 
 class Participant(models.Model):

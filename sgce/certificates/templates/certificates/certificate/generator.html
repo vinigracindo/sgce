@@ -44,11 +44,6 @@
         {% endfor %}
   {% endif %}
   <div class="row justify-content-center">
-    <div class="alert alert-info" role="alert">
-      O campo ENDERECO_EMAIL é opcional.
-    </div>
-  </div>
-  <div class="row justify-content-center">
     <div class="col-md-10">
       <form id="form" method="post" enctype="multipart/form-data">{% csrf_token %}
         {% bootstrap_field form.template layout='group' %}

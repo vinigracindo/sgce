@@ -206,7 +206,6 @@ def certificate_render_pdf(request, hash):
     return response
 
 
-# TODO: Refactor
 @login_required
 def certificates_creator(request):
     context = {}
@@ -219,15 +218,15 @@ def certificates_creator(request):
             template = form.cleaned_data['template']
             certificates = form.cleaned_data['certificates']
 
-            certificates = json.loads(certificates)
+            certificates = json.loads(certificates)[:-1] # Remove last tuple of None's
 
             inspector = {'certificates': [], 'error': []}
 
             for certificate_attrs in certificates:
-                email, cpf, name, *args = certificate_attrs
+                cpf, name, *args = certificate_attrs
                 attrs = {}
 
-                for key, value in enumerate(args, 3):
+                for key, value in enumerate(args, 2):
                     attrs[template.template_fields()[key]] = value
 
                 participant, created = Participant.objects.get_or_create(
@@ -235,20 +234,13 @@ def certificates_creator(request):
                     defaults={'name': name}
                 )
 
-                if email:
-                    try:
-                        validate_email(email)
-                        participant.email = email
-                        participant.save()
-                    except: pass
-
                 try:
                     certificate = Certificate.objects.create(participant=participant, template=template, fields=attrs)
                     inspector['certificates'].append(certificate)
                 except IntegrityError:
                     inspector['error'].append(certificate_attrs)
 
-                return render(request, 'certificates/template/inspector.html', {'inspector': inspector})
+            return render(request, 'certificates/template/inspector.html', {'inspector': inspector})
 
     else:
         form = CertificatesCreatorForm(request.user)
@@ -256,6 +248,7 @@ def certificates_creator(request):
     context['form'] = form
 
     return render(request, 'certificates/certificate/generator.html', context)
+
 
 
 @login_required
