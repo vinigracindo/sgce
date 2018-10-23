@@ -75,7 +75,7 @@ class CertificatesCreatorPost(LoggedInTestCase):
 
         data = dict(
             template=self.template.pk,
-            certificates='[["", "181.144.390-76", "Alan Turing", "Evento", "01/01/2018"]]',
+            certificates='[["181.144.390-76", "Alan Turing", "Evento", "01/01/2018"]]',
         )
 
         self.response = self.client.post(r('certificates:certificates-creator'), data)
@@ -96,7 +96,6 @@ class CertificatesCreatorPost(LoggedInTestCase):
 
     def test_create_participant_attrs(self):
         participant = Participant.objects.first()
-        self.assertEqual('', participant.email)
         self.assertEqual('18114439076', participant.cpf)
         self.assertEqual('Alan Turing', participant.name)
 
@@ -109,7 +108,7 @@ class CertificatesCreatorInvalidCpfPost(LoggedInTestCase):
 
         data = dict(
             template=self.template.pk,
-            certificates='[["", "111.111.111-11", "Alan Turing", "Evento", "01/01/2018"]]',
+            certificates='[["111.111.111-11", "Alan Turing", "Evento", "01/01/2018"]]',
         )
 
         self.response = self.client.post(r('certificates:certificates-creator'), data)

@@ -61,7 +61,7 @@ class TemplateModelTest(TestCase):
     def test_get_fields(self):
         self.assertListEqual(
             self.template.template_fields(),
-            ['ENDERECO_EMAIL', 'NUMERO_CPF', 'NOME_COMPLETO', 'NOME_EVENTO']
+            ['NUMERO_CPF', 'NOME_COMPLETO', 'NOME_EVENTO']
         )
         # another test
         self.template.content = '''
@@ -77,7 +77,7 @@ class TemplateModelTest(TestCase):
         self.template.refresh_from_db()
         self.assertListEqual(
             self.template.template_fields(),
-            ['ENDERECO_EMAIL', 'NUMERO_CPF', 'NOME_COMPLETO', 'NOME_EVENTO', 'EMAIL_PARTICIPANTE']
+            ['NUMERO_CPF', 'NOME_COMPLETO', 'NOME_EVENTO', 'EMAIL_PARTICIPANTE']
         )
 
     def test_layout(self):

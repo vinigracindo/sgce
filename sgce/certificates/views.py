@@ -218,7 +218,7 @@ def certificates_creator(request):
             template = form.cleaned_data['template']
             certificates = form.cleaned_data['certificates']
 
-            certificates = json.loads(certificates)[:-1] # Remove last tuple of None's
+            certificates = json.loads(certificates)#[:-1] # Remove last tuple of None's
 
             inspector = {'certificates': [], 'error': []}
 
@@ -248,7 +248,6 @@ def certificates_creator(request):
     context['form'] = form
 
     return render(request, 'certificates/certificate/generator.html', context)
-
 
 
 @login_required

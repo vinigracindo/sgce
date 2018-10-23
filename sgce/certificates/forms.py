@@ -84,9 +84,13 @@ class CertificatesCreatorForm(forms.Form):
                     except Exception as e:
                         raise forms.ValidationError('O CPF {} da linha {} é inválido.'.format(attrs_certificate[0], line))
                         break
+            else:
+                certificates.remove(attrs_certificate)
 
         if any_object is False:
             raise forms.ValidationError('A tabela não pode conter valores em branco')
+
+        data = json.dumps(certificates)
 
         return data
 
