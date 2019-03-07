@@ -10,7 +10,7 @@ e o projeto adere ao [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## 1.0.1 - 2019/03/07
 ### Correção
-- Remove nome e evento do título do pdf gerado por questões de incompatibilidade com gunicorn
+- Altera composição do título do certificado gerado por questões de incompatibilidade com gunicorn
 
 ## 1.0.0 - 2019/02/27
 ### Adicionado
