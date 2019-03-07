@@ -7,7 +7,7 @@ from sgce.core.utils.slugify import generate_unique_slug
 
 class Event(models.Model):
     name = models.CharField('nome', max_length=255)
-    slug = models.SlugField('slug', unique=True, editable=False)
+    slug = models.SlugField('slug', unique=True, editable=False, max_length=300)
     start_date = models.DateField('data de início')
     end_date = models.DateField('data de término')
     location = models.CharField('local de realização', max_length=255, blank=True)
