@@ -8,6 +8,10 @@ e o projeto adere ao [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Alterado
 - Nenhuma alteração
 
+## 1.0.1 - 2019/03/07
+### Correção
+- Remove nome e evento do título do pdf gerado por questões de incompatibilidade com gunicorn
+
 ## 1.0.0 - 2019/02/27
 ### Adicionado
 - Gerenciamento de Usuários
@@ -15,4 +19,5 @@ e o projeto adere ao [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 - Gereciamento de Particpantes
 - Gerenciamento de Modelos de Certificados
 
-[Em desenvolvimento]: https://github.com/vinigracindo/sgce/compare/v1.0.0...HEAD
+[Em desenvolvimento]: https://github.com/vinigracindo/sgce/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/vinigracindo/sgce/compare/v1.0.1...v1.0.0
