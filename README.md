@@ -147,8 +147,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 ### 10. Trabalhando com Supervisor
 1. `pip3 install supervisor `
-2. Navegue até a página `cd /etc/supervisor/conf.d/`i
-3. Crie um arquivo de configuração `nano sgce.conf`
+2. Navegue até a página `cd /etc/supervisor/conf.d/`
+3. Crie um usuário www-data no Ubuntu
+```
+sudo groupadd varwwwusers
+sudo adduser www-data varwwwusers
+sudo chgrp -R varwwwusers /var/www/
+sudo chmod -R 760 /var/www/
+```
+4. Crie um arquivo de configuração `nano sgce.conf`
 
 ```
 [program:sgce]
