@@ -131,12 +131,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 
 ### 8. Configurando o Django
-1. Rode as migrações no banco de dados: `python manage.py migrate`
-2. Rode os testes e verifique se está tudo correto: `python manage.py test`
-3. Crie um usuário administrator: `python manage.py createsuperuser`
-4. `python manage.py collectstatic`
-5. Rode o seguinte comando: `python manage.py loaddata Group`
-6. Rode o servidor `python manage.py runserver 0.0.0.0:8000` e verifique se está funcionando na acessando http://<ip_servidor>:8000
+1. Crie um arquivo de configuração: `copy contrib\ini-sample settings.ini`
+2. Entre no arquivo gerado settings.ini.
+-> 2.1 - Coloque DEBUG=False;
+-> 2.2 - Em ALLOWED_HOSTS coloque seu domínio;
+-> 2.3 - Em SITE_URL coloque seu domínio;
+-> 2.4 - Gere um novo SECRET_KEY `python contib/secret_get.py`. Copie a chave gerada pelo comando e coloque em SECRET_KEY;
+3. Rode as migrações no banco de dados: `python manage.py migrate`
+4. Rode os testes e verifique se está tudo correto: `python manage.py test`
+5. Crie um usuário administrator: `python manage.py createsuperuser`
+6. `python manage.py collectstatic`
+7. Rode o seguinte comando: `python manage.py loaddata Group`
+8. Rode o servidor `python manage.py runserver 0.0.0.0:8000` e verifique se está funcionando na acessando http://<ip_servidor>:8000
 
 
 ### 9. Trabalhando com Gunicorn
