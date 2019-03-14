@@ -133,10 +133,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 ### 8. Configurando o Django
 1. Crie um arquivo de configuração: `copy contrib\ini-sample settings.ini`
 2. Entre no arquivo gerado settings.ini.
--> 2.1 - Coloque DEBUG=False;
--> 2.2 - Em ALLOWED_HOSTS coloque seu domínio;
--> 2.3 - Em SITE_URL coloque seu domínio;
--> 2.4 - Gere um novo SECRET_KEY `python contib/secret_get.py`. Copie a chave gerada pelo comando e coloque em SECRET_KEY;
+- Coloque DEBUG=False;
+- Em ALLOWED_HOSTS coloque seu domínio;
+- Em SITE_URL coloque seu domínio;
+- Gere um novo SECRET_KEY `python contib/secret_get.py`. Copie a chave gerada pelo comando e coloque em SECRET_KEY;
 3. Rode as migrações no banco de dados: `python manage.py migrate`
 4. Rode os testes e verifique se está tudo correto: `python manage.py test`
 5. Crie um usuário administrator: `python manage.py createsuperuser`
