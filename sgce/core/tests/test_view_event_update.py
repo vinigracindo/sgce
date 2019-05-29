@@ -12,13 +12,13 @@ from sgce.accounts.models import Profile
 class EventUpdateWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(EventUpdateWithoutPermission, self).setUp()
-        another_user = get_user_model().objects.create_user(username='another_user', password='password')
+        another_user = get_user_model().objects.create_user(username = 'another_user', password = 'password')
         self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=another_user,
+            name = 'Simpósio Brasileiro de Informática',
+            start_date = datetime.date(2018, 6, 18),
+            end_date = datetime.date(2018, 6, 18),
+            location = 'IFAL - Campus Arapiraca',
+            created_by = another_user,
         )
         self.response = self.client.get(r('core:event-update', self.event.pk))
 
@@ -32,11 +32,11 @@ class EventUpdateWithPermission(LoggedInTestCase):
     def setUp(self):
         super(EventUpdateWithPermission, self).setUp()
         self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
+            name = 'Simpósio Brasileiro de Informática',
+            start_date = datetime.date(2018, 6, 18),
+            end_date = datetime.date(2018, 6, 18),
+            location = 'IFAL - Campus Arapiraca',
+            created_by = self.user_logged_in,
         )
 
 
@@ -91,11 +91,11 @@ class EventUpdatePost(EventUpdateWithPermission):
     def setUp(self):
         super(EventUpdatePost, self).setUp()
         data = dict(
-            name='Primeiro Encontro das Engenharias',
-            start_date=datetime.date(2018, 7, 18),
-            end_date=datetime.date(2018, 7, 18),
-            location='Sesi',
-            created_by=self.user_logged_in,
+            name = 'Primeiro Encontro das Engenharias',
+            start_date = datetime.date(2018, 7, 18),
+            end_date = datetime.date(2018, 7, 18),
+            location = 'Sesi',
+            created_by = self.user_logged_in,
         )
         self.response = self.client.post(r('core:event-update', self.event.pk), data)
         self.event.refresh_from_db()

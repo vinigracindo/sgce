@@ -12,9 +12,9 @@ from sgce.accounts.forms import UserForm, UserUpdateForm
 
 
 @login_required
-@permission_required('auth.delete_user', raise_exception=True)
+@permission_required('auth.delete_user', raise_exception = True)
 def user_active_or_disable(request, pk):
-    user = get_user_model().objects.get(pk=pk)
+    user = get_user_model().objects.get(pk = pk)
     if user.pk is not request.user.pk:
         status = not user.is_active
         user.is_active = status
@@ -40,7 +40,7 @@ class UserCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessage
     form_class = UserForm
     template_name = 'accounts/user/form.html'
     success_url = reverse_lazy('accounts:user-list')
-    success_message = "O usuário %(username)s foi criado com sucesso."
+    success_message = 'O usuário %(username)s foi criado com sucesso.'
 
     def form_valid(self, form):
         form.instance.set_password(form.instance.password)
@@ -54,4 +54,4 @@ class UserUpdateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessage
     form_class = UserUpdateForm
     template_name = 'accounts/user/form.html'
     success_url = reverse_lazy('accounts:user-list')
-    success_message = "O usuário %(username)s foi atualizado com sucesso."
+    success_message = 'O usuário %(username)s foi atualizado com sucesso.'

@@ -13,8 +13,8 @@ class TemplateDeleteWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(TemplateDeleteWithoutPermission, self).setUp()
         another_user = mommy.make(get_user_model())
-        event = mommy.make(Event, created_by=another_user)
-        self.template = mommy.make(Template, event=event, background='core/testes/test.gif')
+        event = mommy.make(Event, created_by = another_user)
+        self.template = mommy.make(Template, event = event, background = 'core/testes/test.gif')
 
         self.response = self.client.get(r('certificates:template-delete', self.template.pk))
 
@@ -27,8 +27,8 @@ class TemplateDeleteWithoutPermission(LoggedInTestCase):
 class TemplateDeleteWithPermission(LoggedInTestCase):
     def setUp(self):
         super(TemplateDeleteWithPermission, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
-        self.template = mommy.make(Template, event=event, background='core/testes/test.gif')
+        event = mommy.make(Event, created_by = self.user_logged_in)
+        self.template = mommy.make(Template, event = event, background = 'core/testes/test.gif')
 
 
 class TemplateDeleteGet(TemplateDeleteWithPermission):

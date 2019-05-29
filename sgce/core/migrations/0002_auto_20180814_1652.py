@@ -13,13 +13,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='event',
-            name='created_by',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='events', to=settings.AUTH_USER_MODEL, verbose_name='criado por'),
+            model_name = 'event',
+            name = 'created_by',
+            field = models.ForeignKey(on_delete = django.db.models.deletion.PROTECT, related_name = 'events', to = settings.AUTH_USER_MODEL, verbose_name = 'criado por'),
         ),
         migrations.AlterField(
-            model_name='event',
-            name='slug',
-            field=models.SlugField(editable=False, unique=True, verbose_name='slug'),
+            model_name = 'event',
+            name = 'slug',
+            field = models.SlugField(editable = False, unique = True, verbose_name = 'slug'),
         ),
     ]

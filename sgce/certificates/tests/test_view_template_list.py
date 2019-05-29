@@ -12,9 +12,9 @@ from sgce.core.tests.base import LoggedInTestCase
 class TemplateListGet(LoggedInTestCase):
     def setUp(self):
         super(TemplateListGet, self).setUp()
-        self.event = mommy.make(Event, created_by=self.user_logged_in)
-        self.t1 = mommy.make(Template, event=self.event, background='core/tests/test.gif')
-        self.t2 = mommy.make(Template, event=self.event, background='core/tests/test.gif')
+        self.event = mommy.make(Event, created_by = self.user_logged_in)
+        self.t1 = mommy.make(Template, event = self.event, background = 'core/tests/test.gif')
+        self.t2 = mommy.make(Template, event = self.event, background = 'core/tests/test.gif')
 
         self.response = self.client.get(r('certificates:template-list'))
 

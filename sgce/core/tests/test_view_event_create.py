@@ -27,8 +27,8 @@ class EventCreateWithPermission(LoggedInTestCase):
         # permission required: core.add_event
         content_type = ContentType.objects.get_for_model(Event)
         permission = Permission.objects.get(
-            codename='add_event',
-            content_type=content_type,
+            codename = 'add_event',
+            content_type = content_type,
         )
         self.user_logged_in.user_permissions.add(permission)
         self.user_logged_in.refresh_from_db()
@@ -73,10 +73,10 @@ class EventCreatePost(EventCreateWithPermission):
     def setUp(self):
         super(EventCreatePost, self).setUp()
         data = dict(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 21),
-            end_date=datetime.date(2018, 6, 21),
-            location='IFAL - Campus Arapiraca',
+            name = 'Simpósio Brasileiro de Informática',
+            start_date = datetime.date(2018, 6, 21),
+            end_date = datetime.date(2018, 6, 21),
+            location = 'IFAL - Campus Arapiraca',
         )
         self.response = self.client.post(r('core:event-create'), data)
 

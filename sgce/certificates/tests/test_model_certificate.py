@@ -12,15 +12,15 @@ from sgce.core.models import Event
 class CertificateModelTest(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
-        event = mommy.make(Event, created_by=user)
-        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
+        event = mommy.make(Event, created_by = user)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
         self.participant = mommy.make(Participant)
 
         self.certificate = Certificate.objects.create(
-            participant=self.participant,
-            template=self.template,
-            fields='',
-            status=Certificate.PENDING,
+            participant = self.participant,
+            template = self.template,
+            fields = '',
+            status = Certificate.PENDING,
         )
 
     def test_create(self):
@@ -40,6 +40,6 @@ class CertificateModelTest(TestCase):
     def test_unique_together(self):
         with self.assertRaises(IntegrityError):
             self.certificate = Certificate.objects.create(
-                participant=self.participant,
-                template=self.template,
+                participant = self.participant,
+                template = self.template,
             )

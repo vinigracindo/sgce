@@ -25,7 +25,7 @@ class EventListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super(EventListView, self).get_queryset()
         user = self.request.user
-        return queryset if user.is_superuser else queryset.filter(created_by=self.request.user)
+        return queryset if user.is_superuser else queryset.filter(created_by = self.request.user)
 
 
 class EventCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
@@ -38,7 +38,7 @@ class EventCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessag
     success_message = "O evento %(name)s foi criado com sucesso."
 
     def form_valid(self, form):
-        obj = form.save(commit=False)
+        obj = form.save(commit = False)
         obj.created_by = self.request.user
         return super(EventCreateView, self).form_valid(form)
 

@@ -8,7 +8,7 @@ class UserForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'email', 'is_superuser', 'username', 'password', 'groups']
         widgets = {
             'password': forms.PasswordInput,
-            'groups':forms.CheckboxSelectMultiple
+            'groups': forms.CheckboxSelectMultiple
         }
 
     def __init__(self, *args, **kwargs):

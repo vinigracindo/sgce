@@ -15,9 +15,9 @@ def link_callback(uri, rel):
 
     # convert URIs to absolute system paths
     if uri.startswith(mUrl):
-        path = os.path.join(mRoot, uri.replace(mUrl, ""))
+        path = os.path.join(mRoot, uri.replace(mUrl, ''))
     elif uri.startswith(sUrl):
-        path = os.path.join(sRoot, uri.replace(sUrl, ""))
+        path = os.path.join(sRoot, uri.replace(sUrl, ''))
     else:
         return uri  # handle absolute uri (ie: http://some.tld/foo.png)
 

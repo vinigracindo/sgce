@@ -46,8 +46,8 @@ class LoginGet(TestCase):
 
     def test_redirect_authenticated_user(self):
         """Must redirect to settings.LOGIN_REDIRECT_URL when user is authenticated."""
-        get_user_model().objects.create_user(username='username', password='password')
-        response = self.client.login(username='username', password='password')
+        get_user_model().objects.create_user(username = 'username', password = 'password')
+        response = self.client.login(username = 'username', password = 'password')
         response = self.client.get(r('login'))
         self.assertRedirects(response, r(settings.LOGIN_REDIRECT_URL))
 
@@ -55,7 +55,7 @@ class LoginGet(TestCase):
 class LoginPostUserValid(TestCase):
     def setUp(self):
         user = get_user_model().objects.create_user('usuario', 'usuario', 'userpass')
-        data = dict(username=user.username, password='userpass')
+        data = dict(username=user.username, password = 'userpass')
         self.response = self.client.post(r('login'), data)
 
     def test_valid_user_redirect(self):
@@ -69,7 +69,7 @@ class LoginPostUserValid(TestCase):
 
 class LoginPostUserInvalid(TestCase):
     def setUp(self):
-        data = dict(username='user_does_not_exist', password='anything')
+        data = dict(username='user_does_not_exist', password = 'anything')
         self.response = self.client.post(r('login'), data)
 
     def test_invalid_user_post(self):

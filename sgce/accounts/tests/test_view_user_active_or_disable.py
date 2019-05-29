@@ -24,8 +24,8 @@ class UserActiveOrDisableWithPermission(LoggedInTestCase):
         # permission required: profile.can_enable_or_disable_user
         content_type = ContentType.objects.get_for_model(get_user_model())
         permission = Permission.objects.get(
-            codename='delete_user',
-            content_type=content_type,
+            codename = 'delete_user',
+            content_type = content_type,
         )
 
         self.user_logged_in.user_permissions.add(permission)
@@ -46,7 +46,7 @@ class UserActiveOrDisable(UserActiveOrDisableWithPermission):
 class UserDisableGet(UserActiveOrDisableWithPermission):
     def setUp(self):
         super(UserDisableGet, self).setUp()
-        self.another_user = mommy.make(get_user_model(), is_active=True)
+        self.another_user = mommy.make(get_user_model(), is_active = True)
         self.response = self.client.get(r('accounts:user-active-or-disable', self.another_user.pk))
         self.another_user.refresh_from_db()
 
@@ -57,7 +57,7 @@ class UserDisableGet(UserActiveOrDisableWithPermission):
 class UserEnableGet(UserActiveOrDisableWithPermission):
     def setUp(self):
         super(UserEnableGet, self).setUp()
-        self.another_user = mommy.make(get_user_model(), is_active=False)
+        self.another_user = mommy.make(get_user_model(), is_active = False)
         self.response = self.client.get(r('accounts:user-active-or-disable', self.another_user.pk))
         self.another_user.refresh_from_db()
 

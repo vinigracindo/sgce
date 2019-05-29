@@ -29,18 +29,18 @@ class HomeTest(TestCase):
 class HomeTestPost(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
-        event = mommy.make(Event, name='Simpósio Brasileiro de Informática', created_by=user)
-        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
-        participant = mommy.make(Participant, cpf='67790155040')
+        event = mommy.make(Event, name = 'Simpósio Brasileiro de Informática', created_by = user)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
+        participant = mommy.make(Participant, cpf = '67790155040')
 
         self.certificate = Certificate.objects.create(
-            participant=participant,
-            template=self.template,
-            fields='',
-            status=Certificate.VALID,
+            participant = participant,
+            template = self.template,
+            fields = '',
+            status = Certificate.VALID,
         )
         data = dict(
-            cpf='677.901.550-40',
+            cpf = '677.901.550-40',
         )
         self.response = self.client.post(r('home'), data)
 
@@ -57,10 +57,10 @@ class HomeTestPost(TestCase):
 
     def test_html(self):
         Certificate.objects.create(
-            participant=mommy.make(Participant, cpf='07298801090'),
-            template=self.template,
-            fields='',
-            status=Certificate.VALID,
+            participant = mommy.make(Participant, cpf = '07298801090'),
+            template = self.template,
+            fields = '',
+            status = Certificate.VALID,
         )
 
         contents = [
@@ -75,7 +75,7 @@ class HomeTestPost(TestCase):
 
     def test_error(self):
         data = dict(
-            cpf='376.727.930-47',
+            cpf = '376.727.930-47',
         )
         self.response = self.client.post(r('home'), data)
 

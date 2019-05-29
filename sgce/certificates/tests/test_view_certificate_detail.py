@@ -10,15 +10,15 @@ from sgce.core.models import Event
 class CertificateDetailGet(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
-        event = mommy.make(Event, name='Simpósio Brasileiro de Informática', created_by=user)
-        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
-        participant = mommy.make(Participant, cpf='67790155040')
+        event = mommy.make(Event, name = 'Simpósio Brasileiro de Informática', created_by = user)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
+        participant = mommy.make(Participant, cpf = '67790155040')
 
         self.certificate = Certificate.objects.create(
-            participant=participant,
-            template=self.template,
-            fields='',
-            status=Certificate.VALID,
+            participant = participant,
+            template = self.template,
+            fields = '',
+            status = Certificate.VALID,
         )
         self.response = self.client.get(r('certificates:certificate-detail', self.certificate.hash))
 
@@ -57,18 +57,18 @@ class CertificateDetailInvalidGet(TestCase):
 class CertificateDetailTestInvalidStatusGet(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
-        event = mommy.make(Event, name='Simpósio Brasileiro de Informática', created_by=user)
-        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
-        participant = mommy.make(Participant, cpf='67790155040')
+        event = mommy.make(Event, name = 'Simpósio Brasileiro de Informática', created_by = user)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
+        participant = mommy.make(Participant, cpf = '67790155040')
 
         certificate = Certificate.objects.create(
-            participant=participant,
-            template=self.template,
-            fields='',
+            participant = participant,
+            template = self.template,
+            fields = '',
             status=Certificate.PENDING,
         )
         data = dict(
-            hash=certificate.hash,
+            hash = certificate.hash,
         )
         self.response = self.client.get(r('certificates:certificate-detail', certificate.hash))
 

@@ -10,13 +10,13 @@ from sgce.core.tests.base import LoggedInTestCase
 class EventDetailWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(EventDetailWithoutPermission, self).setUp()
-        another_user = get_user_model().objects.create_user(username='another_user', password='password')
+        another_user = get_user_model().objects.create_user(username = 'another_user', password = 'password')
         self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=another_user,
+            name = 'Simpósio Brasileiro de Informática',
+            start_date = datetime.date(2018, 6, 18),
+            end_date = datetime.date(2018, 6, 18),
+            location = 'IFAL - Campus Arapiraca',
+            created_by = another_user,
         )
         self.response = self.client.get(r('core:event-detail', self.event.slug))
 
@@ -30,11 +30,11 @@ class EventDetailWithPermission(LoggedInTestCase):
     def setUp(self):
         super(EventDetailWithPermission, self).setUp()
         self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=self.user_logged_in,
+            name = 'Simpósio Brasileiro de Informática',
+            start_date = datetime.date(2018, 6, 18),
+            end_date = datetime.date(2018, 6, 18),
+            location = 'IFAL - Campus Arapiraca',
+            created_by = self.user_logged_in,
         )
 
 

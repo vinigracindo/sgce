@@ -5,9 +5,9 @@ from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 error_messages = {
-    'invalid': _("Invalid CPF number"),
-    'digits_only': _("This field requires only numbers"),
-    'max_digits': _("This field requires exactly 11 digits"),
+    'invalid': _('Invalid CPF number'),
+    'digits_only': _('This field requires only numbers'),
+    'max_digits': _('This field requires exactly 11 digits'),
 }
 
 
@@ -26,10 +26,10 @@ def validate_cpf(value):
     if value in EMPTY_VALUES:
         return u''
     if not value.isdigit():
-        value = re.sub("[-\.]", "", value)
+        value = re.sub('[-\.]', '', value)
 
-    if value in ["00000000000", "11111111111", "22222222222", "33333333333", "44444444444",
-                 "55555555555", "66666666666", "77777777777", "88888888888", "99999999999"]:
+    if value in ['00000000000', '11111111111', '22222222222', '33333333333', '44444444444',
+                 '55555555555', '66666666666', '77777777777', '88888888888', '99999999999']:
         raise ValidationError(error_messages['invalid'])
 
     orig_value = value[:]

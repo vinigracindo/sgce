@@ -12,8 +12,8 @@ from sgce.core.tests.base import LoggedInTestCase
 class CertificatesCreatorGet(LoggedInTestCase):
     def setUp(self):
         super(CertificatesCreatorGet, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
-        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
+        event = mommy.make(Event, created_by = self.user_logged_in)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
 
         self.response = self.client.get(r('certificates:certificates-creator'))
 
@@ -50,12 +50,12 @@ class CertificatesCreatorGet(LoggedInTestCase):
 class CertificatesCreatorBlankDataPost(LoggedInTestCase):
     def setUp(self):
         super(CertificatesCreatorBlankDataPost, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
-        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
+        event = mommy.make(Event, created_by = self.user_logged_in)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
 
         data = dict(
-            template=self.template.pk,
-            certificates='[]',
+            template = self.template.pk,
+            certificates = '[]',
         )
 
         self.response = self.client.post(r('certificates:certificates-creator'), data)
@@ -70,12 +70,12 @@ class CertificatesCreatorBlankDataPost(LoggedInTestCase):
 class CertificatesCreatorPost(LoggedInTestCase):
     def setUp(self):
         super(CertificatesCreatorPost, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
-        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
+        event = mommy.make(Event, created_by = self.user_logged_in)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
 
         data = dict(
-            template=self.template.pk,
-            certificates='[["181.144.390-76", "Alan Turing", "Evento", "01/01/2018"]]',
+            template = self.template.pk,
+            certificates = '[["181.144.390-76", "Alan Turing", "Evento", "01/01/2018"]]',
         )
 
         self.response = self.client.post(r('certificates:certificates-creator'), data)
@@ -103,12 +103,12 @@ class CertificatesCreatorPost(LoggedInTestCase):
 class CertificatesCreatorInvalidCpfPost(LoggedInTestCase):
     def setUp(self):
         super(CertificatesCreatorInvalidCpfPost, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
-        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
+        event = mommy.make(Event, created_by = self.user_logged_in)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
 
         data = dict(
-            template=self.template.pk,
-            certificates='[["111.111.111-11", "Alan Turing", "Evento", "01/01/2018"]]',
+            template = self.template.pk,
+            certificates = '[["111.111.111-11", "Alan Turing", "Evento", "01/01/2018"]]',
         )
 
         self.response = self.client.post(r('certificates:certificates-creator'), data)
@@ -126,12 +126,12 @@ class CertificatesCreatorInvalidCpfPost(LoggedInTestCase):
 class CertificatesCreatorInvalidBlankValuesPost(LoggedInTestCase):
     def setUp(self):
         super(CertificatesCreatorInvalidBlankValuesPost, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
-        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
+        event = mommy.make(Event, created_by = self.user_logged_in)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
 
         data = dict(
-            template=self.template.pk,
-            certificates='[["899.215.730-47", "", "Evento", "01/01/2018"]]',
+            template = self.template.pk,
+            certificates = '[["899.215.730-47", "", "Evento", "01/01/2018"]]',
         )
 
         self.response = self.client.post(r('certificates:certificates-creator'), data)
@@ -149,12 +149,12 @@ class CertificatesCreatorInvalidBlankValuesPost(LoggedInTestCase):
 class CertificatesCreatorInvalidMissValuePost(LoggedInTestCase):
     def setUp(self):
         super(CertificatesCreatorInvalidMissValuePost, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
-        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
+        event = mommy.make(Event, created_by = self.user_logged_in)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
 
         data = dict(
-            template=self.template.pk,
-            certificates='[["899.215.730-47", "", "Evento"]]', # miss DATA_EVENTO
+            template = self.template.pk,
+            certificates = '[["899.215.730-47", "", "Evento"]]', # miss DATA_EVENTO
         )
 
         self.response = self.client.post(r('certificates:certificates-creator'), data)

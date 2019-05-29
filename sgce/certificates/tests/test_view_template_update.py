@@ -12,8 +12,8 @@ class TemplateUpdateWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(TemplateUpdateWithoutPermission, self).setUp()
         another_user = mommy.make(get_user_model())
-        event = mommy.make(Event, created_by=another_user)
-        self.template = mommy.make(Template, event=event, background='core/testes/test.gif')
+        event = mommy.make(Event, created_by = another_user)
+        self.template = mommy.make(Template, event = event, background = 'core/testes/test.gif')
 
         self.response = self.client.get(r('certificates:template-update', self.template.pk))
 
@@ -26,22 +26,22 @@ class TemplateUpdateWithoutPermission(LoggedInTestCase):
 class TemplateUpdateWithPermission(LoggedInTestCase):
     def setUp(self):
         super(TemplateUpdateWithPermission, self).setUp()
-        self.event = mommy.make(Event, created_by=self.user_logged_in)
-        self.template = mommy.make(Template, event=self.event, background='core/testes/test.gif')
+        self.event = mommy.make(Event, created_by = self.user_logged_in)
+        self.template = mommy.make(Template, event = self.event, background = 'core/testes/test.gif')
 
         self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=self.event,
-            title='CERTIFICADO',
-            content='''
+            name = 'SBI - Certificado de Participante',
+            event = self.event,
+            title = 'CERTIFICADO',
+            content = '''
                             Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
                             ''',
-            backside_title='Programação',
-            backside_content='''
+            backside_title = 'Programação',
+            backside_content = '''
                             1 - Abertura
                             2 - Lorem Ipsum
                             ''',
-            background='core/tests/test.gif',
+            background = 'core/tests/test.gif',
         )
 
 
@@ -89,33 +89,33 @@ class TemplateUpdatePost(TemplateUpdateWithPermission):
     def setUp(self):
         super(TemplateUpdatePost, self).setUp()
         data = dict(
-            name='SBI - Certificado do Palestrante',
-            event=self.event.pk,
-            title='CERTIFICADO DE PALESTRANTE',
-            content='''
+            name = 'SBI - Certificado do Palestrante',
+            event = self.event.pk,
+            title = 'CERTIFICADO DE PALESTRANTE',
+            content = '''
                     Certificamos que NOME_COMPLETO apresentou a palestra NOME_PALESTRA no evento NOME_EVENTO.
                     ''',
-            backside_title='Programação',
-            backside_content='''
+            backside_title = 'Programação',
+            backside_content = '''
                     1 - Abertura
                     2 - Lorem Ipsum
                     ''',
-            background='core/tests/test.gif',
-            font=Template.ARIAL,
-            title_top_distance=0,
-            title_section_align=Template.LEFT,
-            title_align=Template.LEFT,
-            title_color=Template.BLACK,
-            title_font_size=10,
-            content_title_distance=0,
-            content_section_align=Template.LEFT,
-            content_text_align=Template.LEFT,
-            content_text_color=Template.BLACK,
-            content_font_size=10,
-            footer_title_distance=0,
-            footer_section_align=Template.LEFT,
-            footer_text_align=Template.LEFT,
-            footer_text_color=Template.BLACK,
+            background = 'core/tests/test.gif',
+            font = Template.ARIAL,
+            title_top_distance = 0,
+            title_section_align = Template.LEFT,
+            title_align = Template.LEFT,
+            title_color = Template.BLACK,
+            title_font_size = 10,
+            content_title_distance = 0,
+            content_section_align = Template.LEFT,
+            content_text_align = Template.LEFT,
+            content_text_color = Template.BLACK,
+            content_font_size = 10,
+            footer_title_distance = 0,
+            footer_section_align = Template.LEFT,
+            footer_text_align = Template.LEFT,
+            footer_text_color = Template.BLACK,
         )
         self.response = self.client.post(r('certificates:template-update', self.template.pk), data)
         self.template.refresh_from_db()

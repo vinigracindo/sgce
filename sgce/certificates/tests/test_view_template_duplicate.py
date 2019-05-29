@@ -12,8 +12,8 @@ from sgce.core.tests.base import LoggedInTestCase
 class TemplateDuplicateGet(LoggedInTestCase):
     def setUp(self):
         super(TemplateDuplicateGet, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
-        self.template = mommy.make(Template, event=event, background='core/testes/test.gif')
+        event = mommy.make(Event, created_by = self.user_logged_in)
+        self.template = mommy.make(Template, event = event, background = 'core/testes/test.gif')
         self.response = self.client.get(r('certificates:template-duplicate', self.template.pk))
 
     def test_get(self):
@@ -49,26 +49,26 @@ class TemplateDuplicateGet(LoggedInTestCase):
 class TemplateDuplicatePost(LoggedInTestCase):
     def setUp(self):
         super(TemplateDuplicatePost, self).setUp()
-        self.e1 = mommy.make(Event, created_by=self.user_logged_in)
-        self.e2 = mommy.make(Event, created_by=self.user_logged_in)
+        self.e1 = mommy.make(Event, created_by = self.user_logged_in)
+        self.e2 = mommy.make(Event, created_by = self.user_logged_in)
 
         self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=self.e1,
-            title='CERTIFICADO',
-            content='''
+            name = 'SBI - Certificado de Participante',
+            event = self.e1,
+            title = 'CERTIFICADO',
+            content = '''
                             Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
                             ''',
-            backside_title='Programação',
-            backside_content='''
+            backside_title = 'Programação',
+            backside_content = '''
                             1 - Abertura
                             2 - Lorem Ipsum
                             ''',
-            background='core/tests/test.gif',
+            background = 'core/tests/test.gif',
         )
 
         data = dict(
-            event=self.e2.pk
+            event = self.e2.pk
         )
 
         self.response = self.client.post(r('certificates:template-duplicate', self.template.pk), data)
@@ -83,7 +83,7 @@ class TemplateDuplicatePost(LoggedInTestCase):
 
     def test_template_created(self):
         """The new template created must have the same attrs of self.template"""
-        new_template = Template.objects.get(pk=2)
+        new_template = Template.objects.get(pk = 2)
 
         self.assertEqual(new_template.event, self.e2)
 

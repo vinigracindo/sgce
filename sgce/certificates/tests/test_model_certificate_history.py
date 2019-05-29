@@ -11,21 +11,21 @@ from sgce.core.models import Event
 class CertificateHistoryModelTest(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
-        event = mommy.make(Event, created_by=user)
-        template = mommy.make(Template, event=event, background='core/tests/test.gif')
+        event = mommy.make(Event, created_by = user)
+        template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
         participant = mommy.make(Participant)
         certificate = Certificate.objects.create(
-            participant=participant,
-            template=template,
-            fields='',
-            status=Certificate.PENDING,
+            participant = participant,
+            template = template,
+            fields = '',
+            status = Certificate.PENDING,
         )
 
         self.certificate_history = CertificateHistory.objects.create(
-            certificate=certificate,
-            user=user,
-            notes='anything',
-            ip='127.0.0.1',
+            certificate = certificate,
+            user = user,
+            notes = 'anything',
+            ip = '127.0.0.1',
         )
 
     def test_create(self):

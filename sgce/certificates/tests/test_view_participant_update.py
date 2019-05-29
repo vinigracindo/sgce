@@ -22,7 +22,7 @@ class ParticipantUpdateWithPermission(LoggedInTestCase):
     def setUp(self):
         super(ParticipantUpdateWithPermission, self).setUp()
 
-        self.participant = mommy.make(Participant, email='alan@turing.com')
+        self.participant = mommy.make(Participant, email = 'alan@turing.com')
 
         self.user_logged_in.is_superuser = True
         self.user_logged_in.save()
@@ -80,9 +80,9 @@ class ParticipantUpdatePost(ParticipantUpdateWithPermission):
     def setUp(self):
         super(ParticipantUpdatePost, self).setUp()
         data = dict(
-            name='User Name',
-            cpf='39265928000',
-            email='user@name.com',
+            name = 'User Name',
+            cpf = '39265928000',
+            email = 'user@name.com',
         )
         self.response = self.client.post(r('certificates:participant-update', self.participant.pk), data)
         self.participant.refresh_from_db()
