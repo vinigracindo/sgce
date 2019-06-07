@@ -80,7 +80,7 @@ class CertificatesCreatorForm(forms.Form):
                     break
                 else:
                     try:
-                        attrs_certificate[0] = validate_cpf(attrs_certificate[0])
+                        attrs_certificate[0] = validate_cpf(attrs_certificate[0].strip())
                     except Exception as e:
                         raise forms.ValidationError('O CPF {} da linha {} é inválido.'.format(attrs_certificate[0], line))
                         break

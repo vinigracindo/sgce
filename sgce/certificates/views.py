@@ -222,7 +222,7 @@ def certificates_creator(request):
             inspector = {'certificates': [], 'error': []}
 
             for certificate_attrs in certificates:
-                cpf, name, *args = certificate_attrs
+                cpf, name, *args = [x.strip() for x in certificate_attrs]
                 attrs = {}
 
                 for key, value in enumerate(args, 2):
