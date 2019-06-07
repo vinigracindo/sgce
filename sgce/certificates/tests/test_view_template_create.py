@@ -26,8 +26,8 @@ class TemplateCreateWithPermission(LoggedInTestCase):
         # permission required: certificates.add_template
         content_type = ContentType.objects.get_for_model(Template)
         permission = Permission.objects.get(
-            codename='add_template',
-            content_type=content_type,
+            codename = 'add_template',
+            content_type = content_type,
         )
         self.user_logged_in.user_permissions.add(permission)
         self.user_logged_in.refresh_from_db()
@@ -70,36 +70,36 @@ class TemplateCreateGet(TemplateCreateWithPermission):
 class TemplateCreatePost(TemplateCreateWithPermission):
     def setUp(self):
         super(TemplateCreatePost, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
+        event = mommy.make(Event, created_by = self.user_logged_in)
 
         data = dict(
-            name='SBI - Certificado de Participante',
-            event=event.pk,
-            title='CERTIFICADO',
-            content='''
+            name = 'SBI - Certificado de Participante',
+            event = event.pk,
+            title = 'CERTIFICADO',
+            content = '''
             Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
             ''',
-            backside_title='Programação',
-            backside_content='''
+            backside_title = 'Programação',
+            backside_content = '''
             1 - Abertura
             2 - Lorem Ipsum
             ''',
-            background='core/tests/test.gif',
-            font=Template.ARIAL,
-            title_top_distance=0,
-            title_section_align=Template.LEFT,
-            title_align=Template.LEFT,
-            title_color=Template.BLACK,
-            title_font_size=10,
-            content_title_distance=0,
-            content_section_align=Template.LEFT,
-            content_text_align=Template.LEFT,
-            content_text_color=Template.BLACK,
-            content_font_size=10,
-            footer_title_distance=0,
-            footer_section_align=Template.LEFT,
-            footer_text_align=Template.LEFT,
-            footer_text_color=Template.BLACK,
+            background = 'core/tests/test.gif',
+            font = Template.ARIAL,
+            title_top_distance = 0,
+            title_section_align = Template.LEFT,
+            title_align = Template.LEFT,
+            title_color = Template.BLACK,
+            title_font_size = 10,
+            content_title_distance = 0,
+            content_section_align = Template.LEFT,
+            content_text_align = Template.LEFT,
+            content_text_color = Template.BLACK,
+            content_font_size = 10,
+            footer_title_distance = 0,
+            footer_section_align = Template.LEFT,
+            footer_text_align = Template.LEFT,
+            footer_text_color = Template.BLACK,
         )
         self.response = self.client.post(r('certificates:template-create'), data)
 

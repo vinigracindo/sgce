@@ -8,8 +8,8 @@ from sgce.core.tests.base import LoggedInTestCase
 class ParticipantListGet(LoggedInTestCase):
     def setUp(self):
         super(ParticipantListGet, self).setUp()
-        self.p1 = mommy.make(Participant, email='a@a.com')
-        self.p2 = mommy.make(Participant, email='b@b.com')
+        self.p1 = mommy.make(Participant, email = 'a@a.com')
+        self.p2 = mommy.make(Participant, email = 'b@b.com')
 
         self.response = self.client.get(r('certificates:participant-list'))
 

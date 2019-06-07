@@ -33,12 +33,12 @@ class CertificatesEvaluationTest(LoggedInTestCase):
 class CertificatesEvaluationPostTest(LoggedInTestCase):
     def setUp(self):
         super(CertificatesEvaluationPostTest, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
-        self.template = mommy.make(Template, event=event, background='core/tests/test.gif')
+        event = mommy.make(Event, created_by = self.user_logged_in)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
 
         data = dict(
             event=event.pk,
-            template=self.template.pk,
+            template = self.template.pk,
         )
 
         self.response = self.client.post(r('certificates:certificates-evaluation'), data)

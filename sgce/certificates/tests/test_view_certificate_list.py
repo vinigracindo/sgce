@@ -10,16 +10,16 @@ from sgce.core.tests.base import LoggedInTestCase
 class CertificateListGet(LoggedInTestCase):
     def setUp(self):
         super(CertificateListGet, self).setUp()
-        e1 = mommy.make(Event, created_by=self.user_logged_in)
-        template = mommy.make(Template, event=e1, background='core/tests/test.gif')
+        e1 = mommy.make(Event, created_by = self.user_logged_in)
+        template = mommy.make(Template, event = e1, background = 'core/tests/test.gif')
         participant = mommy.make(Participant)
-        self.certificate = mommy.make(Certificate, template=template, participant=participant, fields='')
+        self.certificate = mommy.make(Certificate, template = template, participant = participant, fields = '')
 
         another_user = mommy.make(get_user_model())
-        e2 = mommy.make(Event, created_by=another_user)
-        t2 = mommy.make(Template, event=e2, background='core/tests/test.gif')
+        e2 = mommy.make(Event, created_by = another_user)
+        t2 = mommy.make(Template, event = e2, background = 'core/tests/test.gif')
         p2 = mommy.make(Participant)
-        self.another_certificate = mommy.make(Certificate, template=t2, participant=p2, fields='')
+        self.another_certificate = mommy.make(Certificate, template = t2, participant = p2, fields = '')
 
         self.response = self.client.get(r('certificates:certificate-list'))
 

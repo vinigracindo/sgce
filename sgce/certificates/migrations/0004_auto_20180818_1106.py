@@ -12,23 +12,23 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='template',
-            name='content_title_distance',
-            field=models.DecimalField(decimal_places=1, default=1.0, max_digits=2, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(10)], verbose_name='distância do título ao texto'),
+            model_name = 'template',
+            name = 'content_title_distance',
+            field = models.DecimalField(decimal_places = 1, default = 1.0, max_digits = 2, validators = [django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(10)], verbose_name = 'distância do título ao texto'),
         ),
         migrations.AlterField(
-            model_name='template',
-            name='footer_section_align',
-            field=models.CharField(choices=[('left', 'Alinhar seção à esquerda'), ('center', 'Seção centralizada'), ('right', 'Alinhar seção à direita')], default='center', max_length=10, verbose_name='alinhamento da seção'),
+            model_name = 'template',
+            name = 'footer_section_align',
+            field = models.CharField(choices = [('left', 'Alinhar seção à esquerda'), ('center', 'Seção centralizada'), ('right', 'Alinhar seção à direita')], default = 'center', max_length = 10, verbose_name = 'alinhamento da seção'),
         ),
         migrations.AlterField(
-            model_name='template',
-            name='footer_title_distance',
-            field=models.DecimalField(decimal_places=1, default=0, max_digits=2, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(10)], verbose_name='distância do texto ao rodapé'),
+            model_name = 'template',
+            name = 'footer_title_distance',
+            field = models.DecimalField(decimal_places = 1, default = 0, max_digits = 2, validators = [django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(10)], verbose_name = 'distância do texto ao rodapé'),
         ),
         migrations.AlterField(
-            model_name='template',
-            name='title_top_distance',
-            field=models.DecimalField(decimal_places=1, default=3, max_digits=2, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(10)], verbose_name='distância do topo ao título'),
+            model_name = 'template',
+            name = 'title_top_distance',
+            field = models.DecimalField(decimal_places = 1, default = 3, max_digits = 2, validators = [django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(10)], verbose_name = 'distância do topo ao título'),
         ),
     ]

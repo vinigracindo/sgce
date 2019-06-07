@@ -14,8 +14,8 @@ class CertificateEvaluationTemplateWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(CertificateEvaluationTemplateWithoutPermission, self).setUp()
         another_user = mommy.make(get_user_model())
-        event = mommy.make(Event, created_by=another_user)
-        self.template = mommy.make(Template, event=event, background='core/tests/teste.gif')
+        event = mommy.make(Event, created_by = another_user)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/teste.gif')
 
         self.response = self.client.get(r('certificates:certificates-evaluation-template', self.template.pk))
 
@@ -28,8 +28,8 @@ class CertificateEvaluationTemplateWithoutPermission(LoggedInTestCase):
 class CertificateEvaluationTemplateWithPermission(LoggedInTestCase):
     def setUp(self):
         super(CertificateEvaluationTemplateWithPermission, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
-        self.template = mommy.make(Template, event=event, background='core/tests/teste.gif')
+        event = mommy.make(Event, created_by = self.user_logged_in)
+        self.template = mommy.make(Template, event = event, background = 'core/tests/teste.gif')
 
 
 class CertificateEvaluationTemplateTest(CertificateEvaluationTemplateWithPermission):

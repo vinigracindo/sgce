@@ -10,9 +10,9 @@ from sgce.core.models import Event
 
 class HomeForm(forms.Form):
     cpf = forms.CharField(
-        max_length=14,
-        label='CPF',
-        widget=forms.TextInput(attrs={'placeholder': 'Digite seu CPF para buscar seus Certificados',
+        max_length = 14,
+        label = 'CPF',
+        widget = forms.TextInput(attrs = {'placeholder': 'Digite seu CPF para buscar seus Certificados',
                                       'data-mask': '000.000.000-00'}),
     )
 
@@ -23,7 +23,7 @@ class HomeForm(forms.Form):
 
 
 class CertificateValidateForm(forms.Form):
-    hash = forms.CharField(label='Código de Autenticação')
+    hash = forms.CharField(label = 'Código de Autenticação')
 
 
 class TemplateForm(forms.ModelForm):
@@ -49,17 +49,17 @@ class TemplateDuplicateForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(TemplateDuplicateForm, self).__init__(*args, **kwargs)
         if not user.is_superuser:
-            self.fields['event'].queryset = Event.objects.filter(created_by=user)
+            self.fields['event'].queryset = Event.objects.filter(created_by = user)
 
 
 class CertificatesCreatorForm(forms.Form):
-    template = forms.ModelChoiceField(queryset=Template.objects, widget=Select2Widget)
+    template = forms.ModelChoiceField(queryset = Template.objects, widget = Select2Widget)
     certificates = forms.CharField()
 
     def __init__(self, user, *args, **kwargs):
         super(CertificatesCreatorForm, self).__init__(*args, **kwargs)
         if not user.is_superuser:
-            self.fields['template'].queryset = Template.objects.filter(event__created_by=user)
+            self.fields['template'].queryset = Template.objects.filter(event__created_by = user)
 
     def clean_certificates(self):
         # TODO: Refactor

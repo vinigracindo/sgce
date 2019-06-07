@@ -15,13 +15,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Profile',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('phone', models.CharField(blank=True, max_length=16, verbose_name='telefone')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='usuário')),
+            name = 'Profile',
+            fields = [
+                ('id', models.AutoField(auto_created = True, primary_key = True, serialize = False, verbose_name = 'ID')),
+                ('phone', models.CharField(blank = True, max_length = 16, verbose_name = 'telefone')),
+                ('user', models.OneToOneField(on_delete = django.db.models.deletion.CASCADE, to = settings.AUTH_USER_MODEL, verbose_name = 'usuário')),
             ],
-            options={
+            options = {
                 'verbose_name': 'perfil',
                 'verbose_name_plural': 'perfis',
             },

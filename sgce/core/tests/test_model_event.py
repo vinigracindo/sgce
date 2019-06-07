@@ -11,11 +11,11 @@ class EventModelTest(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
         self.event = Event.objects.create(
-            name='Simpósio Brasileiro de Informática',
-            start_date=datetime.date(2018, 6, 18),
-            end_date=datetime.date(2018, 6, 18),
-            location='IFAL - Campus Arapiraca',
-            created_by=user,
+            name = 'Simpósio Brasileiro de Informática',
+            start_date = datetime.date(2018, 6, 18),
+            end_date = datetime.date(2018, 6, 18),
+            location = 'IFAL - Campus Arapiraca',
+            created_by = user,
         )
 
     def test_create(self):

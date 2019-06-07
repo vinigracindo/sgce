@@ -6,9 +6,9 @@ from sgce.certificates.validators import validate_cpf
 class ParticipantModelTest(TestCase):
     def setUp(self):
         self.participant = Participant.objects.create(
-            cpf='37377420812',
-            email='alan@turing.com',
-            name='Alan Turing',
+            cpf = '37377420812',
+            email = 'alan@turing.com',
+            name = 'Alan Turing',
         )
 
     def test_create(self):

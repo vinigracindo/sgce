@@ -11,21 +11,21 @@ from sgce.core.models import Event
 class TemplateModelTest(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
-        event = mommy.make(Event, created_by=user)
+        event = mommy.make(Event, created_by = user)
 
         self.template = Template.objects.create(
-            name='SBI - Certificado de Participante',
-            event=event,
-            title='CERTIFICADO',
-            content='''
+            name = 'SBI - Certificado de Participante',
+            event = event,
+            title = 'CERTIFICADO',
+            content = '''
             Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
             ''',
-            backside_title='Programação',
-            backside_content='''
+            backside_title = 'Programação',
+            backside_content = '''
             1 - Abertura
             2 - Lorem Ipsum
             ''',
-            background='core/tests/test.gif',
+            background = 'core/tests/test.gif',
         )
 
     def test_create(self):

@@ -58,19 +58,19 @@ class ValidateCPFTest(TestCase):
         for cpf in self.valid_inputs:
             with self.subTest():
                 # Remove '-' and '.'
-                cpf = re.sub("[-\.]", "", cpf)
+                cpf = re.sub('[-\.]', '', cpf)
                 self.assertEqual(cpf, validate_cpf(cpf))
 
         for cpf in self.invalid_numbers_inputs:
             with self.subTest():
                 # Remove '-' and '.'
-                cpf = re.sub("[-\.]", "", cpf)
+                cpf = re.sub('[-\.]', '', cpf)
                 with self.assertRaisesMessage(ValidationError, 'Invalid CPF number'):
                     validate_cpf(cpf)
 
         for cpf in self.invalid_inputs:
             with self.subTest():
                 # Remove '-' and '.'
-                cpf = re.sub("[-\.]", "", cpf)
+                cpf = re.sub('[-\.]', '', cpf)
                 with self.assertRaisesMessage(ValidationError, 'This field requires only numbers'):
                     validate_cpf(cpf)

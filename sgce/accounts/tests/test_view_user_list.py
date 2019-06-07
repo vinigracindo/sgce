@@ -24,8 +24,8 @@ class UserListWithPermission(LoggedInTestCase):
         # permission required: profile.can_enable_or_disable_user
         content_type = ContentType.objects.get_for_model(get_user_model())
         permission = Permission.objects.get(
-            codename='view_user',
-            content_type=content_type,
+            codename = 'view_user',
+            content_type = content_type,
         )
 
         self.user_logged_in.user_permissions.add(permission)
@@ -36,18 +36,18 @@ class UserListGet(UserListWithPermission):
     def setUp(self):
         super(UserListGet, self).setUp()
         get_user_model().objects.create_user(
-            username='user1',
-            email='user1@domain.com',
-            password='user1password',
-            first_name='User',
-            last_name='One'
+            username = 'user1',
+            email = 'user1@domain.com',
+            password = 'user1password',
+            first_name = 'User',
+            last_name = 'One'
         )
         get_user_model().objects.create_user(
-            username='user2',
-            email='user2@domain.com',
-            password='user2password',
-            first_name='User',
-            last_name='Two'
+            username = 'user2',
+            email = 'user2@domain.com',
+            password = 'user2password',
+            first_name = 'User',
+            last_name = 'Two'
         )
         self.response = self.client.get(r('accounts:user-list'))
 

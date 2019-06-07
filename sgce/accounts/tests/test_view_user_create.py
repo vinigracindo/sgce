@@ -24,13 +24,13 @@ class UserCreateWithPermission(LoggedInTestCase):
         # permission required: profile.can_enable_or_disable_user
         content_type = ContentType.objects.get_for_model(get_user_model())
         p1 = Permission.objects.get(
-            codename='add_user',
-            content_type=content_type,
+            codename = 'add_user',
+            content_type = content_type,
         )
 
         p2 = Permission.objects.get(
-            codename='view_user',
-            content_type=content_type,
+            codename = 'view_user',
+            content_type = content_type,
         )
 
         self.user_logged_in.user_permissions.add(p1, p2)
@@ -92,7 +92,7 @@ class UserCreatePost(UserCreateWithPermission):
         self.assertRedirects(self.response, r('accounts:user-list'))
 
     def test_save_user(self):
-        self.assertTrue(get_user_model().objects.filter(username='alanturing').exists())
+        self.assertTrue(get_user_model().objects.filter(username = 'alanturing').exists())
 
 
 class UserCreatePostInvalid(UserCreateWithPermission):

@@ -12,7 +12,7 @@ class EventDeleteWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(EventDeleteWithoutPermission, self).setUp()
         self.another_user = mommy.make(get_user_model())
-        self.event = mommy.make(Event, created_by=self.another_user)
+        self.event = mommy.make(Event, created_by = self.another_user)
 
         self.response = self.client.get(r('core:event-delete', self.event.pk))
 
@@ -25,7 +25,7 @@ class EventDeleteWithoutPermission(LoggedInTestCase):
 class EventDeleteWithPermission(LoggedInTestCase):
     def setUp(self):
         super(EventDeleteWithPermission, self).setUp()
-        self.event = mommy.make(Event, created_by=self.user_logged_in)
+        self.event = mommy.make(Event, created_by = self.user_logged_in)
 
 
 class EventDeleteGet(EventDeleteWithPermission):

@@ -14,10 +14,10 @@ class CertificateHistoryWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(CertificateHistoryWithoutPermission, self).setUp()
         another_user = mommy.make(get_user_model())
-        event = mommy.make(Event, created_by=another_user)
-        template = mommy.make(Template, event=event, background='core/tests/teste.gif')
+        event = mommy.make(Event, created_by = another_user)
+        template = mommy.make(Template, event = event, background = 'core/tests/teste.gif')
         participant = mommy.make(Participant)
-        self.certificate = mommy.make(Certificate, participant=participant, template=template, fields='')
+        self.certificate = mommy.make(Certificate, participant = participant, template = template, fields = '')
 
         self.response = self.client.get(r('certificates:certificate-history', self.certificate.pk))
 
@@ -30,21 +30,21 @@ class CertificateHistoryWithoutPermission(LoggedInTestCase):
 class CertificatHistoryTemplateWithPermission(LoggedInTestCase):
     def setUp(self):
         super(CertificatHistoryTemplateWithPermission, self).setUp()
-        event = mommy.make(Event, created_by=self.user_logged_in)
-        template = mommy.make(Template, event=event, background='core/tests/teste.gif')
+        event = mommy.make(Event, created_by = self.user_logged_in)
+        template = mommy.make(Template, event = event, background = 'core/tests/teste.gif')
         participant = mommy.make(Participant)
-        self.certificate = mommy.make(Certificate, participant=participant, template=template, fields='')
+        self.certificate = mommy.make(Certificate, participant = participant, template = template, fields = '')
 
 
 class CertificateHistoryTemplateTest(CertificatHistoryTemplateWithPermission):
     def setUp(self):
         super(CertificateHistoryTemplateTest, self).setUp()
 
-        mommy.make(CertificateHistory, certificate=self.certificate, notes='Log-entry-1')
-        mommy.make(CertificateHistory, certificate=self.certificate, notes='Log-entry-2')
-        mommy.make(CertificateHistory, certificate=self.certificate, notes='Log-entry-3')
-        mommy.make(CertificateHistory, certificate=self.certificate, notes='Log-entry-4')
-        mommy.make(CertificateHistory, certificate=self.certificate, notes='Log-entry-5')
+        mommy.make(CertificateHistory, certificate = self.certificate, notes = 'Log-entry-1')
+        mommy.make(CertificateHistory, certificate = self.certificate, notes = 'Log-entry-2')
+        mommy.make(CertificateHistory, certificate = self.certificate, notes = 'Log-entry-3')
+        mommy.make(CertificateHistory, certificate = self.certificate, notes = 'Log-entry-4')
+        mommy.make(CertificateHistory, certificate = self.certificate, notes = 'Log-entry-5')
 
         self.response = self.client.get(r('certificates:certificate-history', self.certificate.pk))
 

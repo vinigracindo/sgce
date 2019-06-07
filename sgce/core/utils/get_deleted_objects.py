@@ -4,7 +4,7 @@ from django.utils.encoding import force_text
 
 
 def get_deleted_objects(objs):
-    collector = NestedObjects(using='default')
+    collector = NestedObjects(using = 'default')
     collector.collect(objs)
 
     def format_callback(obj):

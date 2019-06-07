@@ -11,9 +11,9 @@ class EventListGet(LoggedInTestCase):
         super(EventListGet, self).setUp()
         self.another_user = mommy.make(get_user_model())
 
-        self.e1 = mommy.make(Event, created_by=self.user_logged_in)
-        self.e2 = mommy.make(Event, created_by=self.user_logged_in)
-        self.e3 = mommy.make(Event, created_by=self.another_user)
+        self.e1 = mommy.make(Event, created_by = self.user_logged_in)
+        self.e2 = mommy.make(Event, created_by = self.user_logged_in)
+        self.e3 = mommy.make(Event, created_by = self.another_user)
 
         self.response = self.client.get(r('core:event-list'))
 
