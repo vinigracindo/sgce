@@ -8,6 +8,7 @@ from django.utils.safestring import mark_safe
 from jsonfield import JSONField
 from tinymce.models import HTMLField
 
+from sgce.certificates.utils.text import remove_accents
 from sgce.certificates.validators import validate_cpf
 from sgce.core.models import Event
 from sgce.core.utils.list import remove_duplicates
@@ -154,7 +155,7 @@ class Template(models.Model):
         """Must return the fields that will build the certificate. The pattern: UPPERCASE_UPPERCASE"""
         #optional_field = ['ENDERECO_EMAIL']
         required_fields = ['NUMERO_CPF', 'NOME_COMPLETO']
-        another_fields = re.findall(r'\b([A-Z]+_[A-Z]+)\b', self.content)
+        another_fields = re.findall(r'\b([A-Z]+_[A-Z]+)\b', remove_accents(self.content))
         #return remove_duplicates(optional_field + required_fields + another_fields)
         return remove_duplicates(required_fields + another_fields)
 
