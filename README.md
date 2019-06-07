@@ -1,7 +1,7 @@
 # SGCE
 
 [![Build Status](https://travis-ci.org/vinigracindo/sgce.svg?branch=master)](https://travis-ci.org/vinigracindo/sgce)
-![alt text](https://landscape.io/github/vinigracindo/sgce/master/landscape.svg?style=flat "Landscape")
+[![Code Health](https://landscape.io/github/vinigracindo/sgce/master/landscape.svg?style=flat)](https://landscape.io/github/vinigracindo/sgce/master)
 [![Coverage Status](https://coveralls.io/repos/github/vinigracindo/sgce/badge.svg?branch=master)](https://coveralls.io/github/vinigracindo/sgce?branch=master)
 [![Requirements Status](https://requires.io/github/vinigracindo/sgce/requirements.svg?branch=master)](https://requires.io/github/vinigracindo/sgce/requirements/?branch=master)
 [![License](https://img.shields.io/pypi/l/django-treenode.svg)](https://img.shields.io/pypi/l/django-treenode.svg)
@@ -13,6 +13,9 @@
 Live demo:<br/>
 https://sgce-app.herokuapp.com/<br/>
 https://sgce-app.herokuapp.com/login/ (User: admin | Password: adm11200)
+
+### Agradecimento pelas contribuições no projeto
+[Raphael Gibson](https://github.com/raphaelgibson)
 
 
 O SGCE está sendo desenvolvido baseado no [SGCE criado pela Universidade Federal de Pampa](https://softwarepublico.gov.br/social/sgce).

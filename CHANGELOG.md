@@ -8,6 +8,12 @@ e o projeto adere ao [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Alterado
 - Nenhuma alteração
 
+## 1.1.0 - 2019/06/07
+### Correções
+- Fix #1
+- Fix #2
+- Merge pull request #4
+
 ## 1.0.1 - 2019/03/07
 ### Correção
 - Altera composição do título do certificado gerado por questões de incompatibilidade com gunicorn
