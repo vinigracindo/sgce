@@ -14,11 +14,10 @@ Live demo:<br/>
 https://sgce-app.herokuapp.com/<br/>
 https://sgce-app.herokuapp.com/login/ (User: admin | Password: adm11200)
 
-### Agradecimento pelas contribuições no projeto
-[Raphael Gibson](https://github.com/raphaelgibson)
-
-
 O SGCE está sendo desenvolvido baseado no [SGCE criado pela Universidade Federal de Pampa](https://softwarepublico.gov.br/social/sgce).
+
+## Agradecimentos
+[Raphael Gibson](https://github.com/raphaelgibson)
 
 ## Screenshots
 ![Main](https://user-images.githubusercontent.com/999040/44290422-0b453080-a24f-11e8-9075-fbcdfab8a96e.png)
