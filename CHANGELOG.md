@@ -8,6 +8,12 @@ e o projeto adere ao [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Alterado
 - Nenhuma alteração
 
+## 1.2.0 - 2019/07/12
+### Adicionado
+- Melhorado a tela administrativa para Eventos, Participantes e Modelos.
+### Alterações
+- Atualizado as dependências inseguras do projeto.
+
 ## 1.1.0 - 2019/06/07
 ### Correções
 - Fix #1
