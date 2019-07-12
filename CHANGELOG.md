@@ -4,28 +4,26 @@ Todas as mudanças notáveis ​​neste projeto serão documentadas neste arqui
 O formato é baseado em [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 e o projeto adere ao [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Em Desenvolvimento
-### Alterado
-- Nenhuma alteração
+## [Unreleased]
 
-## 1.2.0 - 2019/07/12
-### Adicionado
+## [1.2.0] - 2019-07-12
+### Added
 - Melhorado a tela administrativa para Eventos, Participantes e Modelos.
-### Alterações
+### Changed
 - Atualizado as dependências inseguras do projeto.
 
-## 1.1.0 - 2019/06/07
-### Correções
+## [1.1.0] - 2019-06-07
+### Added
 - Fix #1
 - Fix #2
 - Merge pull request #4
 
-## 1.0.1 - 2019/03/07
-### Correção
+## [1.0.1] - 2019-03-07
+### Changed
 - Altera composição do título do certificado gerado por questões de incompatibilidade com gunicorn
 
-## 1.0.0 - 2019/02/27
-### Adicionado
+## [1.0.0] - 2019-02-27
+### Added
 - Gerenciamento de Usuários
 - Gerenciamento de Eventos
 - Gereciamento de Particpantes
