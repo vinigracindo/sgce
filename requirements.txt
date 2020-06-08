@@ -1,14 +1,11 @@
 django-bootstrap4==0.0.8
 dj-database-url==0.5.0
 dj-static==0.0.6
-Django==2.2.3
+Django==2.2.13
 python-decouple==3.1
 pytz==2019.1
-Pillow==6.1.0
 static3==0.7.0
 django-test-without-migrations==0.6
-gunicorn==19.9.0
-psycopg2==2.8.3
 coveralls==1.8.1
 django-tinymce==2.8.0
 xhtml2pdf==0.2.3
@@ -16,3 +13,6 @@ django-qr-code==1.0.0
 django_select2==7.1.0
 jsonfield==2.0.2
 model_mommy==1.6.0
+gunicorn==19.9.0
+psycopg2==2.8.3
+Pillow==6.2.0
