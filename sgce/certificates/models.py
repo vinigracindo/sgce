@@ -47,14 +47,14 @@ class Template(models.Model):
         (LIGHT_GRAY, 'Cinza claro'),
         (DARK_GRAY, 'Cinza escuro'),
     )
-    name = models.CharField('nome', max_length = 128)
+    name = models.CharField('nome', max_length=255)
     event = models.ForeignKey(
         Event,
         verbose_name='evento',
         related_name='templates',
         on_delete=models.PROTECT
     )
-    title = models.CharField('título', max_length=128, blank=True)
+    title = models.CharField('título', max_length=255, blank=True)
     content = HTMLField(
         'texto',
         default='''
@@ -66,7 +66,7 @@ class Template(models.Model):
         Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO, realizado em DATA_EVENTO
         '''
     )
-    backside_title = models.CharField('título do verso', max_length=128, blank=True)
+    backside_title = models.CharField('título do verso', max_length=255, blank=True)
     backside_content = HTMLField('texto do verso', blank=True)
     background = models.ImageField(
         verbose_name='imagem de fundo',
