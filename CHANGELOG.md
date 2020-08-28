@@ -1,8 +1,17 @@
 # Changelog
-Todas as mudanças notáveis ​​neste projeto serão documentadas neste arquivo.
+Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
 O formato é baseado em [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 e o projeto adere ao [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## [1.3.0] - 2020-08-28
+### Added
+- Adicionado Edição do Perfil Logado (#11).
+- Adicionado o atributo has_qrcode no Modelo do Certificado. Na migração (0005_auto_20200828_1230) coloca True como default em todos os certificados já criados. Caso seja False, o certificado não vem com QRCode.
+- Adicionado o atributo is_public no Modelo do Certificado. Na migração (0006_template_is_public) coloca como False em todos os certificados. Antes todos os modelos eram públicos para todos os usuários cadastrados no sistema. Agora só fica público se este campo bolleano for marcado.
+- Adicionado na criação/edição de um certificado a página de configuração onde é possível setar o is_public e o has_qrcode.
+- Fix #12 - Aumentado o max_length dos atributos do Modelo e dos Eventos (0007_auto_20200828_1812).
+- Atualizado as dependências do projeto.
 
 ## [1.2.1] - 2020-06-08
 ###Changed
