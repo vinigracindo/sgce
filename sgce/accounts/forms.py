@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 
 
 class UserForm(forms.ModelForm):
@@ -21,3 +22,12 @@ class UserForm(forms.ModelForm):
 class UserUpdateForm(UserForm):
     class Meta(UserForm.Meta):
         exclude = ('password',)
+
+
+class ProfileUpdateForm(UserForm):
+    class Meta(UserForm.Meta):
+        exclude = ('is_superuser', 'groups')
+
+    def clean_password(self):
+        password = make_password(self.cleaned_data['password'])
+        return password

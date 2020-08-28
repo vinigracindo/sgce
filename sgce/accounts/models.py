@@ -5,10 +5,10 @@ from django.conf import settings
 class Profile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
-        verbose_name = 'usuário',
-        on_delete = models.CASCADE
+        verbose_name='usuário',
+        on_delete=models.CASCADE
     )
-    phone = models.CharField('telefone', max_length = 16, blank = True)
+    phone = models.CharField('telefone', max_length=16, blank=True)
 
     class Meta:
         verbose_name = 'perfil'

@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
@@ -6,9 +7,9 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, update_session_auth_hash
 
-from sgce.accounts.forms import UserForm, UserUpdateForm
+from sgce.accounts.forms import UserForm, UserUpdateForm, ProfileUpdateForm
 
 
 @login_required
@@ -55,3 +56,21 @@ class UserUpdateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessage
     template_name = 'accounts/user/form.html'
     success_url = reverse_lazy('accounts:user-list')
     success_message = 'O usuário %(username)s foi atualizado com sucesso.'
+
+
+class ProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = get_user_model()
+    form_class = ProfileUpdateForm
+    template_name = 'accounts/user/form.html'
+    success_message = 'Perfil atualizado com sucesso.'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('accounts:profile-update')
+
+    def form_valid(self, form):
+        self.object = form.save()
+        update_session_auth_hash(self.request, self.object)
+        return super().form_valid(form)
+
+    def get_object(self):
+        return self.model.objects.get(pk=self.request.user.pk)
