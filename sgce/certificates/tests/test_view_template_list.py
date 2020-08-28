@@ -1,7 +1,5 @@
 from django.shortcuts import resolve_url as r
 
-import datetime
-
 from model_mommy import mommy
 
 from sgce.certificates.models import Template
@@ -12,9 +10,10 @@ from sgce.core.tests.base import LoggedInTestCase
 class TemplateListGet(LoggedInTestCase):
     def setUp(self):
         super(TemplateListGet, self).setUp()
-        self.event = mommy.make(Event, created_by = self.user_logged_in)
-        self.t1 = mommy.make(Template, event = self.event, background = 'core/tests/test.gif')
-        self.t2 = mommy.make(Template, event = self.event, background = 'core/tests/test.gif')
+        self.event = mommy.make(Event, created_by=self.user_logged_in)
+        self.t1 = mommy.make(Template, event=self.event, background='core/tests/test.gif')
+        self.t2 = mommy.make(Template, event=self.event, background='core/tests/test.gif')
+        self.random_event = mommy.make(Template, event=mommy.make(Event), background='core/tests/test.gif')
 
         self.response = self.client.get(r('certificates:template-list'))
 
@@ -41,3 +40,9 @@ class TemplateListGet(LoggedInTestCase):
         for key in variables:
             with self.subTest():
                 self.assertIn(key, self.response.context)
+
+    def test_queryset(self):
+        templates = self.response.context['templates']
+        self.assertIn(self.t1, templates)
+        self.assertIn(self.t2, templates)
+        self.assertNotIn(self.random_event, templates)

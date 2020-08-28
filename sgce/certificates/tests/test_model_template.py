@@ -27,6 +27,7 @@ class TemplateModelTest(TestCase):
             ''',
             background='core/tests/test.gif',
             has_qrcode=False,
+            is_public=False,
         )
 
     def test_create(self):

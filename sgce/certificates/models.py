@@ -50,9 +50,9 @@ class Template(models.Model):
     name = models.CharField('nome', max_length = 128)
     event = models.ForeignKey(
         Event,
-        verbose_name = 'evento',
-        related_name = 'templates',
-        on_delete = models.PROTECT
+        verbose_name='evento',
+        related_name='templates',
+        on_delete=models.PROTECT
     )
     title = models.CharField('título', max_length=128, blank=True)
     content = HTMLField(
@@ -129,18 +129,19 @@ class Template(models.Model):
     )
     footer_section_align = models.CharField(
         'alinhamento da seção',
-        max_length = 10,
-        choices = SECTION_ALIGN,
-        default = CENTER
+        max_length=10,
+        choices=SECTION_ALIGN,
+        default=CENTER
     )
     footer_text_align = models.CharField(
         'alinhamento do rodapé',
-        max_length = 10,
-        choices = TEXT_ALIGN,
-        default = CENTER
+        max_length=10,
+        choices=TEXT_ALIGN,
+        default=CENTER
     )
     footer_text_color = models.CharField('cor do rodapé', max_length=10, choices=COLOR, default=BLACK)
     has_qrcode = models.BooleanField(verbose_name='tem qrcode?', default=True)
+    is_public = models.BooleanField(verbose_name='É público?', default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

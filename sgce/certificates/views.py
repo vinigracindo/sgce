@@ -1,6 +1,7 @@
 import json
 
 from django.contrib import messages
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -94,6 +95,10 @@ class TemplateListView(LoginRequiredMixin, ListView):
     model = Template
     template_name = 'certificates/template/list.html'
     context_object_name = 'templates'
+
+    def get_queryset(self):
+        # Show all publics template and all templates created by logged user
+        return Template.objects.filter(Q(event__created_by=self.request.user) | Q(is_public=True)).distinct()
 
 
 class TemplateCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):

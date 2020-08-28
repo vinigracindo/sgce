@@ -133,8 +133,10 @@
                           Configurações
                         </div>
                         <div class="card-body">
-                          {% bootstrap_label "Validação com QRCode?" label_for="id_has_qrcode" %}{% if form.font.field.required %}<span class="required-field">*</span>{% endif %}:
+                          {% bootstrap_label "Validação com QRCode?" label_for="id_has_qrcode" %}{% if form.has_qrdcode.field.required %}<span class="required-field">*</span>{% endif %}
                           {% bootstrap_field form.has_qrcode placeholder='' show_label=False  %}
+                          {% bootstrap_label "Público? (Permite que seja visualizado por terceiros)" label_for="id_is_public" %}{% if form.is_public.field.required %}<span class="required-field">*</span>{% endif %}
+                          {% bootstrap_field form.is_public placeholder='' show_label=False  %}
                         </div>
                       </div>
                     </div>

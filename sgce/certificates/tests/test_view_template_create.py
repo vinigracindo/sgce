@@ -48,7 +48,7 @@ class TemplateCreateGet(TemplateCreateWithPermission):
         """Html must contain input tags"""
         tags = (
             ('<form', 1),
-            ('<input', 11),
+            ('<input', 12),
             ('<select', 11),
             ('<textarea', 2),
             ('type="submit"', 1),
@@ -70,11 +70,11 @@ class TemplateCreateGet(TemplateCreateWithPermission):
 class TemplateCreatePost(TemplateCreateWithPermission):
     def setUp(self):
         super(TemplateCreatePost, self).setUp()
-        event = mommy.make(Event, created_by = self.user_logged_in)
+        event = mommy.make(Event, created_by=self.user_logged_in)
 
         data = dict(
-            name = 'SBI - Certificado de Participante',
-            event = event.pk,
+            name='SBI - Certificado de Participante',
+            event=event.pk,
             title = 'CERTIFICADO',
             content = '''
             Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
