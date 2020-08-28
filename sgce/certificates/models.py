@@ -54,78 +54,78 @@ class Template(models.Model):
         related_name = 'templates',
         on_delete = models.PROTECT
     )
-    title = models.CharField('título', max_length = 128, blank = True)
+    title = models.CharField('título', max_length=128, blank=True)
     content = HTMLField(
         'texto',
-        default = '''
+        default='''
         Exemplo: Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO, realizado em DATA_EVENTO.
         ''',
-        help_text = '''
+        help_text='''
         Os campos que compõem o certificado devem ser formados por duas palavras maísculas separadas pelo
         caractere sublinhado (underline), como no texto de exemplo:
         Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO, realizado em DATA_EVENTO
         '''
     )
-    backside_title = models.CharField('título do verso', max_length = 128, blank = True)
-    backside_content = HTMLField('texto do verso', blank = True)
+    backside_title = models.CharField('título do verso', max_length=128, blank=True)
+    backside_content = HTMLField('texto do verso', blank=True)
     background = models.ImageField(
-        verbose_name = 'imagem de fundo',
-        upload_to = 'backgrounds',
-        blank = True,
-        help_text = '''
+        verbose_name='imagem de fundo',
+        upload_to='backgrounds',
+        blank=True,
+        help_text='''
         É recomendado que imagem de fundo deverá ter 3508 pixels de largura e 2480 pixels de altura, 
         correspondendo a uma folha A4 na orientação de paisagem.
         '''
     )
-    font = models.CharField('fonte', max_length = 10, choices = FONTS, default = ARIAL)
+    font = models.CharField('fonte', max_length=10, choices=FONTS, default=ARIAL)
     title_top_distance = models.DecimalField(
         'distância do topo ao título',
-        decimal_places = 1,
-        max_digits = 2,
-        default = 3,
-        validators = [MinValueValidator(0), MaxValueValidator(10)]
+        decimal_places=1,
+        max_digits=2,
+        default=3,
+        validators=[MinValueValidator(0), MaxValueValidator(10)]
     )
     title_section_align = models.CharField(
         'alinhamento da seção',
-        max_length = 10,
-        choices = SECTION_ALIGN,
-        default = CENTER
+        max_length=10,
+        choices=SECTION_ALIGN,
+        default=CENTER
     )
     title_align = models.CharField(
         'alinhamento do título',
-        max_length = 10,
-        choices = TEXT_ALIGN,
-        default = CENTER
+        max_length=10,
+        choices=TEXT_ALIGN,
+        default=CENTER
     )
     title_color = models.CharField('cor do título', max_length = 10, choices = COLOR, default = BLACK)
     title_font_size = models.PositiveIntegerField('tamanho da fonte do título', default = 30)
     content_title_distance = models.DecimalField(
         'distância do título ao texto',
-        decimal_places = 1,
-        max_digits = 2,
-        default = 1.0,
-        validators = [MinValueValidator(0), MaxValueValidator(10)]
+        decimal_places=1,
+        max_digits=2,
+        default=1.0,
+        validators=[MinValueValidator(0), MaxValueValidator(10)]
     )
     content_section_align = models.CharField(
         'alinhamento da seção',
-        max_length = 10,
-        choices = SECTION_ALIGN,
-        default = CENTER
+        max_length=10,
+        choices=SECTION_ALIGN,
+        default=CENTER
     )
     content_text_align = models.CharField(
         'alinhmento do texto',
-        max_length = 10,
-        choices = TEXT_ALIGN,
-        default = JUSTIFY
+        max_length=10,
+        choices=TEXT_ALIGN,
+        default=JUSTIFY
     )
-    content_text_color = models.CharField('cor do texto', max_length = 10, choices = COLOR, default = BLACK)
-    content_font_size = models.PositiveIntegerField('tamanho da fonte do texto', default = 12)
+    content_text_color = models.CharField('cor do texto', max_length=10, choices=COLOR, default=BLACK)
+    content_font_size = models.PositiveIntegerField('tamanho da fonte do texto', default=12)
     footer_title_distance = models.DecimalField(
         'distância do texto ao rodapé',
-        decimal_places = 1,
-        max_digits = 2,
-        default = 0,
-        validators = [MinValueValidator(0), MaxValueValidator(10)]
+        decimal_places=1,
+        max_digits=2,
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(10)]
     )
     footer_section_align = models.CharField(
         'alinhamento da seção',
@@ -139,10 +139,10 @@ class Template(models.Model):
         choices = TEXT_ALIGN,
         default = CENTER
     )
-    footer_text_color = models.CharField('cor do rodapé', max_length = 10, choices = COLOR, default = BLACK)
-
-    created_at = models.DateTimeField(auto_now_add = True)
-    updated_at = models.DateTimeField(auto_now = True)
+    footer_text_color = models.CharField('cor do rodapé', max_length=10, choices=COLOR, default=BLACK)
+    has_qrcode = models.BooleanField(verbose_name='tem qrcode?', default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'modelo'

@@ -75,10 +75,14 @@
                     text-align: {{ certificate.template.footer_text_align }};
                     color: {{ certificate.template.footer_text_color }};">
             <p>
-                {% qr_from_text "https://sgce.ifal.edu.br/sgce/certificados/validar/{{ certificate.hash }}" size="2" image_format="png" error_correction="L" %} <br/>
-                Este documento dispensa o uso de assinatura, <br/>
-                a autenticidade pode ser verificada através da URL: <br/>
-                {{ domain }}/certificates/certificate/{{ certificate.hash }}/
+                {% if certificate.has_qrcode %}
+                    {% qr_from_text "https://sgce.ifal.edu.br/sgce/certificados/validar/{{ certificate.hash }}" size="2" image_format="png" error_correction="L" %} <br/>
+                    Este documento dispensa o uso de assinatura, <br/>
+                    a autenticidade pode ser verificada através da URL: <br/>
+                    {{ domain }}/certificates/certificate/{{ certificate.hash }}/
+                {% else %}
+                    A autenticidade deste certificado pode ser verificada em: {{ domain }}/certificates/certificate/{{ certificate.hash }}/
+                {% endif %}
             </p>
         </div>
         {% if certificate.template.backside_title or certificate.template.backside_content %}

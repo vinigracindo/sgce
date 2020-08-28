@@ -48,7 +48,7 @@ class TemplateCreateGet(TemplateCreateWithPermission):
         """Html must contain input tags"""
         tags = (
             ('<form', 1),
-            ('<input', 10),
+            ('<input', 11),
             ('<select', 11),
             ('<textarea', 2),
             ('type="submit"', 1),

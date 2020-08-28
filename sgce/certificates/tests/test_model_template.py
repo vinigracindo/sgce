@@ -14,18 +14,19 @@ class TemplateModelTest(TestCase):
         event = mommy.make(Event, created_by = user)
 
         self.template = Template.objects.create(
-            name = 'SBI - Certificado de Participante',
-            event = event,
-            title = 'CERTIFICADO',
-            content = '''
+            name='SBI - Certificado de Participante',
+            event=event,
+            title='CERTIFICADO',
+            content='''
             Certificamos que NOME_COMPLETO participou do evento NOME_EVENTO.
             ''',
-            backside_title = 'Programação',
-            backside_content = '''
+            backside_title='Programação',
+            backside_content='''
             1 - Abertura
             2 - Lorem Ipsum
             ''',
-            background = 'core/tests/test.gif',
+            background='core/tests/test.gif',
+            has_qrcode=False,
         )
 
     def test_create(self):

@@ -33,7 +33,7 @@ def home(request):
             cpf = form.cleaned_data['cpf']
 
             certificates = Certificate.objects\
-                .filter(participant__cpf = cpf,status = Certificate.VALID)\
+                .filter(participant__cpf=cpf, status=Certificate.VALID)\
                 .order_by('-created_at')\
                 .select_related()
 
@@ -135,7 +135,7 @@ class TemplateDeleteView(LoginRequiredMixin, TemplateEventCreatedByPermission, D
 
 @login_required
 def template_duplicate(request, pk):
-    template = Template.objects.get(pk = pk)
+    template = Template.objects.get(pk=pk)
 
     if request.method == "POST":
         form = TemplateDuplicateForm(request.user, request.POST)
@@ -159,12 +159,12 @@ def template_duplicate(request, pk):
 
 @login_required
 def template_preview_render_pdf(request, template_pk):
-    template = Template.objects.get(pk = template_pk)
+    template = Template.objects.get(pk=template_pk)
     template_path = 'certificates/template/pdf/preview.html'
     context = {'template': template}
 
     # Create a Django response object, and specify content_type as pdf
-    response = HttpResponse(content_type = 'application/pdf')
+    response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="{}-{}.pdf"'.format(template.name, 'Modelo Teste')
 
     # find the template and render it.
@@ -174,7 +174,7 @@ def template_preview_render_pdf(request, template_pk):
     # create a pdf
     pisa_status = pisa.CreatePDF(html, dest = response, link_callback = link_callback)
 
-    # if error then show some funy view
+    # if error then show some view
     if pisa_status.err:
         return HttpResponse('We had some errors <pre>' + html + '</pre>')
 
@@ -198,7 +198,7 @@ def certificate_render_pdf(request, hash):
     # create a pdf
     pisa_status = pisa.CreatePDF(html, dest = response, link_callback = link_callback)
 
-    # if error then show some funy view
+    # if error then show some view
     if pisa_status.err:
         return HttpResponse('We had some errors <pre>' + html + '</pre>')
 

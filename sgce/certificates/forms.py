@@ -2,6 +2,7 @@ import json
 
 from django import forms
 from django_select2.forms import Select2Widget
+from tinymce.widgets import TinyMCE
 
 from sgce.certificates.models import Template, Certificate, Participant
 from sgce.certificates.validators import validate_cpf
@@ -31,6 +32,7 @@ class TemplateForm(forms.ModelForm):
         model = Template
         exclude = ('created_by',)
         widgets = {
+            'content': TinyMCE(attrs={'cols': 80, 'rows': 30}),
             'event': Select2Widget,
         }
 
@@ -43,7 +45,7 @@ class TemplateDuplicateForm(forms.ModelForm):
             'event': Select2Widget,
         }
         help_texts = {
-            'event': ('Escolha o evento que você quer aplicar este modelo'),
+            'event': 'Escolha o evento que você quer aplicar este modelo',
         }
 
     def __init__(self, user, *args, **kwargs):
