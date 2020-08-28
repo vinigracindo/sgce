@@ -153,7 +153,6 @@ ABSOLUTE_URL_OVERRIDES = {
 
 TINYMCE_DEFAULT_CONFIG = {
     'plugins': "table,xhtmlxtras,paste,searchreplace",
-    'theme': "advanced",
     "theme_advanced_buttons3_add" : "cite,abbr",
     'cleanup_on_startup': True,
     'custom_undo_redo_levels': 10,
@@ -167,4 +166,5 @@ TINYMCE_DEFAULT_CONFIG = {
     'theme_advanced_statusbar_location': "bottom",
     'theme_advanced_resizing': True,
     'width': '100%',
+    'height': "480",
 }
