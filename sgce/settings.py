@@ -152,19 +152,32 @@ ABSOLUTE_URL_OVERRIDES = {
 }
 
 TINYMCE_DEFAULT_CONFIG = {
-    'plugins': "table,xhtmlxtras,paste,searchreplace",
-    "theme_advanced_buttons3_add" : "cite,abbr",
-    'cleanup_on_startup': True,
-    'custom_undo_redo_levels': 10,
-    'theme_advanced_buttons1': "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-    'theme_advanced_buttons2': "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-    'theme_advanced_buttons3': "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-    'theme_advanced_buttons4': "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak",
-    'extended_valid_elements': "iframe[src|title|width|height|allowfullscreen|frameborder|webkitAllowFullScreen|mozallowfullscreen|allowFullScreen]",
-    'theme_advanced_toolbar_location': "top",
-    'theme_advanced_toolbar_align': "left",
-    'theme_advanced_statusbar_location': "bottom",
-    'theme_advanced_resizing': True,
-    'width': '100%',
-    'height': "480",
+    'theme': 'silver',
+    'paste_text_sticky': True,
+    'paste_text_sticky_default': True,
+    'plugins': 'table,spellchecker,paste,searchreplace',
+    'theme_advanced_buttons1': 'bold,italic,underline,bullist,numlist,link,unlink,styleselect,fontselect,fontsizeselect',
+    'toolbar': "undo redo | sizeselect | bold italic | fontselect | alignleft aligncenter alignright alignjustify | fontsizeselect",
+
+    'fontsize_formats': "8pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 18pt 20pt 24pt 36pt 42pt 50pt 60pt",
+    'font_formats': "Andale Mono=andale mono,times;" +
+    "Arial=arial,helvetica,sans-serif;" +
+    "Arial Black=arial black,avant garde;" +
+    "Book Antiqua=book antiqua,palatino;" +
+    "Comic Sans MS=comic sans ms,sans-serif;" +
+    "Courier New=courier new,courier;" +
+    "Georgia=georgia,palatino;" +
+    "Helvetica=helvetica;" +
+    "Impact=impact,chicago;" +
+    "Symbol=symbol;" +
+    "Tahoma=tahoma,arial,helvetica,sans-serif;" +
+    "Terminal=terminal,monaco;" +
+    "Times New Roman=times new roman,times;" +
+    "Trebuchet MS=trebuchet ms,geneva;" +
+    "Verdana=verdana,geneva;" +
+    "Webdings=webdings;" +
+    "Wingdings=wingdings,zapf dingbats",
+
+    'width': 'auto',
+    'height': 360,
 }
