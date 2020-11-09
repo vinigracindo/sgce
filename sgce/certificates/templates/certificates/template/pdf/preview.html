@@ -76,7 +76,7 @@
                     color: {{ template.footer_text_color }};">
             <p>
                 {% if template.has_qrcode %}
-                    {% qr_from_text "https://sgce.ifal.edu.br/sgce/certificados/validar/{{ certificate.hash }}" size="2" image_format="png" error_correction="L" %} <br/>
+                    {% qr_from_text domain|add:"/certificates/certificate/" size="2" image_format="png" error_correction="L" %} <br/>
                     Este documento dispensa o uso de assinatura, <br/>
                     a autenticidade pode ser verificada através da URL: <br/>
                     ### MODELO TESTE ###

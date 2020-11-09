@@ -166,7 +166,7 @@ def template_duplicate(request, pk):
 def template_preview_render_pdf(request, template_pk):
     template = Template.objects.get(pk=template_pk)
     template_path = 'certificates/template/pdf/preview.html'
-    context = {'template': template}
+    context = {'template': template, 'domain': settings.SITE_URL}
 
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
