@@ -52,6 +52,7 @@
       {% block content %}
       {% endblock %}
     </div>
+    {% include 'includes/rodape-credito.html' %}
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -64,24 +65,5 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
     {% block extra-js %}{% endblock %}
-    
-    <footer class="footer fixed-bottom">
-      <div class="footnote">
-          <p class="font-weight-light">
-              O sistema <strong class="font-weight-normal">SGCE</strong> é um software livre licenciado sob <a href="https://github.com/vinigracindo/sgce/blob/master/LICENSE" rel="external">MIT License</a>.
-          </p>
-          <p>
-              <strong>Copyright 2020 © IFCE Campus Cedro</strong>
-          </p>
-          <p id="infocopy" class="small font-weight-light">
-
-          Desenvolvido por <a href="https://github.com/vinigracindo" alt="Perfil no Github de Vinnicyus Gracindo">Vinnicyus Gracindo</a> baseado no sistema <a href="https://softwarepublico.gov.br/social/sgce" alt="Página do SGCE no Portal do Software Público">SGCE</a>  
-          criado pela <a href="https://unipampa.edu.br/" alt="Site da UNIPAMPA">Universidade Federal do Pampa</a>.
-          Adaptado para o IFCE Campus Cedro pelo estudante 
-          <a href="http://lattes.cnpq.br/2799259176733620" alt="Perfil no Lattes de Francisco Gabriel">Francisco Gabriel de Souza Lima</a>, sob orientação do professor 
-          <a href="https://joseolinda.github.io/" alt="Site do professor José Olinda">José Olinda da Silva</a>.
-          </p>    
-      </div>
-    </footer>
   </body>
 </html>
