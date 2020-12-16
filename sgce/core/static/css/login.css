@@ -43,10 +43,6 @@ body {
   border-top-right-radius: 0;
 }
 
-
-
-
-
 .footnote {
     border-top: 2px solid #eee;
     clear: both;
@@ -56,7 +52,7 @@ body {
     padding-top: 20px;
 }
 .footnotes p {
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.2rem !important;
 }
 .footnote a, .footnote strong {
     color: #999;
