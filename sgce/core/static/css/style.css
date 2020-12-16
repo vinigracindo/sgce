@@ -36,6 +36,12 @@ html {
     color:red;
 }
 
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 .footnote {
     border-top: 2px solid #eee;
     clear: both;
@@ -45,7 +51,7 @@ html {
     padding-top: 20px;
 }
 .footnotes p {
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.2rem !important;
 }
 .footnote a, .footnote strong {
     color: #999;
