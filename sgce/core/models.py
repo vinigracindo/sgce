@@ -11,6 +11,16 @@ class Event(models.Model):
     start_date = models.DateField('data de início')
     end_date = models.DateField('data de término')
     location = models.CharField('local de realização', max_length=255, blank=True)
+    has_public_page = models.BooleanField(
+        'Criar uma página pública',
+        help_text=
+        '''
+        Cria uma página pública do evento que mostra todos os certificados.
+        Recomenda-se não marcar essa opção caso o certificado possua dados sensíveis
+        como CPF.
+        ''',
+        default=False,
+    )
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name='criado por',

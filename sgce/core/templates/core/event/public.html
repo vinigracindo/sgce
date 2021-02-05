@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra-css %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/buttons.dataTables.min.css' %}">
+{% endblock %}
+
+{% block content-title %}Evento{% endblock %}
+{% block content-description %}
+  <b>{{ event.name }}</b> <br>
+  {% if event.start_date != event.end_date %}
+    {{ event.start_date }} até {{ event.end_date }}
+  {% else %}
+    {{ event.start_date }}
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+  {% for template in event.templates.all %}
+    <div class="row mt-4">
+        <h3>{{ template.name }}</h3>
+    </div>
+    <div class="row">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th>Certificado</th>
+          <th>Nome</th>
+          <th>Download</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for certificate in template.certificates.all %}
+          <tr>
+            <td>{{ certificate.template.name }}</td>
+            <td>{{ certificate.fields.name }}</td>
+            <td><a href="{% url 'certificates:certificate-pdf' certificate.hash %}" class="fas fa-file-pdf fa-sm" title="Visualizar"></a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+          <th>Certificado</th>
+          <th>Nome</th>
+          <th>Download</th>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  {% endfor %}
+{% endblock %}
+
+{% block extra-js %}
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/dataTables.buttons.min.js' %}"></script>
+<script>
+  $(function () {
+    $('table').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true,
+      'language': {
+        "sEmptyTable": "Nenhum registro encontrado",
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sInfoThousands": ".",
+        "sLengthMenu": "_MENU_ resultados por página",
+        "sLoadingRecords": "Carregando...",
+        "sProcessing": "Processando...",
+        "sZeroRecords": "Nenhum registro encontrado",
+        "sSearch": "Pesquisar",
+        "oPaginate": {
+            "sNext": "Próximo",
+            "sPrevious": "Anterior",
+            "sFirst": "Primeiro",
+            "sLast": "Último"
+        },
+        "oAria": {
+            "sSortAscending": ": Ordenar colunas de forma ascendente",
+            "sSortDescending": ": Ordenar colunas de forma descendente"
+        },
+      },
+    })
+  })
+</script>
+{% endblock %}

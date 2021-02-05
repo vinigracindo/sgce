@@ -68,7 +68,7 @@ class EventUpdateGet(EventUpdateWithPermission):
         tags = (
             ('<form', 1),
             # CSRF, Name, Start_date, End_date and Location
-            ('<input', 5),
+            ('<input', 6),
             ('type="text"', 2),
             ('type="date"', 2),
             ('type="submit"', 1),

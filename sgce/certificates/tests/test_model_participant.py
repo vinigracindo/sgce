@@ -18,6 +18,8 @@ class ParticipantModelTest(TestCase):
         field = Participant._meta.get_field('email')
         self.assertTrue(field.blank)
 
+
+
     def test_str(self):
         self.assertEqual('Alan Turing (373.774.208-12)', str(self.participant))
 

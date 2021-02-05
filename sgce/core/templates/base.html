@@ -41,7 +41,9 @@
       {% include 'includes/barra-brasil.html' %}
     {% endif %}
 
-    {% include 'includes/navbar.html' %}
+    {% if user.is_authenticated %}
+      {% include 'includes/navbar.html' %}
+    {% endif %}
 
     <div class="main-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <h1 class="display-4">{% block content-title %}Bem-vindo{% endblock %}</h1>

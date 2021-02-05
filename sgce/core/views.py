@@ -74,3 +74,10 @@ class EventDeleteView(LoginRequiredMixin, EventCreatedByPermission, DeleteView):
 class EventDetailView(LoginRequiredMixin, EventCreatedByPermission, DetailView):
     model = Event
     template_name = 'core/event/detail.html'
+
+
+def event_page(request, slug):
+    context = {
+        'event': Event.objects.get(slug=slug)
+    }
+    return render(request, 'core/event/public.html', context)

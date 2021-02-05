@@ -20,10 +20,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 
+from sgce.core.views import event_page
 from sgce.certificates.views import home
 
 urlpatterns = [
     path('', home, name = 'home'),
+    path('event/<slug:slug>/', event_page, name='event-public-page'),
     path('core/', include('sgce.core.urls', namespace = 'core')),
     path('accounts/', include('sgce.accounts.urls', namespace = 'accounts')),
     path('certificates/', include('sgce.certificates.urls', namespace = 'certificates')),

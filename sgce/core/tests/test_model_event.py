@@ -15,6 +15,7 @@ class EventModelTest(TestCase):
             start_date = datetime.date(2018, 6, 18),
             end_date = datetime.date(2018, 6, 18),
             location = 'IFAL - Campus Arapiraca',
+            has_public_page = False,
             created_by = user,
         )
 
