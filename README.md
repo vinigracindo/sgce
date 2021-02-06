@@ -100,6 +100,8 @@ docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --no
 
 docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
 
+docker-compose -f docker-compose.prod.yml exec web python manage.py loaddata Group
+
 docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
 ```
 
