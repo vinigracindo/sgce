@@ -72,6 +72,41 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+## Deploy com Docker
+
+1. Configurar as varíaveis no arquivo .env.prod
+```
+DEBUG=0
+SECRET_KEY=<Gere uma chave única>
+DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+SQL_DATABASE=<db_name>
+SQL_USER=<db_user>
+SQL_PASSWORD=<db_password>
+SQL_HOST=<db_host>
+SQL_PORT=5432
+```
+
+DEBUG: 0 = False. 1 = True
+
+SECRET_KEY: Gere uma secret key utilizando o contrib/secret_gen.py ou utilizando o site https://djecrety.ir/
+
+Remova as variáveis SQL_DATABASE, SQL_USER, SQL_PASSWORD, SQL_HOST e SQL_PORT para utilizar os valores defaults
+do settings.py
+
+2. Execute o docker compose
+```console
+docker-compose -f docker-compose.yml up -d --build
+
+docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
+
+docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
+
+docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
+```
+
+Deploy realizado na porta 1337. Acesse http://localhost:1337/
+
+Caso queira mudar a porta, basta alterar o serviço do nginx no docker-compose.yml e alterar a variável `ports`.
 
 ## Como realizar Deploy no Ubuntu Server
 
