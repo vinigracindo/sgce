@@ -1,5 +1,6 @@
 .DS_STORE
 .env
+.vscode
 .idea
 .sgce
 *.sqlite3
