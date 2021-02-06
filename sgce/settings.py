@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "UNSAFE_KEY"),
 # 0 = False, 1 = True
 DEBUG = int(os.environ.get("DEBUG", default=1)) 
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost 127.0.0.1").split(" ")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost 127.0.0.1 herokuapp.com").split(" ")
 
 INTERNAL_IPS = (
     '127.0.0.1',

@@ -4,6 +4,13 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 e o projeto adere ao [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2021-02-05
+### Added
+- Fix (#16).
+- Adicionado deploy com Docker.
+- Removido dependência com o python-decouple.
+- Adicionado o atributo has_public_page no Evento. Na migração (0005_auto_20201116_0945) coloca False como default em todos os eventos já criados. Caso seja True, o evento poderá cer acessado através da url /event/<slug_field> e todos os certificados do evento serão mostrados na página.
+
 ## [1.3.0] - 2020-08-28
 ### Added
 - Adicionado Edição do Perfil Logado (#11).
