@@ -1,7 +1,7 @@
 django-bootstrap4==2.2.0
 dj-database-url==0.5.0
 dj-static==0.0.6
-Django==2.2.17
+Django==2.2.21
 pytz==2020.1
 static3==0.7.0
 django-test-without-migrations==0.6
