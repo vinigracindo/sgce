@@ -11,7 +11,7 @@ from sgce.core.models import Event
 class TemplateModelTest(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
-        event = mommy.make(Event, created_by = user)
+        event = mommy.make(Event, created_by=user)
 
         self.template = Template.objects.create(
             name='SBI - Certificado de Participante',
@@ -58,12 +58,13 @@ class TemplateModelTest(TestCase):
         self.assertTrue(field.blank)
 
     def test_str(self):
-        self.assertEqual('{}: {}'.format(self.template.event.name, self.template.name), str(self.template))
+        self.assertEqual('{}: {}'.format(
+            self.template.event.name, self.template.name), str(self.template))
 
     def test_get_fields(self):
         self.assertListEqual(
             self.template.template_fields(),
-            ['NUMERO_CPF', 'NOME_COMPLETO', 'NOME_EVENTO']
+            ['NUMERO_DNI', 'NOME_COMPLETO', 'NOME_EVENTO']
         )
         # another test
         self.template.content = '''
@@ -79,7 +80,7 @@ class TemplateModelTest(TestCase):
         self.template.refresh_from_db()
         self.assertListEqual(
             self.template.template_fields(),
-            ['NUMERO_CPF', 'NOME_COMPLETO', 'NOME_EVENTO', 'EMAIL_PARTICIPANTE']
+            ['NUMERO_DNI', 'NOME_COMPLETO', 'NOME_EVENTO', 'EMAIL_PARTICIPANTE']
         )
 
     def test_layout(self):

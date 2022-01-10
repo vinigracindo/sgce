@@ -21,7 +21,6 @@ from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, Certifi
 from sgce.certificates.mixins import TemplateEventCreatedByPermission
 from sgce.certificates.models import Template, Participant, Certificate, CertificateHistory
 from sgce.certificates.utils.pdf import link_callback
-from sgce.certificates.validators import validate_cpf
 from sgce.core.decorators import template_event_created_by_user_logged_in_required, \
     certificate_event_created_by_user_logged_in_required
 from sgce.core.utils.get_deleted_objects import get_deleted_objects
@@ -32,10 +31,10 @@ def home(request):
     if request.method == 'POST':
         form = HomeForm(request.POST)
         if form.is_valid():
-            cpf = form.cleaned_data['cpf']
+            dni = form.cleaned_data['dni']
 
             certificates = Certificate.objects\
-                .filter(participant__cpf=cpf, status=Certificate.VALID)\
+                .filter(participant__dni=dni, status=Certificate.VALID)\
                 .order_by('-created_at')\
                 .select_related()
 
@@ -43,7 +42,7 @@ def home(request):
                 context['certificates'] = certificates
             else:
                 messages.error(
-                    request, 'Não existem certificados válidos para este CPF.')
+                    request, 'Não existem certificados válidos para este DNI.')
     else:
         form = HomeForm()
     context['form'] = form
@@ -236,14 +235,14 @@ def certificates_creator(request):
             inspector = {'certificates': [], 'error': []}
 
             for certificate_attrs in certificates:
-                cpf, name, *args = [x.strip() for x in certificate_attrs]
+                dni, name, *args = [x.strip() for x in certificate_attrs]
                 attrs = {}
 
                 for key, value in enumerate(args, 2):
                     attrs[template.template_fields()[key]] = value
 
                 participant, created = Participant.objects.get_or_create(
-                    cpf=validate_cpf(cpf),
+                    dni=dni,
                     defaults={'name': name}
                 )
 

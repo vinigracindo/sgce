@@ -13,47 +13,48 @@
 
 {% block content %}
 {% if messages %}
-  {% for message in messages %}
-    <div class="alert alert-info" role="alert">
-      {{ message }}
-    </div>
-  {% endfor %}
+{% for message in messages %}
+<div class="alert alert-info" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
 {% endif %}
 <div class="row">
   <table id="tableList" class="table table-bordered table-striped">
     <thead>
-    <tr>
-      <th>CPF</th>
-      <th>Nome</th>
-      <th>Email</th>
-      {% if user.is_superuser %}
+      <tr>
+        <th>DNI</th>
+        <th>Nome</th>
+        <th>Email</th>
+        {% if user.is_superuser %}
         <th>Ações</th>
-      {% endif %}
-    </tr>
+        {% endif %}
+      </tr>
     </thead>
     <tbody>
-    {% for participant in participants %}
+      {% for participant in participants %}
       <tr>
-        <td>{{ participant.cpf }}</td>
+        <td>{{ participant.dni }}</td>
         <td>{{ participant.name }}</td>
         <td>{{ participant.email }}</td>
         {% if user.is_superuser %}
-          <td style="white-space: nowrap;">
-            <a href="{% url 'certificates:participant-update' participant.pk %}" class="fas fa-edit fa-sm" title="Editar"></a>
-          </td>
+        <td style="white-space: nowrap;">
+          <a href="{% url 'certificates:participant-update' participant.pk %}" class="fas fa-edit fa-sm"
+            title="Editar"></a>
+        </td>
         {% endif %}
       </tr>
-    {% endfor %}
+      {% endfor %}
     </tbody>
     <tfoot>
-    <tr>
-      <th>CPF</th>
-      <th>Nome</th>
-      <th>Email</th>
-      {% if user.is_superuser %}
+      <tr>
+        <th>DNI</th>
+        <th>Nome</th>
+        <th>Email</th>
+        {% if user.is_superuser %}
         <th>Ações</th>
-      {% endif %}
-    </tr>
+        {% endif %}
+      </tr>
     </tfoot>
   </table>
 </div>
@@ -66,12 +67,12 @@
 <script>
   $(function () {
     $('#tableList').DataTable({
-      'paging'      : true,
+      'paging': true,
       'lengthChange': false,
-      'searching'   : true,
-      'ordering'    : false,
-      'info'        : true,
-      'autoWidth'   : true,
+      'searching': true,
+      'ordering': false,
+      'info': true,
+      'autoWidth': true,
       'language': {
         "sEmptyTable": "Nenhum registro encontrado",
         "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -85,14 +86,14 @@
         "sZeroRecords": "Nenhum registro encontrado",
         "sSearch": "Pesquisar",
         "oPaginate": {
-            "sNext": "Próximo",
-            "sPrevious": "Anterior",
-            "sFirst": "Primeiro",
-            "sLast": "Último"
+          "sNext": "Próximo",
+          "sPrevious": "Anterior",
+          "sFirst": "Primeiro",
+          "sLast": "Último"
         },
         "oAria": {
-            "sSortAscending": ": Ordenar colunas de forma ascendente",
-            "sSortDescending": ": Ordenar colunas de forma descendente"
+          "sSortAscending": ": Ordenar colunas de forma ascendente",
+          "sSortDescending": ": Ordenar colunas de forma descendente"
         },
       },
     })

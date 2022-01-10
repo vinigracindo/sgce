@@ -17,7 +17,8 @@ class CertificateValidateTest(TestCase):
 
     def test_template(self):
         """Must use certificates/certificate/validate.html"""
-        self.assertTemplateUsed(self.response, 'certificates/certificate/validate.html')
+        self.assertTemplateUsed(
+            self.response, 'certificates/certificate/validate.html')
 
     def test_has_form(self):
         """Context must have user form"""
@@ -28,24 +29,28 @@ class CertificateValidateTest(TestCase):
 class CertificateValidateTestPost(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
-        event = mommy.make(Event, name = 'Simpósio Brasileiro de Informática', created_by = user)
-        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
-        participant = mommy.make(Participant, cpf = '67790155040')
+        event = mommy.make(
+            Event, name='Simpósio Brasileiro de Informática', created_by=user)
+        self.template = mommy.make(
+            Template, event=event, background='core/tests/test.gif')
+        participant = mommy.make(Participant, dni='67790155040')
 
         self.certificate = Certificate.objects.create(
-            participant = participant,
-            template = self.template,
-            fields = '',
-            status = Certificate.VALID,
+            participant=participant,
+            template=self.template,
+            fields='',
+            status=Certificate.VALID,
         )
         data = dict(
-            hash = self.certificate.hash,
+            hash=self.certificate.hash,
         )
-        self.response = self.client.post(r('certificates:certificate-validate'), data)
+        self.response = self.client.post(
+            r('certificates:certificate-validate'), data)
 
     def test_post_status(self):
         self.assertEqual(302, self.response.status_code)
 
     def test_post(self):
         """ Valid POST should redirect to 'certificates-evaluation-template' """
-        self.assertRedirects(self.response, r('certificates:certificate-detail', self.certificate.hash))
+        self.assertRedirects(self.response, r(
+            'certificates:certificate-detail', self.certificate.hash))

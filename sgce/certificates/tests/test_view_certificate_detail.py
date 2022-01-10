@@ -10,23 +10,27 @@ from sgce.core.models import Event
 class CertificateDetailGet(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
-        event = mommy.make(Event, name = 'Simpósio Brasileiro de Informática', created_by = user)
-        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
-        participant = mommy.make(Participant, cpf = '67790155040')
+        event = mommy.make(
+            Event, name='Simpósio Brasileiro de Informática', created_by=user)
+        self.template = mommy.make(
+            Template, event=event, background='core/tests/test.gif')
+        participant = mommy.make(Participant, dni='67790155040')
 
         self.certificate = Certificate.objects.create(
-            participant = participant,
-            template = self.template,
-            fields = '',
-            status = Certificate.VALID,
+            participant=participant,
+            template=self.template,
+            fields='',
+            status=Certificate.VALID,
         )
-        self.response = self.client.get(r('certificates:certificate-detail', self.certificate.hash))
+        self.response = self.client.get(
+            r('certificates:certificate-detail', self.certificate.hash))
 
     def test_get(self):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/certificate/detail.html')
+        self.assertTemplateUsed(
+            self.response, 'certificates/certificate/detail.html')
 
     def test_context(self):
         variables = ['certificate']
@@ -48,7 +52,8 @@ class CertificateDetailGet(TestCase):
 
 class CertificateDetailInvalidGet(TestCase):
     def setUp(self):
-        self.response = self.client.get(r('certificates:certificate-detail', 'invalid-hash'))
+        self.response = self.client.get(
+            r('certificates:certificate-detail', 'invalid-hash'))
 
     def test_get(self):
         self.assertContains(self.response, 'Certificado inválido')
@@ -57,20 +62,23 @@ class CertificateDetailInvalidGet(TestCase):
 class CertificateDetailTestInvalidStatusGet(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
-        event = mommy.make(Event, name = 'Simpósio Brasileiro de Informática', created_by = user)
-        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
-        participant = mommy.make(Participant, cpf = '67790155040')
+        event = mommy.make(
+            Event, name='Simpósio Brasileiro de Informática', created_by=user)
+        self.template = mommy.make(
+            Template, event=event, background='core/tests/test.gif')
+        participant = mommy.make(Participant, dni='67790155040')
 
         certificate = Certificate.objects.create(
-            participant = participant,
-            template = self.template,
-            fields = '',
+            participant=participant,
+            template=self.template,
+            fields='',
             status=Certificate.PENDING,
         )
         data = dict(
-            hash = certificate.hash,
+            hash=certificate.hash,
         )
-        self.response = self.client.get(r('certificates:certificate-detail', certificate.hash))
+        self.response = self.client.get(
+            r('certificates:certificate-detail', certificate.hash))
 
     def test_error(self):
         self.assertContains(self.response, 'Certificado inválido')

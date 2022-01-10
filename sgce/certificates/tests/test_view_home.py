@@ -29,18 +29,20 @@ class HomeTest(TestCase):
 class HomeTestPost(TestCase):
     def setUp(self):
         user = mommy.make(get_user_model())
-        event = mommy.make(Event, name = 'Simpósio Brasileiro de Informática', created_by = user)
-        self.template = mommy.make(Template, event = event, background = 'core/tests/test.gif')
-        participant = mommy.make(Participant, cpf = '67790155040')
+        event = mommy.make(
+            Event, name='Simpósio Brasileiro de Informática', created_by=user)
+        self.template = mommy.make(
+            Template, event=event, background='core/tests/test.gif')
+        participant = mommy.make(Participant, dni='67790155040')
 
         self.certificate = Certificate.objects.create(
-            participant = participant,
-            template = self.template,
-            fields = '',
-            status = Certificate.VALID,
+            participant=participant,
+            template=self.template,
+            fields='',
+            status=Certificate.VALID,
         )
         data = dict(
-            cpf = '677.901.550-40',
+            dni='67790155040',
         )
         self.response = self.client.post(r('home'), data)
 
@@ -57,15 +59,15 @@ class HomeTestPost(TestCase):
 
     def test_html(self):
         Certificate.objects.create(
-            participant = mommy.make(Participant, cpf = '07298801090'),
-            template = self.template,
-            fields = '',
-            status = Certificate.VALID,
+            participant=mommy.make(Participant, dni='07298801090'),
+            template=self.template,
+            fields='',
+            status=Certificate.VALID,
         )
 
         contents = [
-            (1, '677.901.550-40'),
-            (0, '072.988.010-90'),
+            (1, '67790155040'),
+            (0, '07298801090'),
             (1, 'Simpósio Brasileiro de Informática'),
         ]
 
@@ -75,8 +77,9 @@ class HomeTestPost(TestCase):
 
     def test_error(self):
         data = dict(
-            cpf = '376.727.930-47',
+            dni='376.727.930-47',
         )
         self.response = self.client.post(r('home'), data)
 
-        self.assertContains(self.response, 'Não existem certificados válidos para este CPF.')
+        self.assertContains(
+            self.response, 'Não existem certificados válidos para este DNI.')

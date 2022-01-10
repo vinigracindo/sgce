@@ -10,7 +10,8 @@ class ParticipantUpdateWithoutPermission(LoggedInTestCase):
     def setUp(self):
         super(ParticipantUpdateWithoutPermission, self).setUp()
         self.participant = mommy.make(Participant)
-        self.response = self.client.get(r('certificates:participant-update', self.participant.pk))
+        self.response = self.client.get(
+            r('certificates:participant-update', self.participant.pk))
 
     def test_get(self):
         """Must return 403 HttpError (No permission)"""
@@ -22,7 +23,7 @@ class ParticipantUpdateWithPermission(LoggedInTestCase):
     def setUp(self):
         super(ParticipantUpdateWithPermission, self).setUp()
 
-        self.participant = mommy.make(Participant, email = 'alan@turing.com')
+        self.participant = mommy.make(Participant, email='alan@turing.com')
 
         self.user_logged_in.is_superuser = True
         self.user_logged_in.save()
@@ -32,19 +33,21 @@ class ParticipantUpdateWithPermission(LoggedInTestCase):
 class ParticipantUpdateGet(ParticipantUpdateWithPermission):
     def setUp(self):
         super(ParticipantUpdateGet, self).setUp()
-        self.response = self.client.get(r('certificates:participant-update', self.participant.pk))
+        self.response = self.client.get(
+            r('certificates:participant-update', self.participant.pk))
 
     def test_get(self):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/participant/form.html')
+        self.assertTemplateUsed(
+            self.response, 'certificates/participant/form.html')
 
     def test_inputs(self):
         """Html must contain filled inputs"""
         inputs = [
             self.participant.name,
-            self.participant.cpf,
+            self.participant.dni,
             self.participant.email,
         ]
         for input in inputs:
@@ -55,7 +58,7 @@ class ParticipantUpdateGet(ParticipantUpdateWithPermission):
         """Html must contain input tags"""
         tags = (
             ('<form', 1),
-            # CSRF, Name, cpf and email
+            # CSRF, Name, dni and email
             ('<input', 4),
             ('type="text"', 2),
             ('type="email"', 1),
@@ -80,11 +83,12 @@ class ParticipantUpdatePost(ParticipantUpdateWithPermission):
     def setUp(self):
         super(ParticipantUpdatePost, self).setUp()
         data = dict(
-            name = 'User Name',
-            cpf = '39265928000',
-            email = 'user@name.com',
+            name='User Name',
+            dni='39265928000',
+            email='user@name.com',
         )
-        self.response = self.client.post(r('certificates:participant-update', self.participant.pk), data)
+        self.response = self.client.post(
+            r('certificates:participant-update', self.participant.pk), data)
         self.participant.refresh_from_db()
 
     def test_post(self):
@@ -94,4 +98,4 @@ class ParticipantUpdatePost(ParticipantUpdateWithPermission):
     def test_update_user(self):
         self.assertEqual('User Name', self.participant.name)
         self.assertEqual('user@name.com', self.participant.email)
-        self.assertEqual('39265928000', self.participant.cpf)
+        self.assertEqual('39265928000', self.participant.dni)

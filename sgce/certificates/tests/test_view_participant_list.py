@@ -8,8 +8,8 @@ from sgce.core.tests.base import LoggedInTestCase
 class ParticipantListGet(LoggedInTestCase):
     def setUp(self):
         super(ParticipantListGet, self).setUp()
-        self.p1 = mommy.make(Participant, email = 'a@a.com')
-        self.p2 = mommy.make(Participant, email = 'b@b.com')
+        self.p1 = mommy.make(Participant, email='a@a.com')
+        self.p2 = mommy.make(Participant, email='b@b.com')
 
         self.response = self.client.get(r('certificates:participant-list'))
 
@@ -17,16 +17,17 @@ class ParticipantListGet(LoggedInTestCase):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'certificates/participant/list.html')
+        self.assertTemplateUsed(
+            self.response, 'certificates/participant/list.html')
 
     def test_html(self):
         contents = [
             (1, self.p1.name),
             (1, self.p1.email),
-            (1, self.p1.cpf),
+            (1, self.p1.dni),
             (1, self.p2.name),
             (1, self.p2.email),
-            (1, self.p2.cpf),
+            (1, self.p2.dni),
         ]
 
         for count, expected in contents:
