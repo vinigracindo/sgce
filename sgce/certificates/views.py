@@ -13,6 +13,7 @@ from django.template.loader import get_template
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.conf import settings
+from sgce.core.utils.ip import get_client_ip
 from xhtml2pdf import pisa
 
 from sgce.certificates.forms import TemplateForm, TemplateDuplicateForm, CertificatesCreatorForm, ParticipantForm, \
@@ -41,7 +42,8 @@ def home(request):
             if certificates.exists():
                 context['certificates'] = certificates
             else:
-                messages.error(request, 'Não existem certificados válidos para este CPF.')
+                messages.error(
+                    request, 'Não existem certificados válidos para este CPF.')
     else:
         form = HomeForm()
     context['form'] = form
@@ -54,7 +56,7 @@ def certificate_validate(request):
         form = CertificateValidateForm(request.POST)
         if form.is_valid():
             hash = form.cleaned_data['hash']
-            return redirect('certificates:certificate-detail', hash = hash)
+            return redirect('certificates:certificate-detail', hash=hash)
 
     else:
         form = CertificateValidateForm()
@@ -65,8 +67,9 @@ def certificate_validate(request):
 def certificate_detail(request, hash):
     context = {}
     try:
-        context['certificate'] = Certificate.objects.get(hash = hash)
-    except Certificate.DoesNotExist: pass
+        context['certificate'] = Certificate.objects.get(hash=hash)
+    except Certificate.DoesNotExist:
+        pass
 
     return render(request, 'certificates/certificate/detail.html', context)
 
@@ -127,7 +130,8 @@ class TemplateDeleteView(LoginRequiredMixin, TemplateEventCreatedByPermission, D
 
     def get_context_data(self, **kwargs):
         context = super(TemplateDeleteView, self).get_context_data(**kwargs)
-        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        deletable_objects, model_count, protected = get_deleted_objects([
+                                                                        self.object])
         context['deletable_objects'] = deletable_objects
         context['model_count'] = model_count
         context['protected'] = protected
@@ -149,7 +153,8 @@ def template_duplicate(request, pk):
             template.pk = None
             template.event = event
             template.save()
-            messages.success(request, 'O modelo {} foi duplicado com sucesso.'.format(template))
+            messages.success(
+                request, 'O modelo {} foi duplicado com sucesso.'.format(template))
             return HttpResponseRedirect(reverse('certificates:template-list'))
     else:
         form = TemplateDuplicateForm(request.user)
@@ -170,14 +175,16 @@ def template_preview_render_pdf(request, template_pk):
 
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename="{}-{}.pdf"'.format(template.id, 'Modelo Teste')
+    response['Content-Disposition'] = 'inline; filename="{}-{}.pdf"'.format(
+        template.id, 'Modelo Teste')
 
     # find the template and render it.
     template = get_template(template_path)
     html = template.render(context)
 
     # create a pdf
-    pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+    pisa_status = pisa.CreatePDF(
+        html, dest=response, link_callback=link_callback)
 
     # if error then show some view
     if pisa_status.err:
@@ -187,13 +194,13 @@ def template_preview_render_pdf(request, template_pk):
 
 
 def certificate_render_pdf(request, hash):
-    certificate = get_object_or_404(Certificate, hash = hash)
+    certificate = get_object_or_404(Certificate, hash=hash)
     template_path = 'certificates/certificate/pdf/certificate.html'
 
     context = {'certificate': certificate, 'domain': settings.SITE_URL}
 
     # Create a Django response object, and specify content_type as pdf
-    response = HttpResponse(content_type = 'application/pdf')
+    response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="certificado.pdf"'
 
     # find the template and render it.
@@ -201,7 +208,8 @@ def certificate_render_pdf(request, hash):
     html = template.render(context)
 
     # create a pdf
-    pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+    pisa_status = pisa.CreatePDF(
+        html, dest=response, link_callback=link_callback)
 
     # if error then show some view
     if pisa_status.err:
@@ -215,7 +223,8 @@ def certificates_creator(request):
     context = {}
 
     if request.method == 'POST':
-        form = CertificatesCreatorForm(request.user, request.POST, request.FILES)
+        form = CertificatesCreatorForm(
+            request.user, request.POST, request.FILES)
         context['certificates'] = request.POST['certificates']
 
         if form.is_valid():
@@ -239,7 +248,8 @@ def certificates_creator(request):
                 )
 
                 try:
-                    certificate = Certificate.objects.create(participant=participant, template=template, fields=attrs)
+                    certificate = Certificate.objects.create(
+                        participant=participant, template=template, fields=attrs)
                     inspector['certificates'].append(certificate)
                 except IntegrityError:
                     inspector['error'].append(certificate_attrs)
@@ -268,7 +278,7 @@ def certificates_evaluation(request):
 
         if form.is_valid():
             template = form.cleaned_data['template']
-            return HttpResponseRedirect(reverse('certificates:certificates-evaluation-template', args = (template.pk,)))
+            return HttpResponseRedirect(reverse('certificates:certificates-evaluation-template', args=(template.pk,)))
 
     form = CertificateEvaluationForm(request.user)
     return render(request, 'certificates/template/evaluation.html', {'form': form})
@@ -292,11 +302,11 @@ def certificates_evaluation_template(request, template_pk):
 
             for certificate in certificates:
                 CertificateHistory.objects.create(
-                    certificate = certificate,
-                    user = request.user,
-                    notes = notes,
-                    ip = request.META.get('REMOTE_ADDR'),
-                    status = status,
+                    certificate=certificate,
+                    user=request.user,
+                    notes=notes,
+                    ip=get_client_ip(request),
+                    status=status,
                 )
 
             certificates.update(status=status)
@@ -318,4 +328,4 @@ class CertificateListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super(CertificateListView, self).get_queryset()
         user = self.request.user
-        return queryset if user.is_superuser else queryset.filter(template__event__created_by = self.request.user)
+        return queryset if user.is_superuser else queryset.filter(template__event__created_by=self.request.user)
