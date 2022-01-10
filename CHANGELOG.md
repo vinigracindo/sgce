@@ -4,6 +4,11 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 e o projeto adere ao [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2022-01-10
+### Added
+- Fix (#17).
+- Atualizado requirements
+
 ## [1.4.0] - 2021-02-05
 ### Added
 - Fix (#16).
